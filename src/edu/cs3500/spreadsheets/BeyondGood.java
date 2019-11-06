@@ -47,28 +47,45 @@ public class BeyondGood {
     }
   }
 
+  /**
+   * Formats a cell's contents based on assignment specifications.
+   *
+   * @param model            The given model containing the cell that needs formatting.
+   * @param evaluateLocation The location of the cell that needs formatting.
+   */
   private static void formatOutput(BasicWorksheetModel model, Coord evaluateLocation) {
     try {
+      // if the cell is a number
       String output = String.format("%f", model.getCellAt(evaluateLocation).evaluateCell());
       System.out.println(output);
     } catch (IllegalFormatConversionException efce) {
     }
+    // if the cell is a string
     String output = parseString(model.getCellAt(evaluateLocation).evaluateCell().toString());
     System.out.println(output);
   }
 
+  /**
+   * Formats a given string based on assignment specifications.
+   *
+   * @param unformattedOutput the unformatted string input (cell contents).
+   * @return A formatted string with backslashes and double quotes escaped.
+   */
   private static String parseString(String unformattedOutput) {
+    // set accumulator string
     String accumulatedString = "";
-
     int i;
+    // for each character in the string
     for (i = 0; i < unformattedOutput.length(); i++) {
       char c = unformattedOutput.charAt(i);
-
+      // if it is a double quote or backslash, escape it
       if (c == '"' | c == '\\') {
         accumulatedString += "\\";
       }
+      // append it to the accumulator
       accumulatedString += c;
     }
+    // encase the whole string in double quotes
     return "\"" + accumulatedString + "\"";
   }
 
