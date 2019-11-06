@@ -53,9 +53,7 @@ public class Multiply implements CellVisitor<CellFormula, Double> {
     return 0.12345;
   }
 
-
-  // since a blank cell contains no numeric values, the Product function ignores it by treating
-  // it as 1
+  // ignores the blank value by multiplying it by 1.0
   @Override
   public Double visitBlank(CellBlank b) {
     return 1.0;
@@ -63,10 +61,6 @@ public class Multiply implements CellVisitor<CellFormula, Double> {
 
   @Override
   public Double apply(CellFormula formula) {
-    try {
-      return (Double) formula.accept(this);
-    } catch (NullPointerException e) {
-      throw new IllegalArgumentException("this is a cyclic reference");
-    }
+    return (Double) formula.accept(this);
   }
 }

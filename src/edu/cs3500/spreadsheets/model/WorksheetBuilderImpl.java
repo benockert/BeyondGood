@@ -14,21 +14,27 @@ public class WorksheetBuilderImpl implements WorksheetReader.WorksheetBuilder<Ba
 
   @Override
   public WorksheetReader.WorksheetBuilder createCell(int col, int row, String contents) {
-    // constructs a cell from the given string contents
-    CellFormula cell;
-    // if the cell is a reference or a formula
-    if (contents.substring(0, 1).equals("=")) {
-      // create a string without the "="
-      String contentsWithoutEquals = contents.substring(1);
-      // create a new cell with the reference or formula
-      cell = Parser.parse(contentsWithoutEquals).accept(new SexpVisitorHandler(this.cellHashMap));
-    } else {
-      cell = Parser.parse(contents).accept(new SexpVisitorHandler(this.cellHashMap));
+    try {
+      // constructs a cell from the given string contents
+      CellFormula cell;
+      // if the cell is a reference or a formula
+      if (contents.substring(0, 1).equals("=")) {
+        // create a string without the "="
+        String contentsWithoutEquals = contents.substring(1);
+        // create a new cell with the reference or formula
+        cell = Parser.parse(contentsWithoutEquals).accept(new SexpVisitorHandler(this.cellHashMap));
+      } else {
+        cell = Parser.parse(contents).accept(new SexpVisitorHandler(this.cellHashMap));
+      }
+      // constructs a coordinate from the given row and column number
+      Coord location = new Coord(col, row);
+      // adds the cell to the HashMap
+      this.cellHashMap.put(location, cell);
+    } catch (IllegalArgumentException e) {
+      // prints out errors in creating cells with the error message they throw
+      System.out.println("Error in cell " + Coord.colIndexToName(col) + row
+              + ": " + e.toString().substring(36));
     }
-    // constructs a coordinate from the given row and column number
-    Coord location = new Coord(col, row);
-    // adds the cell to the HashMap
-    this.cellHashMap.put(location, cell);
     return this;
   }
 

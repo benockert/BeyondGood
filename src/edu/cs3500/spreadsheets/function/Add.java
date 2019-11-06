@@ -52,7 +52,6 @@ public class Add implements CellVisitor<CellFormula, Double> {
     return 0.0;
   }
 
-  // since a blank cell has no numbers, the add function ignores it by treating it as a 0
   @Override
   public Double visitBlank(CellBlank b) {
     return 0.0;
@@ -60,10 +59,6 @@ public class Add implements CellVisitor<CellFormula, Double> {
 
   @Override
   public Double apply(CellFormula formula) {
-    try {
-      return (Double) formula.accept(this);
-    } catch (NullPointerException e) {
-      throw new IllegalArgumentException("this is a cyclic reference");
-    }
+    return (Double) formula.accept(this);
   }
 }

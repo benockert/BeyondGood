@@ -48,19 +48,15 @@ public class Repeat implements CellVisitor<CellFormula, String> {
     return s.evaluateCell();
   }
 
-  // blank cells should not add anything to the repeated string, so they return their default
-  // raw contents of an empty string
+  // ignores the blank cell by returning an empty string
   @Override
   public String visitBlank(CellBlank b) {
-    return b.getRawContents();
+    return "";
   }
 
   @Override
   public String apply(CellFormula formula) {
-    try {
-      return (String) formula.accept(this);
-    } catch (NullPointerException e) {
-      throw new IllegalArgumentException("this is a cyclic reference");
-    }
+    return (String) formula.accept(this);
   }
+
 }

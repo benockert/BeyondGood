@@ -27,11 +27,7 @@ public class CellReference implements CellFormula {
   // to evaluate just a reference (ex: =A1:A3), just return the value of the first cell
   @Override
   public Object evaluateCell() {
-    try {
-      return this.cells.get(0).evaluateCell();
-    } catch (NullPointerException e) {
-      throw new IllegalArgumentException("this is a cyclic reference");
-    }
+    return this.cells.get(0).evaluateCell();
   }
 
   // raw contents should just be a string of the coordinates (ex: "A1:A3")

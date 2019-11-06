@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.cs3500.spreadsheets.cell.CellBlank;
 import edu.cs3500.spreadsheets.cell.CellBoolean;
 import edu.cs3500.spreadsheets.cell.CellDouble;
 import edu.cs3500.spreadsheets.cell.CellFormula;
@@ -97,7 +96,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
     if (!referenceSymbol.contains(":")) {
       // set the coordinate of the cell
       cell1coordinate = getCoord(referenceSymbol);
-      // get the cell from the worksheet at that coordinate
+      // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
       CellFormula refCell = this.cells.get(cell1coordinate);
       // add that cell to the referenced list
       referencedCells.add(refCell);
@@ -131,13 +130,10 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
         // set a new coordinate
         Coord tempCoord = new Coord(i, j);
         // add the cell at that coordinate to the result list
-        if (this.cells.get(tempCoord) == null) {
-          result.add(new CellBlank());
-        } else {
-          result.add(this.cells.get(tempCoord));
-        }
+        result.add(this.cells.get(tempCoord));
       }
     }
+
     return result;
   }
 

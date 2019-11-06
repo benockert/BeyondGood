@@ -45,18 +45,13 @@ public class LessThan implements CellVisitor<CellFormula, Double> {
     throw new IllegalArgumentException("Cannot compare strings");
   }
 
-  // blank cells do not have numeric values and can therefore not be compared for less than
   @Override
   public Double visitBlank(CellBlank b) {
-    throw new IllegalArgumentException("Cannot compare blank cells");
+    throw new IllegalArgumentException("Cannot compare two blank cells");
   }
 
   @Override
   public Double apply(CellFormula formula) {
-    try {
       return (Double) formula.accept(this);
-    } catch (NullPointerException e) {
-      throw new IllegalArgumentException("this is a cyclic reference");
-    }
   }
 }

@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.cs3500.spreadsheets.cell.CellBlank;
 import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.SexpVisitorHandler;
@@ -77,6 +78,9 @@ public class BasicWorksheetModel implements Worksheet {
 
   @Override
   public CellFormula getCellAt(Coord location) {
+    if (this.cells.get(location) == null) {
+      this.cells.put(location, new CellBlank());
+    }
     return this.cells.get(location);
   }
 
@@ -85,11 +89,7 @@ public class BasicWorksheetModel implements Worksheet {
    */
   private void updateAllCells() {
     for (Map.Entry<Coord, CellFormula> cell : this.cells.entrySet()) {
-      try {
-        cell.getValue().evaluateCell();
-      } catch (NullPointerException n) {
-        throw new IllegalArgumentException("Modifying this cell creates a cyclic reference");
-      }
+      cell.getValue().evaluateCell();
     }
   }
 }

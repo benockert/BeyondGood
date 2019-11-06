@@ -9,7 +9,7 @@ public class CellBlank implements CellFormula {
 
   @Override
   public String evaluateCell() {
-    return null;
+    return "The requested cell is either blank or contains an error.";
   }
 
   @Override

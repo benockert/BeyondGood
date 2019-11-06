@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.IllegalFormatConversionException;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -40,12 +41,23 @@ public class BeyondGood {
       // attempts to make a readable file out of the given file name
       FileReader readFile = new FileReader(file);
       BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
-      System.out.println(model.getCellAt(evaluateLocation).evaluateCell());
+      formatOutput(model, evaluateLocation);
     } catch (FileNotFoundException fnf) {
       System.out.println("Invalid file given");
     }
   }
 
+  private static void formatOutput(BasicWorksheetModel model, Coord evaluateLocation) {
+    String output = String.format("%f", model.getCellAt(evaluateLocation).evaluateCell());
+    System.out.println(output);
+  }
+
+  /**
+   * Gets the Coordinate representation of the given string cell name
+   *
+   * @param cellName the cell name represented as a string ([col][index])
+   * @return the given cell String as a Coord
+   */
   private static Coord getCoord(String cellName) {
     // parses the cellName to get the String representation of the column name
     int col = Coord.colNameToIndex(cellName.substring(0, 1));
