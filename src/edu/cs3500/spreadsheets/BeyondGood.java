@@ -48,8 +48,28 @@ public class BeyondGood {
   }
 
   private static void formatOutput(BasicWorksheetModel model, Coord evaluateLocation) {
-    String output = String.format("%f", model.getCellAt(evaluateLocation).evaluateCell());
+    try {
+      String output = String.format("%f", model.getCellAt(evaluateLocation).evaluateCell());
+      System.out.println(output);
+    } catch (IllegalFormatConversionException efce) {
+    }
+    String output = parseString(model.getCellAt(evaluateLocation).evaluateCell().toString());
     System.out.println(output);
+  }
+
+  private static String parseString(String unformattedOutput) {
+    String accumulatedString = "";
+
+    int i;
+    for (i = 0; i < unformattedOutput.length(); i++) {
+      char c = unformattedOutput.charAt(i);
+
+      if (c == '"' | c == '\\') {
+        accumulatedString += "\\";
+      }
+      accumulatedString += c;
+    }
+    return "\"" + accumulatedString + "\"";
   }
 
   /**
@@ -62,7 +82,7 @@ public class BeyondGood {
     // parses the cellName to get the String representation of the column name
     int col = Coord.colNameToIndex(cellName.substring(0, 1));
     // parses the cellName to get the row number of the cell
-    int row = cellName.charAt(1) - 48;
+    int row = Integer.parseInt(cellName.substring(1));
     // returns a new coordinate based on the row and column of the given cell name
     return new Coord(col, row);
   }
