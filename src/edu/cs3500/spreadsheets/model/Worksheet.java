@@ -1,5 +1,8 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashMap;
+import java.util.List;
+
 import edu.cs3500.spreadsheets.cell.CellFormula;
 
 /**
@@ -38,5 +41,11 @@ public interface Worksheet {
    * @return a cell at a specific location.
    */
   CellFormula getCellAt(Coord location);
+
+  /**
+   * Returns all the cells in this model.
+   * @return the cells of the model.
+   */
+  HashMap<Coord, CellFormula> getCells();
 
 }

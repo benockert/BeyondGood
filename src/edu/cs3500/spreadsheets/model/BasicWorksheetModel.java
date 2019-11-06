@@ -1,6 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.cs3500.spreadsheets.cell.CellBlank;
@@ -82,6 +83,11 @@ public class BasicWorksheetModel implements Worksheet {
       this.cells.put(location, new CellBlank());
     }
     return this.cells.get(location);
+  }
+
+  @Override
+  public HashMap<Coord, CellFormula> getCells() {
+    return this.cells;
   }
 
   /**

@@ -3,8 +3,12 @@ package edu.cs3500.spreadsheets;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.IllegalFormatConversionException;
+import java.util.Map;
 
+import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
@@ -29,9 +33,49 @@ public class BeyondGood {
 
     if (args[0].equals("-in") && args[2].equals("-eval")) {
       runMainInEval(args);
+    } else if (args[0].equals("-in") && args[2].equals("-save")) {
+      runMainInSave(args);
+    } else if (args[0].equals("-in") && args[2].equals("-gui")) {
+      runMainInGUI(args);
+    } else if (args[0].equals("-gui")) {
+      runNewGUI(args);
     }
+  }
 
+  private static void saveContentsToFile(BasicWorksheetModel model, PrintWriter pw) {
+    String rawContents = "";
+    HashMap<Coord, CellFormula> modelCells = model.getCells();
+    for (Map.Entry<Coord, CellFormula> cell : modelCells.entrySet()) {
+      rawContents += cell.getValue().getRawContents() + "\n";
+    }
+    pw.append(rawContents);
+  }
 
+  private static void runMainInSave(String[] args) {
+    // the worksheet builder
+    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
+    String fileName = args[1];
+    File file = new File(fileName);
+    String fileOutName = args[3];
+    File fileOut = new File(fileOutName);
+    try {
+      PrintWriter printToFile = new PrintWriter(fileOut);
+      FileReader readFile = new FileReader(file);
+      BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
+      saveContentsToFile(model, printToFile);
+    } catch (FileNotFoundException fnf) {
+      System.out.println("Invalid file given");
+    }
+  }
+
+  private static void runMainInGUI(String[] args) {
+    // the worksheet builder
+    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
+  }
+
+  private static void runNewGUI(String[] args) {
+    // the worksheet builder
+    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
   }
 
   private static void runMainInEval(String[] args) {
