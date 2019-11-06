@@ -1,0 +1,22 @@
+A1 3
+B1 4
+C1 9
+D1 12
+
+A2 =A1
+B2 =B1
+C2 =C1
+D2 =D1
+
+A3 =(PRODUCT (SUM 3 4) (SUM 5 6))
+A4 =(LESSTHAN (SUM 1 1) (PRODUCT 5 1))
+
+A5 =(SUM A1 B1)
+A6 =(PRODUCT B2 C1)
+A7 =(SUM A1:D1)
+A8 =(PRODUCT A1:D2)
+
+# cyclic references
+A1 =(SUM A1 B1)
+B1 =(SUM C1 D1)
+C1 =(PRODUCT B1 2)
