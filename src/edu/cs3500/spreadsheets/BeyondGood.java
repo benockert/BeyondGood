@@ -20,14 +20,23 @@ public class BeyondGood {
    * @param args any command-line arguments.
    */
   public static void main(String[] args) {
-    // the worksheet builder
-    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
     /*
       TODO: For now, look in the args array to obtain a filename and a cell name,
       - read the file and build a model from it, 
       - evaluate all the cells, and
       - report any errors, or print the evaluated value of the requested cell.
     */
+
+    if (args[0].equals("-in") && args[2].equals("-eval")) {
+      runMainInEval(args);
+    }
+
+
+  }
+
+  private static void runMainInEval(String[] args) {
+    // the worksheet builder
+    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
 
     // the path to the text file that this spreadsheet will be created from
     String fileName = args[1];
@@ -46,6 +55,7 @@ public class BeyondGood {
       System.out.println("Invalid file given");
     }
   }
+
 
   /**
    * Formats a cell's contents based on assignment specifications.
