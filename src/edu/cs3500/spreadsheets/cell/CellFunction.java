@@ -41,7 +41,7 @@ public class CellFunction implements CellFormula {
     for (CellFormula form : arguments) {
       contents += (" " + form.getRawContents());
     }
-    return "=" + contents + ")";
+    return contents + ")";
   }
 
   @Override

@@ -69,7 +69,7 @@ public class BasicWorksheetModelTest {
     initData();
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
     this.worksheet.editCell("=(SUM 5 6 7)", location);
-    assertEquals("=(SUM 5.0 6.0 7.0)", this.worksheet.getCellAt(location).getRawContents());
+    assertEquals("(SUM 5.0 6.0 7.0)", this.worksheet.getCellAt(location).getRawContents());
     assertEquals(18.0, this.worksheet.getCellAt(location).evaluateCell());
   }
 
@@ -79,7 +79,7 @@ public class BasicWorksheetModelTest {
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
     this.worksheet.editCell(5.0, location2);
     this.worksheet.editCell("=(SUM 5 6 A1)", location);
-    assertEquals("=(SUM 5.0 6.0 A1)", this.worksheet.getCellAt(location).getRawContents());
+    assertEquals("(SUM 5.0 6.0 A1)", this.worksheet.getCellAt(location).getRawContents());
     assertEquals(16.0, this.worksheet.getCellAt(location).evaluateCell());
   }
 

@@ -176,6 +176,31 @@ public class AddTest {
     assertEquals(9.0, this.model.getCellAt(this.locationB2).evaluateCell());
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddFunctionWithIndirectReference2() {
+    initData();
+    model.editCell("=B3", this.locationA1);
+    model.editCell("=A1", this.locationA2);
+    model.editCell("=A2", this.locationB1);
+    model.editCell("=B1", this.locationB2);
+    model.editCell("=(SUM B2 10)", this.locationB3);
+    assertEquals(20.0, this.model.getCellAt(this.locationB3).evaluateCell());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddFunctionWithReference3() {
+    initData();
+    model.editCell(5, this.locationA1);
+    model.editCell("=(SUM A1 A2)", this.locationA2);
+    assertEquals(60.0, this.model.getCellAt(this.locationA2).evaluateCell());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testFunctionWithReference() {
+    initData();
+    model.editCell("=A1", this.locationA1);
+    assertEquals(60.0, this.model.getCellAt(this.locationA1).evaluateCell());
+  }
 
   // TESTS FOR THE ADD FUNCTION OBJECT AND THE SEXP VISITOR HANDLER
   @Test
@@ -258,29 +283,4 @@ public class AddTest {
             + " 13 (PRODUCT (SUM 3 true 2) 2))").accept(this.visitor).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testAddFunctionWithIndirectReference2() {
-    initData();
-    model.editCell("=B3", this.locationA1);
-    model.editCell("=A1", this.locationA2);
-    model.editCell("=A2", this.locationB1);
-    model.editCell("=B1", this.locationB2);
-    model.editCell("=(SUM B2 10)", this.locationB3);
-    assertEquals(20.0, this.model.getCellAt(this.locationB3).evaluateCell());
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testAddFunctionWithReference3() {
-    initData();
-    model.editCell(5, this.locationA1);
-    model.editCell("=(SUM A1 A2)", this.locationA2);
-    assertEquals(60.0, this.model.getCellAt(this.locationA2).evaluateCell());
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void testFunctionWithReference() {
-    initData();
-    model.editCell("=A1", this.locationA1);
-    assertEquals(60.0, this.model.getCellAt(this.locationA1).evaluateCell());
-  }
 }

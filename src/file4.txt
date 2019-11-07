@@ -16,5 +16,5 @@ A6 =(PRODUCT B2 C1)
 A7 =(SUM A1:D1)
 A8 =(PRODUCT A1:D2)
 
-D10 ="Ben says \"hello\" to \\ Shreya"
+D10 "Ben says \"hello\" to \\ Shreya"
 D11 true

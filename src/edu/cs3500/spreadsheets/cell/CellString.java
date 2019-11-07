@@ -25,7 +25,8 @@ public class CellString implements CellFormula {
 
   @Override
   public String getRawContents() {
-    return this.value;
+    return "\"" + this.value + "\"";
+
   }
 
   @Override

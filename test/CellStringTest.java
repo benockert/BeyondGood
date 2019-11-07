@@ -25,7 +25,7 @@ public class CellStringTest {
   @Test
   public void testCellString1String() {
     initData();
-    assertEquals("hello", this.cellString1.getRawContents());
+    assertEquals("\"hello\"", this.cellString1.getRawContents());
   }
 
   @Test
@@ -37,7 +37,7 @@ public class CellStringTest {
   @Test
   public void testCellString2String() {
     initData();
-    assertEquals("", this.cellString2.getRawContents());
+    assertEquals("\"\"", this.cellString2.getRawContents());
   }
 
   @Test
@@ -49,7 +49,7 @@ public class CellStringTest {
   @Test
   public void testCellString3String() {
     initData();
-    assertEquals("Object Oriented Design", this.cellString3.getRawContents());
+    assertEquals("\"Object Oriented Design\"", this.cellString3.getRawContents());
   }
 
   @Test

@@ -3,6 +3,7 @@ A1 3
 B1 4
 C1 9
 D1 12
+D2 = (REPT "hello" 5)
 
 # creates cells that compute numbers
 A3 =(PRODUCT (SUM 3 4) (SUM 5 6))

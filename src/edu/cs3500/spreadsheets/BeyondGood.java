@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.IllegalFormatConversionException;
@@ -13,6 +14,7 @@ import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
+import edu.cs3500.spreadsheets.view.BasicWorksheetSaveView;
 
 /**
  * The main class for our program. This class actually runs the program.
@@ -34,7 +36,7 @@ public class BeyondGood {
     if (args[0].equals("-in") && args[2].equals("-eval")) {
       runMainInEval(args);
     } else if (args[0].equals("-in") && args[2].equals("-save")) {
-      runMainInSave(args);
+      runSaveView(args);
     } else if (args[0].equals("-in") && args[2].equals("-gui")) {
       runMainInGUI(args);
     } else if (args[0].equals("-gui")) {
@@ -42,16 +44,38 @@ public class BeyondGood {
     }
   }
 
-  private static void saveContentsToFile(BasicWorksheetModel model, PrintWriter pw) {
-    String rawContents = "";
-    HashMap<Coord, CellFormula> modelCells = model.getCells();
-    for (Map.Entry<Coord, CellFormula> cell : modelCells.entrySet()) {
-      rawContents += cell.getValue().getRawContents() + "\n";
+  /**
+   * Creates a model from a user-given file path and evaluates a chosen cell from the model.
+   *
+   * @param args the command line arguments of from the client
+   */
+  private static void runMainInEval(String[] args) {
+    // the worksheet builder
+    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
+    // the path to the text file that this spreadsheet will be created from
+    String fileName = args[1];
+    File file = new File(fileName);
+    // the String name of the cell that we will eventually want to evaluate
+    String cellName = args[3];
+    // the Coordinate of the cell that we will eventually want to evaluate
+    Coord evaluateLocation = getCoord(cellName);
+    try {
+      // attempts to make a readable file out of the given file name
+      FileReader readFile = new FileReader(file);
+      BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
+      formatOutput(model, evaluateLocation);
+    } catch (FileNotFoundException fnf) {
+      System.out.println("Invalid file given");
     }
-    pw.append(rawContents);
   }
 
-  private static void runMainInSave(String[] args) {
+  /**
+   * Creates a model from a user-given file path and then saves the model to a given file
+   * path for later use.
+   *
+   * @param args the command line arguments of from the client
+   */
+  private static void runSaveView(String[] args) {
     // the worksheet builder
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
     String fileName = args[1];
@@ -62,42 +86,33 @@ public class BeyondGood {
       PrintWriter printToFile = new PrintWriter(fileOut);
       FileReader readFile = new FileReader(file);
       BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
-      saveContentsToFile(model, printToFile);
+      BasicWorksheetSaveView saveView = new BasicWorksheetSaveView(model, printToFile);
+      saveView.render();
     } catch (FileNotFoundException fnf) {
       System.out.println("Invalid file given");
+    } catch (IOException io) {
+      System.out.println("Error saving file");
     }
   }
 
+  /**
+   * Creates a model from a user-given file path and renders a graphical view of the model.
+   *
+   * @param args the command line arguments of from the client
+   */
   private static void runMainInGUI(String[] args) {
     // the worksheet builder
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
   }
 
+  /**
+   * Creates a graphical view of a blank spreadsheet for the client to use.
+   *
+   * @param args the command line arguments of from the client
+   */
   private static void runNewGUI(String[] args) {
     // the worksheet builder
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
-  }
-
-  private static void runMainInEval(String[] args) {
-    // the worksheet builder
-    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
-
-    // the path to the text file that this spreadsheet will be created from
-    String fileName = args[1];
-    File file = new File(fileName);
-    // the String name of the cell that we will eventually want to evaluate
-    String cellName = args[3];
-    // the Coordinate of the cell that we will eventually want to evaluate
-    Coord evaluateLocation = getCoord(cellName);
-
-    try {
-      // attempts to make a readable file out of the given file name
-      FileReader readFile = new FileReader(file);
-      BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
-      formatOutput(model, evaluateLocation);
-    } catch (FileNotFoundException fnf) {
-      System.out.println("Invalid file given");
-    }
   }
 
 
