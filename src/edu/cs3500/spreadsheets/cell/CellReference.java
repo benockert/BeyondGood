@@ -23,6 +23,8 @@ public class CellReference implements CellFormula {
   public CellReference(String coordString, List<CellFormula> cells) {
     this.coordString = coordString;
 
+    // TODO --> have constructor check for direct and indirect references
+
     //if (!anyCycles(location, cells)) {
     this.cells = cells;
     //} else {

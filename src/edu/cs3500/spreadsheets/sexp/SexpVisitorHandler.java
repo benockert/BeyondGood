@@ -74,6 +74,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
   @Override
   public CellFormula visitSymbol(String s) {
     List<CellFormula> listOfReferencedCells = getReferencedCells(s);
+    // creates a new cell reference, whose constructor checks for direct or indirect references
     return new CellReference(s, listOfReferencedCells);
   }
 
@@ -98,9 +99,9 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
     if (!referenceSymbol.contains(":")) {
       // set the coordinate of the cell
       cell1coordinate = getCoord(referenceSymbol);
+
       // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
       CellFormula refCell = this.cells.get(cell1coordinate);
-
       referencedCells.add(refCell);
 
     } else {

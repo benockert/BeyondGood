@@ -14,7 +14,9 @@ import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
+import edu.cs3500.spreadsheets.view.BasicWorksheetGraphicalView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetSaveView;
+import edu.cs3500.spreadsheets.view.BasicWorksheetView;
 
 /**
  * The main class for our program. This class actually runs the program.
@@ -113,6 +115,13 @@ public class BeyondGood {
   private static void runNewGUI(String[] args) {
     // the worksheet builder
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
+
+    BasicWorksheetView view = new BasicWorksheetGraphicalView();
+    try {
+      view.render();
+    } catch (IOException io) {
+    }
+
   }
 
   /**
