@@ -70,8 +70,8 @@ public class BeyondGood {
   }
 
   /**
-   * Creates a model from a user-given file path and then saves the model to a given file
-   * path for later use.
+   * Creates a model from a user-given file path and then saves the model to a given file path for
+   * later use.
    *
    * @param args the command line arguments of from the client
    */
@@ -115,7 +115,6 @@ public class BeyondGood {
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
   }
 
-
   /**
    * Formats a cell's contents based on assignment specifications.
    *
@@ -127,6 +126,8 @@ public class BeyondGood {
       // if the cell is a number
       String output = String.format("%f", model.getCellAt(evaluateLocation).evaluateCell());
       System.out.println(output);
+      // exits if the cells value was a number and it was printed in the proper format
+      System.exit(0);
     } catch (IllegalFormatConversionException efce) {
     }
     // if the cell is a string

@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets.cell;
 import java.util.List;
 
 import edu.cs3500.spreadsheets.function.CellVisitor;
+import edu.cs3500.spreadsheets.model.Coord;
 
 /**
  * A class that represents a cell in a spreadsheet that contains a reference. A reference is a
@@ -21,7 +22,12 @@ public class CellReference implements CellFormula {
    */
   public CellReference(String coordString, List<CellFormula> cells) {
     this.coordString = coordString;
+
+    //if (!anyCycles(location, cells)) {
     this.cells = cells;
+    //} else {
+    // throw new IllegalArgumentException("Cyclic reference");
+    //}
   }
 
   // to evaluate just a reference (ex: =A1:A3), just return the value of the first cell

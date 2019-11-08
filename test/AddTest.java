@@ -122,7 +122,7 @@ public class AddTest {
   @Test(expected = IllegalArgumentException.class)
   public void testAddDirectCycle() {
     initData();
-    this.model.editCell("=(SUM A1 1)", this.locationA1);
+    this.model.editCell("=A1", this.locationA1);
     this.model.getCellAt(this.locationA1).evaluateCell();
   }
 

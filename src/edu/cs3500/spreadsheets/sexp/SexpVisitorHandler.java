@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets.sexp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.cs3500.spreadsheets.cell.CellBoolean;
 import edu.cs3500.spreadsheets.cell.CellDouble;
@@ -88,6 +89,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    * @param referenceSymbol a string representing the region of cells being referenced.
    * @return a list of CellFormula representing the cells being referenced.
    */
+  // check here for references
   private List<CellFormula> getReferencedCells(String referenceSymbol) {
     List<CellFormula> referencedCells = new ArrayList<>();
     Coord cell1coordinate;
@@ -98,8 +100,9 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
       cell1coordinate = getCoord(referenceSymbol);
       // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
       CellFormula refCell = this.cells.get(cell1coordinate);
-      // add that cell to the referenced list
+
       referencedCells.add(refCell);
+
     } else {
       // else the reference is to two cells, split the string at the colon
       String[] splitSymbol = referenceSymbol.split(":");
