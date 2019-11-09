@@ -18,6 +18,7 @@ import edu.cs3500.spreadsheets.model.Coord;
  */
 public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
   private HashMap<Coord, CellFormula> cells;
+  private Coord locationOfCell;
 
   /**
    * Constructs a {@code SexpVisitorHandler} object. The default constructor for a Sexp visitor.
@@ -33,8 +34,9 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    *
    * @param cellsForReference the hash map of cells and their location in a spreadsheet.
    */
-  public SexpVisitorHandler(HashMap<Coord, CellFormula> cellsForReference) {
+  public SexpVisitorHandler(HashMap<Coord, CellFormula> cellsForReference, Coord location) {
     this.cells = cellsForReference;
+    this.locationOfCell = location;
   }
 
   // returns a new CellBoolean with the given boolean value
@@ -62,7 +64,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
     // for each expression in copy
     for (Sexp expr : copy) {
       // visit the expression and add it to the result list
-      result.add(expr.accept(new SexpVisitorHandler(this.cells)));
+      result.add(expr.accept(new SexpVisitorHandler(this.cells, this.locationOfCell)));
     }
     // return a new cell function with the first item (name) and the result list
     return new CellFunction(l.get(0).toString(), result);
@@ -75,6 +77,8 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
   public CellFormula visitSymbol(String s) {
     List<CellFormula> listOfReferencedCells = getReferencedCells(s);
     // creates a new cell reference, whose constructor checks for direct or indirect references
+
+    // TODO
     return new CellReference(s, listOfReferencedCells);
   }
 
@@ -90,7 +94,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    * @param referenceSymbol a string representing the region of cells being referenced.
    * @return a list of CellFormula representing the cells being referenced.
    */
-  // check here for references
+  // TODO check here for references
   private List<CellFormula> getReferencedCells(String referenceSymbol) {
     List<CellFormula> referencedCells = new ArrayList<>();
     Coord cell1coordinate;
@@ -100,9 +104,13 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
       // set the coordinate of the cell
       cell1coordinate = getCoord(referenceSymbol);
 
-      // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
-      CellFormula refCell = this.cells.get(cell1coordinate);
-      referencedCells.add(refCell);
+      if (cell1coordinate.equals(this.locationOfCell)) {
+        throw new IllegalArgumentException("Cycle reference");
+      } else {
+        // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
+        CellFormula refCell = this.cells.get(cell1coordinate);
+        referencedCells.add(refCell);
+      }
 
     } else {
       // else the reference is to two cells, split the string at the colon

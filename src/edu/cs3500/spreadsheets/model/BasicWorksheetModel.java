@@ -54,7 +54,7 @@ public class BasicWorksheetModel implements Worksheet {
       // initialize a string of the input without the  "="
       String noEqualsString = input.substring(1);
       // create a new cell with the given string converted to a function or reference
-      editedCell = Parser.parse(noEqualsString).accept(new SexpVisitorHandler(this.cells));
+      editedCell = Parser.parse(noEqualsString).accept(new SexpVisitorHandler(this.cells, location));
     } else {
       // else the cell is a string, format it correctly
       String escapedString = "\"" + input + "\"";

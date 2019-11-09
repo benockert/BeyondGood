@@ -17,17 +17,19 @@ public class WorksheetBuilderImpl implements WorksheetReader.WorksheetBuilder<Ba
     try {
       // constructs a cell from the given string contents
       CellFormula cell;
+      // constructs a coordinate from the given row and column number
+      Coord location = new Coord(col, row);
       // if the cell is a reference or a formula
       if (contents.substring(0, 1).equals("=")) {
         // create a string without the "="
         String contentsWithoutEquals = contents.substring(1);
         // create a new cell with the reference or formula
-        cell = Parser.parse(contentsWithoutEquals).accept(new SexpVisitorHandler(this.cellHashMap));
+        cell = Parser.parse(contentsWithoutEquals).accept(
+                new SexpVisitorHandler(this.cellHashMap, location));
       } else {
-        cell = Parser.parse(contents).accept(new SexpVisitorHandler(this.cellHashMap));
+        cell = Parser.parse(contents).accept(new SexpVisitorHandler(this.cellHashMap, location));
       }
-      // constructs a coordinate from the given row and column number
-      Coord location = new Coord(col, row);
+
       // adds the cell to the HashMap
       this.cellHashMap.put(location, cell);
     } catch (IllegalArgumentException e) {

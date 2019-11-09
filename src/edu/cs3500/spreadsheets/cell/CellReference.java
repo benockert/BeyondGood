@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.cell;
 
+import java.util.HashMap;
 import java.util.List;
 
 import edu.cs3500.spreadsheets.function.CellVisitor;
@@ -22,14 +23,8 @@ public class CellReference implements CellFormula {
    */
   public CellReference(String coordString, List<CellFormula> cells) {
     this.coordString = coordString;
+        this.cells = cells;
 
-    // TODO --> have constructor check for direct and indirect references
-
-    //if (!anyCycles(location, cells)) {
-    this.cells = cells;
-    //} else {
-    // throw new IllegalArgumentException("Cyclic reference");
-    //}
   }
 
   // to evaluate just a reference (ex: =A1:A3), just return the value of the first cell
@@ -48,4 +43,5 @@ public class CellReference implements CellFormula {
   public Object accept(CellVisitor visit) {
     return visit.visitReference(this);
   }
+
 }
