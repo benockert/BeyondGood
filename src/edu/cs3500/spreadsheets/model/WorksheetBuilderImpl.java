@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.cs3500.spreadsheets.cell.CellFormula;
@@ -25,9 +26,9 @@ public class WorksheetBuilderImpl implements WorksheetReader.WorksheetBuilder<Ba
         String contentsWithoutEquals = contents.substring(1);
         // create a new cell with the reference or formula
         cell = Parser.parse(contentsWithoutEquals).accept(
-                new SexpVisitorHandler(this.cellHashMap, location));
+                new SexpVisitorHandler(this.cellHashMap, location, new ArrayList<String>()));
       } else {
-        cell = Parser.parse(contents).accept(new SexpVisitorHandler(this.cellHashMap, location));
+        cell = Parser.parse(contents).accept(new SexpVisitorHandler(this.cellHashMap, location, new ArrayList<String>()));
       }
 
       // adds the cell to the HashMap

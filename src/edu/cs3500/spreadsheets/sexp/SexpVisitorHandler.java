@@ -3,8 +3,8 @@ package edu.cs3500.spreadsheets.sexp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import edu.cs3500.spreadsheets.cell.CellBlank;
 import edu.cs3500.spreadsheets.cell.CellBoolean;
 import edu.cs3500.spreadsheets.cell.CellDouble;
 import edu.cs3500.spreadsheets.cell.CellFormula;
@@ -19,6 +19,7 @@ import edu.cs3500.spreadsheets.model.Coord;
 public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
   private HashMap<Coord, CellFormula> cells;
   private Coord locationOfCell;
+  private List<String> listOfAlreadyReferenced;
 
   /**
    * Constructs a {@code SexpVisitorHandler} object. The default constructor for a Sexp visitor.
@@ -34,9 +35,10 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    *
    * @param cellsForReference the hash map of cells and their location in a spreadsheet.
    */
-  public SexpVisitorHandler(HashMap<Coord, CellFormula> cellsForReference, Coord location) {
+  public SexpVisitorHandler(HashMap<Coord, CellFormula> cellsForReference, Coord location, List<String> visited) {
     this.cells = cellsForReference;
     this.locationOfCell = location;
+    this.listOfAlreadyReferenced = visited;
   }
 
   // returns a new CellBoolean with the given boolean value
@@ -64,7 +66,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
     // for each expression in copy
     for (Sexp expr : copy) {
       // visit the expression and add it to the result list
-      result.add(expr.accept(new SexpVisitorHandler(this.cells, this.locationOfCell)));
+      result.add(expr.accept(new SexpVisitorHandler(this.cells, this.locationOfCell, this.listOfAlreadyReferenced)));
     }
     // return a new cell function with the first item (name) and the result list
     return new CellFunction(l.get(0).toString(), result);
@@ -75,7 +77,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
   // returns a new CellReference with the given name and computed list
   @Override
   public CellFormula visitSymbol(String s) {
-    List<CellFormula> listOfReferencedCells = getReferencedCells(s);
+    List<CellFormula> listOfReferencedCells = getReferencedCells(s, this.locationOfCell);
     // creates a new cell reference, whose constructor checks for direct or indirect references
 
     // TODO
@@ -95,7 +97,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    * @return a list of CellFormula representing the cells being referenced.
    */
   // TODO check here for references
-  private List<CellFormula> getReferencedCells(String referenceSymbol) {
+  private List<CellFormula> getReferencedCells(String referenceSymbol, Coord location) {
     List<CellFormula> referencedCells = new ArrayList<>();
     Coord cell1coordinate;
     Coord cell2coordinate;
@@ -104,14 +106,19 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
       // set the coordinate of the cell
       cell1coordinate = getCoord(referenceSymbol);
 
-      if (cell1coordinate.equals(this.locationOfCell)) {
+      // CYCLES
+      // checks if there is a direct cyclic reference
+      if (cell1coordinate.equals(location) || this.listOfAlreadyReferenced.contains(location.toString())) {
         throw new IllegalArgumentException("Cycle reference");
       } else {
-        // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
-        CellFormula refCell = this.cells.get(cell1coordinate);
-        referencedCells.add(refCell);
+        if (this.cells.get(cell1coordinate) == null) {
+          referencedCells.add(new CellBlank());
+        } else {
+          // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
+          CellFormula refCell = this.cells.get(cell1coordinate);
+          referencedCells.add(refCell);
+        }
       }
-
     } else {
       // else the reference is to two cells, split the string at the colon
       String[] splitSymbol = referenceSymbol.split(":");
@@ -120,7 +127,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
       // set the coordinate of the second cell
       cell2coordinate = getCoord(splitSymbol[1]);
       // add all the cells in that area to the referenced list
-      referencedCells = referenceCellArea(cell1coordinate, cell2coordinate);
+      referencedCells = referenceCellArea(cell1coordinate, cell2coordinate, this.locationOfCell);
     }
     return referencedCells;
   }
@@ -132,7 +139,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    * @param c2 the bottom right coordinate of the region.
    * @return
    */
-  private List<CellFormula> referenceCellArea(Coord c1, Coord c2) {
+  private List<CellFormula> referenceCellArea(Coord c1, Coord c2, Coord locationOfCell) {
     // set a result list
     List<CellFormula> result = new ArrayList<>();
     // for every column in the region
@@ -141,11 +148,16 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
       for (int j = c1.row; j < c2.row + 1; j++) {
         // set a new coordinate
         Coord tempCoord = new Coord(i, j);
-        // add the cell at that coordinate to the result list
-        result.add(this.cells.get(tempCoord));
+
+        // checks for cyclic references
+        if (tempCoord.equals(locationOfCell)) {
+          throw new IllegalArgumentException("Cyclic reference.");
+        } else {
+          // add the cell at that coordinate to the result list
+          result.add(this.cells.get(tempCoord));
+        }
       }
     }
-
     return result;
   }
 

@@ -130,8 +130,23 @@ public class AddTest {
   public void testAddInDirectCycle() {
     initData();
     this.model.editCell("=B1", this.locationA1);
+    this.model.editCell("=A1", this.locationB1);
+    this.model.getCellAt(this.locationB1).evaluateCell();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddInDirectCycle2() {
+    initData();
+    this.model.editCell("=B1", this.locationA1);
     this.model.editCell("=(SUM A1 1)", this.locationB1);
     this.model.getCellAt(this.locationB1).evaluateCell();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testAddDirectCycleRange() {
+    initData();
+    this.model.editCell("=(SUM A1:C3)", this.locationB2);
+    this.model.getCellAt(this.locationB2).evaluateCell();
   }
 
 

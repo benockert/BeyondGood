@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import edu.cs3500.spreadsheets.sexp.SexpVisitorHandler;
  */
 public class BasicWorksheetModel implements Worksheet {
   private HashMap<Coord, CellFormula> cells;
+  private static List<String> listOfAlreadyVisited = new ArrayList<>();
 
   /**
    * Constructs a {@code BasicWorksheetModel} object. The default constructor that creates a blank
@@ -54,7 +56,8 @@ public class BasicWorksheetModel implements Worksheet {
       // initialize a string of the input without the  "="
       String noEqualsString = input.substring(1);
       // create a new cell with the given string converted to a function or reference
-      editedCell = Parser.parse(noEqualsString).accept(new SexpVisitorHandler(this.cells, location));
+      editedCell = Parser.parse(noEqualsString).accept(new SexpVisitorHandler(this.cells, location, this.listOfAlreadyVisited));
+      this.listOfAlreadyVisited.add(noEqualsString);
     } else {
       // else the cell is a string, format it correctly
       String escapedString = "\"" + input + "\"";
