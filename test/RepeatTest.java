@@ -75,7 +75,7 @@ public class RepeatTest {
     this.model.editCell("=(REPT \"hello\" (SUM -2 4))", this.locationB1);
     assertEquals("hellohello", this.model.getCellAt(this.locationB1).evaluateCell());
   }
-  
+
   @Test
   public void testRepeatA1Once() {
     initData();
@@ -105,7 +105,7 @@ public class RepeatTest {
     initData();
     this.model.editCell("=(REPT A1 5)", this.locationB1);
     this.model.editCell("=B1", this.locationA1);
-    assertEquals("A1A1A1A1A1", this.model.getCellAt(this.locationB1).evaluateCell());
+    this.model.getCellAt(this.locationB1).evaluateCell();
   }
 
   // TESTS FOR THE ADD FUNCTION OBJECT AND THE SEXP VISITOR HANDLER

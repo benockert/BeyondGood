@@ -26,9 +26,9 @@ public class WorksheetBuilderImpl implements WorksheetReader.WorksheetBuilder<Ba
         String contentsWithoutEquals = contents.substring(1);
         // create a new cell with the reference or formula
         cell = Parser.parse(contentsWithoutEquals).accept(
-                new SexpVisitorHandler(this.cellHashMap, location, new ArrayList<String>()));
+                new SexpVisitorHandler(new BasicWorksheetModel(this.cellHashMap), location));
       } else {
-        cell = Parser.parse(contents).accept(new SexpVisitorHandler(this.cellHashMap, location, new ArrayList<String>()));
+        cell = Parser.parse(contents).accept(new SexpVisitorHandler(new BasicWorksheetModel(this.cellHashMap), location));
       }
 
       // adds the cell to the HashMap

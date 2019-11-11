@@ -106,8 +106,8 @@ public class MultiplyTest {
     initData();
     this.model.editCell(true, this.locationB1);
     this.model.editCell("hello", this.locationA1);
-    this.model.editCell("=(PRODUCT A1 B1)", this.locationA1);
-    assertEquals(0.0, this.model.getCellAt(this.locationA1).evaluateCell());
+    this.model.editCell("=(PRODUCT A1 B1)", this.locationA2);
+    assertEquals(0.0, this.model.getCellAt(this.locationA2).evaluateCell());
   }
 
   @Test
@@ -141,7 +141,7 @@ public class MultiplyTest {
   }
 
   @Test
-  public void testProductA1D1() {
+  public void testProductA1D2() {
     initData();
     this.model.editCell(5, this.locationA1);
     this.model.editCell(10, this.locationB1);

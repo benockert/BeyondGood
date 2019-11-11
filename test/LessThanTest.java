@@ -75,10 +75,19 @@ public class LessThanTest {
     initData();
     this.model.editCell("=(SUM 6 (PRODUCT 2 7))", this.locationB1);
     this.model.editCell("=(PRODUCT (SUM 2 (PRODUCT 5 3)) 4)", this.locationA1);
+    this.model.editCell("=(LESSTHAN A1 B1)", this.locationA2);
+    assertEquals(false, this.model.getCellAt(this.locationA2).evaluateCell());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testLessThanA1B2InA1() {
+    initData();
+    this.model.editCell("=(SUM 6 (PRODUCT 2 7))", this.locationB1);
+    this.model.editCell("=(PRODUCT (SUM 2 (PRODUCT 5 3)) 4)", this.locationA1);
     this.model.editCell("=(LESSTHAN A1 B1)", this.locationA1);
     assertEquals(false, this.model.getCellAt(this.locationA1).evaluateCell());
   }
-
+  
   @Test(expected = IllegalArgumentException.class)
   public void testLessThanCyclic() {
     initData();

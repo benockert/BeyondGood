@@ -11,7 +11,7 @@ import edu.cs3500.spreadsheets.model.Coord;
  * pointer to either another cell in the spreadsheet, or a rectangular region of cells.
  */
 public class CellReference implements CellFormula {
-  private String coordString;
+  public String coordString;
   public List<CellFormula> cells;
 
   /**
@@ -23,7 +23,7 @@ public class CellReference implements CellFormula {
    */
   public CellReference(String coordString, List<CellFormula> cells) {
     this.coordString = coordString;
-        this.cells = cells;
+    this.cells = cells;
 
   }
 

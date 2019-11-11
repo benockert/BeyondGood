@@ -11,15 +11,15 @@ import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.cell.CellFunction;
 import edu.cs3500.spreadsheets.cell.CellReference;
 import edu.cs3500.spreadsheets.cell.CellString;
+import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 
 /**
  * A class that handles the visitor pattern for s-expressions.
  */
 public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
-  private HashMap<Coord, CellFormula> cells;
+  private BasicWorksheetModel model;
   private Coord locationOfCell;
-  private List<String> listOfAlreadyReferenced;
 
   /**
    * Constructs a {@code SexpVisitorHandler} object. The default constructor for a Sexp visitor.
@@ -33,12 +33,11 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    * Constructs a {@code SexpVisitorHandler} object. A constructor of a Sexp visitor that takes in
    * the cells of a spreadsheet for use in determining the cells of a reference.
    *
-   * @param cellsForReference the hash map of cells and their location in a spreadsheet.
+   * @param modelCells the model of a spreadsheet
    */
-  public SexpVisitorHandler(HashMap<Coord, CellFormula> cellsForReference, Coord location, List<String> visited) {
-    this.cells = cellsForReference;
+  public SexpVisitorHandler(BasicWorksheetModel modelCells, Coord location) {
+    this.model = modelCells;
     this.locationOfCell = location;
-    this.listOfAlreadyReferenced = visited;
   }
 
   // returns a new CellBoolean with the given boolean value
@@ -66,7 +65,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
     // for each expression in copy
     for (Sexp expr : copy) {
       // visit the expression and add it to the result list
-      result.add(expr.accept(new SexpVisitorHandler(this.cells, this.locationOfCell, this.listOfAlreadyReferenced)));
+      result.add(expr.accept(new SexpVisitorHandler(this.model, this.locationOfCell)));
     }
     // return a new cell function with the first item (name) and the result list
     return new CellFunction(l.get(0).toString(), result);
@@ -76,11 +75,9 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
   // creates a list of cells being referenced
   // returns a new CellReference with the given name and computed list
   @Override
-  public CellFormula visitSymbol(String s) {
+  public CellReference visitSymbol(String s) {
     List<CellFormula> listOfReferencedCells = getReferencedCells(s, this.locationOfCell);
     // creates a new cell reference, whose constructor checks for direct or indirect references
-
-    // TODO
     return new CellReference(s, listOfReferencedCells);
   }
 
@@ -108,14 +105,15 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
 
       // CYCLES
       // checks if there is a direct cyclic reference
-      if (cell1coordinate.equals(location) || this.listOfAlreadyReferenced.contains(location.toString())) {
+      if (cell1coordinate.equals(location)) {
         throw new IllegalArgumentException("Cycle reference");
       } else {
-        if (this.cells.get(cell1coordinate) == null) {
+        if (this.model.getCellAt(cell1coordinate) == null) {
           referencedCells.add(new CellBlank());
         } else {
           // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
-          CellFormula refCell = this.cells.get(cell1coordinate);
+          CellFormula refCell = this.model.getCellAt(cell1coordinate);
+          //if (this.c]visitSymbol(refCell.coordString)
           referencedCells.add(refCell);
         }
       }
@@ -149,12 +147,12 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
         // set a new coordinate
         Coord tempCoord = new Coord(i, j);
 
-        // checks for cyclic references
+        // checks for direct cyclic references in multi-cell references
         if (tempCoord.equals(locationOfCell)) {
           throw new IllegalArgumentException("Cyclic reference.");
         } else {
           // add the cell at that coordinate to the result list
-          result.add(this.cells.get(tempCoord));
+          result.add(this.model.getCellAt(tempCoord));
         }
       }
     }
