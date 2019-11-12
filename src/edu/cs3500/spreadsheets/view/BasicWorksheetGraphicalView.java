@@ -1,19 +1,20 @@
 package edu.cs3500.spreadsheets.view;
 
 import java.awt.*;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 
+import edu.cs3500.spreadsheets.cell.CellFormula;
+import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 
 public class BasicWorksheetGraphicalView extends JFrame implements BasicWorksheetView {
-  private JPanel columnPanel;
-  private JPanel rowPanel;
-  private SpreadsheetPanel gridPanel;
-  private JPanel A1Panel;
-  private JPanel A2Panel;
+  private SpreadsheetPanel spreadsheetPanel;
+  private RowPanel rowPanel;
+  private ColumnPanel columnPanel;
+  private JScrollPane scroller;
 
   public BasicWorksheetGraphicalView() {
     super();
@@ -21,41 +22,34 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     this.setSize(900, 500);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    this.setLayout(new BorderLayout());
-    this.gridPanel = new SpreadsheetPanel();
-    this.gridPanel.setPreferredSize(new Dimension(900, 500));
-
-    //A1 Cell Panel
-    this.A1Panel = new JPanel();
-    Border blackline = BorderFactory.createLineBorder(Color.black);
-    this.A1Panel.setBorder(blackline);
-    this.A1Panel.setPreferredSize(new Dimension(64, 20));
-    this.gridPanel.add(this.A1Panel);
-    this.add(this.gridPanel);
-
-    //A2 Cell Panel
-    this.A2Panel = new JPanel();
-    this.A2Panel.setBorder(blackline);
-    this.A2Panel.setPreferredSize(new Dimension(64, 20));
-    this.gridPanel.add(this.A2Panel);
-    this.add(this.gridPanel);
-
-    //row panel
-    this.rowPanel = new JPanel();
-    this.rowPanel.setPreferredSize(new Dimension(30, 500));
-    this.rowPanel.setLayout(new FlowLayout());
+    this.rowPanel = new RowPanel();
+    this.rowPanel.setPreferredSize(new Dimension(20, 200));
     this.rowPanel.setBackground(Color.GRAY);
     this.add(this.rowPanel, BorderLayout.WEST);
 
-    //column panel
-    this.columnPanel = new JPanel();
-    this.columnPanel.setPreferredSize(new Dimension(900, 30));
-    this.columnPanel.setLayout(new FlowLayout());
+    this.columnPanel = new ColumnPanel();
+    this.columnPanel.setPreferredSize(new Dimension(600, 20));
     this.columnPanel.setBackground(Color.GRAY);
     this.add(this.columnPanel, BorderLayout.NORTH);
 
-    this.pack();
+    // adds the spreadsheet panel to the view along with vertical and horizontal scroll bars
+    this.spreadsheetPanel = new SpreadsheetPanel();
+    this.spreadsheetPanel.setPreferredSize(new Dimension(10000, 500));
+    this.scroller = new JScrollPane(this.spreadsheetPanel,
+            ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+    this.add(scroller, BorderLayout.CENTER);
 
+    //______________________________________________________________________________________________
+
+
+  }
+
+  public BasicWorksheetGraphicalView(BasicWorksheetModel model) {
+    HashMap<Coord, CellFormula> cells = model.getCells();
+    for (Map.Entry<Coord, CellFormula> entry : cells.entrySet()) {
+      entry.getValue().evaluateCell();
+    }
   }
 
   @Override

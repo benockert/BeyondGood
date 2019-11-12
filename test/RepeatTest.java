@@ -103,8 +103,8 @@ public class RepeatTest {
   @Test(expected = IllegalArgumentException.class)
   public void testAddTwoProductCyclicThree() {
     initData();
-    this.model.editCell("=(REPT A1 5)", this.locationB1);
     this.model.editCell("=B1", this.locationA1);
+    this.model.editCell("=(REPT A1 5)", this.locationB1);
     this.model.getCellAt(this.locationB1).evaluateCell();
   }
 

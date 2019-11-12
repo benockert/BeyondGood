@@ -161,8 +161,8 @@ public class MultiplyTest {
   @Test(expected = IllegalArgumentException.class)
   public void testAddTwoProductCyclicIndirect() {
     initData();
-    this.model.editCell("=(PRODUCT 5 (SUM A1 2))", this.locationB1);
     this.model.editCell("=B1", this.locationA1);
+    this.model.editCell("=(PRODUCT 5 (SUM A1 2))", this.locationB1);
     this.model.getCellAt(this.locationB1).evaluateCell();
   }
 

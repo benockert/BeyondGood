@@ -102,7 +102,6 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
     if (!referenceSymbol.contains(":")) {
       // set the coordinate of the cell
       cell1coordinate = getCoord(referenceSymbol);
-
       // CYCLES
       // checks if there is a direct cyclic reference
       if (cell1coordinate.equals(location)) {
@@ -113,8 +112,12 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
         } else {
           // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
           CellFormula refCell = this.model.getCellAt(cell1coordinate);
-          //if (this.c]visitSymbol(refCell.coordString)
-          referencedCells.add(refCell);
+          if (refCell instanceof CellReference &&
+                  ((CellReference) refCell).coordString.equals(location.toString())) {
+            throw new IllegalArgumentException("Cyclic reference");
+          } else {
+            referencedCells.add(refCell);
+          }
         }
       }
     } else {
@@ -146,7 +149,6 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
       for (int j = c1.row; j < c2.row + 1; j++) {
         // set a new coordinate
         Coord tempCoord = new Coord(i, j);
-
         // checks for direct cyclic references in multi-cell references
         if (tempCoord.equals(locationOfCell)) {
           throw new IllegalArgumentException("Cyclic reference.");

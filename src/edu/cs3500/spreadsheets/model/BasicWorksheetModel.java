@@ -42,7 +42,7 @@ public class BasicWorksheetModel implements Worksheet {
     CellFormula editedCell = Parser.parse(Boolean.toString(input)).accept(new SexpVisitorHandler());
     // put the cell at the given location
     this.cells.put(location, editedCell);
-    // re-evaluates all cells
+    // updates the contents of all cells
     this.updateAllCells();
   }
 
@@ -65,7 +65,7 @@ public class BasicWorksheetModel implements Worksheet {
     }
     // put the cell at the given locationC
     this.cells.put(location, editedCell);
-    // re-evaluates all cells
+    // updates the contents all cells
     this.updateAllCells();
   }
 
@@ -75,7 +75,7 @@ public class BasicWorksheetModel implements Worksheet {
     CellFormula editedCell = Parser.parse(Double.toString(input)).accept(new SexpVisitorHandler());
     // put the cell at the given location
     this.cells.put(location, editedCell);
-    // re-evaluates all cells
+    // updates the contents of all cells
     this.updateAllCells();
   }
 
@@ -91,6 +91,7 @@ public class BasicWorksheetModel implements Worksheet {
   public HashMap<Coord, CellFormula> getCells() {
     return this.cells;
   }
+
 
   /**
    * Reevaluates all of the cells. This method is called every time a cell is edited.

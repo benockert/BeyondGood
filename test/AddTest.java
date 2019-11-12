@@ -187,19 +187,28 @@ public class AddTest {
     initData();
     this.model.editCell(4.0, this.locationA1);
     this.model.editCell(5.0, this.locationB2);
-    this.model.editCell("=(SUM A1:B2)", new Coord(1,3));
-    assertEquals(9.0, this.model.getCellAt(new Coord(1,3)).evaluateCell());
+    this.model.editCell("=(SUM A1:B2)", new Coord(1, 3));
+    assertEquals(9.0, this.model.getCellAt(new Coord(1, 3)).evaluateCell());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testAddFunctionWithIndirectReference2() {
     initData();
+    model.editCell("=(SUM B2 10)", this.locationB3);
     model.editCell("=B3", this.locationA1);
     model.editCell("=A1", this.locationA2);
     model.editCell("=A2", this.locationB1);
     model.editCell("=B1", this.locationB2);
-    model.editCell("=(SUM B2 10)", this.locationB3);
     this.model.getCellAt(this.locationB3).evaluateCell();
+  }
+
+  @Test
+  public void testAddFunctionReferenceOppositeOrder() {
+    initData();
+    model.editCell("=B2", this.locationA1);
+    model.editCell(5, this.locationB2);
+    model.editCell("=(SUM A1 10)", this.locationB3);
+    assertEquals(15.0, this.model.getCellAt(this.locationB3).evaluateCell());
   }
 
   @Test(expected = IllegalArgumentException.class)

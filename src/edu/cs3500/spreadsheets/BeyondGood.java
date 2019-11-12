@@ -105,6 +105,19 @@ public class BeyondGood {
   private static void runMainInGUI(String[] args) {
     // the worksheet builder
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
+    // the file from which the graphical view will be made
+    String fileName = args[1];
+    File file = new File(fileName);
+    try {
+      FileReader readFile = new FileReader(file);
+      BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
+      BasicWorksheetGraphicalView savedFileView = new BasicWorksheetGraphicalView(model);
+      savedFileView.render();
+    } catch (FileNotFoundException fnf) {
+      System.out.println("Invalid file given");
+    } catch (IOException io) {
+      System.out.println("Error reading file");
+    }
   }
 
   /**
