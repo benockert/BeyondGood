@@ -1,9 +1,9 @@
 A1 "hello"
 A2 "hey"
+
 A3 "today i am going to the \"park\" and\\or the \"pool\""
 A4 true
 A5 false
-
 
 H1 =(PRODUCT A1:A2)
 I1 =(SUM A1:A2 A3)
@@ -12,9 +12,9 @@ K24 =(PRODUCT A4 A5)
 S52 =(SUM A4 A5)
 S53 =(PRODUCT A3:A5)
 
-A113 =(REPT A1, 2)
-AB7 =(REPT A3, 1)
-BA13 =(REPT A4, 4)
+A113 =(REPT A1 2)
+AB7 =(REPT A3 1)
+BA13 =(REPT A4 4)
 
-C12 =(A1:A3)
-D41 =(A4:A5)
+C12 =A1:A3
+D41 =A4:A5
