@@ -108,7 +108,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
         throw new IllegalArgumentException("Cycle reference");
       } else {
         if (this.model.getCellAt(cell1coordinate) == null) {
-          referencedCells.add(new CellBlank());
+          referencedCells.add(new CellBlank(""));
         } else {
           // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
           CellFormula refCell = this.model.getCellAt(cell1coordinate);

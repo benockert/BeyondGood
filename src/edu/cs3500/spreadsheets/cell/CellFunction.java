@@ -124,7 +124,7 @@ public class CellFunction implements CellFormula {
           return new CellString(evalRept);
         }
         // if the function name is LESSTHAN
-      case "LESSTHAN":
+      case "<":
         // if there are not two arguments, throw an exception
         if (this.arguments.size() != 2) {
           throw new IllegalArgumentException("Invalid number of arguments given for LESSTHAN");

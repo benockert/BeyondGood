@@ -57,13 +57,13 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     int numRowsToDraw, numColsToDraw;
     // the default number of rows to draw is 100, unless the model requires more
     if (model.getNumRows() > 100) {
-      numRowsToDraw = model.getNumRows();
+      numRowsToDraw = model.getNumRows() + 1;
     } else {
       numRowsToDraw = 100;
     }
     // the default number of columns to draw is 50, unless the model requires more
     if (model.getNumCols() > 50) {
-      numColsToDraw = model.getNumCols();
+      numColsToDraw = model.getNumCols() + 1;
     } else {
       numColsToDraw = 50;
     }

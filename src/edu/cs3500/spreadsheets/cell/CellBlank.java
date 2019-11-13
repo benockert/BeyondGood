@@ -6,10 +6,15 @@ import edu.cs3500.spreadsheets.function.CellVisitor;
  * Represents a blank cell in a spreadsheet. No contents, displayed as an empty string.
  */
 public class CellBlank implements CellFormula {
+  private String value;
+
+  public CellBlank(String displayValue) {
+    this.value = displayValue;
+  }
 
   @Override
   public String evaluateCell() {
-    return "";
+    return this.value;
   }
 
   @Override

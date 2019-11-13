@@ -177,7 +177,7 @@ public class MultiplyTest {
   @Test
   public void testProductFunctionArbitrary() {
     initData();
-    assertEquals(0.0, this.parser.parse("(PRODUCT 0 1 2 3 4 5)")
+    assertEquals(120.0, this.parser.parse("(PRODUCT 0 1 2 3 4 5)")
             .accept(this.visitor).evaluateCell());
   }
 
@@ -233,7 +233,7 @@ public class MultiplyTest {
   public void testProductAllFunctions() {
     initData();
     assertEquals(1200.0, this.parser.parse("(PRODUCT (SUM 6 4 (REPT \"yo\" 2))"
-            + " (SUM (PRODUCT 3 true 2) 2) 15 (LESSTHAN 5 (SUM 2 7)))")
+            + " (SUM (PRODUCT 3 true 2) 2) 15 (< 5 (SUM 2 7)))")
             .accept(this.visitor).evaluateCell());
   }
 }

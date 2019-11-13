@@ -37,35 +37,35 @@ public class LessThanTest {
   @Test
   public void testLessThanTenFive() {
     initData();
-    this.model.editCell("=(LESSTHAN 10 5)", this.locationB1);
+    this.model.editCell("=(< 10 5)", this.locationB1);
     assertEquals(false, this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testLessThanTrueTen() {
     initData();
-    this.model.editCell("=(LESSTHAN true 10)", this.locationB1);
+    this.model.editCell("=(< true 10)", this.locationB1);
     this.model.getCellAt(this.locationB1).evaluateCell();
   }
 
   @Test
   public void testLessThanProductTenFiveSumElevenThree() {
     initData();
-    this.model.editCell("=(LESSTHAN (PRODUCT 2 5) (SUM 11 3))", this.locationB1);
+    this.model.editCell("=(< (PRODUCT 2 5) (SUM 11 3))", this.locationB1);
     assertEquals(true, this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
   @Test
   public void testLessThanTwoProductThreeSeven() {
     initData();
-    this.model.editCell("=(LESSTHAN 2 (PRODUCT 3 7))", this.locationB1);
+    this.model.editCell("=(< 2 (PRODUCT 3 7))", this.locationB1);
     assertEquals(true, this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
   @Test
   public void testLessThanTwoA1() {
     initData();
-    this.model.editCell("=(LESSTHAN 2 (PRODUCT 5 3))", this.locationB1);
+    this.model.editCell("=(< 2 (PRODUCT 5 3))", this.locationB1);
     this.model.editCell("=B1", this.locationA1);
     assertEquals(true, this.model.getCellAt(this.locationA1).evaluateCell());
   }
@@ -75,7 +75,7 @@ public class LessThanTest {
     initData();
     this.model.editCell("=(SUM 6 (PRODUCT 2 7))", this.locationB1);
     this.model.editCell("=(PRODUCT (SUM 2 (PRODUCT 5 3)) 4)", this.locationA1);
-    this.model.editCell("=(LESSTHAN A1 B1)", this.locationA2);
+    this.model.editCell("=(< A1 B1)", this.locationA2);
     assertEquals(false, this.model.getCellAt(this.locationA2).evaluateCell());
   }
 
@@ -84,14 +84,14 @@ public class LessThanTest {
     initData();
     this.model.editCell("=(SUM 6 (PRODUCT 2 7))", this.locationB1);
     this.model.editCell("=(PRODUCT (SUM 2 (PRODUCT 5 3)) 4)", this.locationA1);
-    this.model.editCell("=(LESSTHAN A1 B1)", this.locationA1);
+    this.model.editCell("=(< A1 B1)", this.locationA1);
     assertEquals(false, this.model.getCellAt(this.locationA1).evaluateCell());
   }
   
   @Test(expected = IllegalArgumentException.class)
   public void testLessThanCyclic() {
     initData();
-    this.model.editCell("=(LESSTHAN 2 (PRODUCT B1 3))", this.locationB1);
+    this.model.editCell("=(< 2 (PRODUCT B1 3))", this.locationB1);
     this.model.getCellAt(this.locationB1).evaluateCell();
   }
 
@@ -99,33 +99,33 @@ public class LessThanTest {
   @Test
   public void testLessThanFunctionNormal() {
     initData();
-    assertEquals(true, this.parser.parse("(LESSTHAN 26 33)")
+    assertEquals(true, this.parser.parse("(< 26 33)")
             .accept(this.visitor).evaluateCell());
   }
 
   @Test
   public void testLessThanFunctionNormal2() {
     initData();
-    assertEquals(false, this.parser.parse("(LESSTHAN 13 5)")
+    assertEquals(false, this.parser.parse("(< 13 5)")
             .accept(this.visitor).evaluateCell());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testLessThanFunction1Argument() {
     initData();
-    this.parser.parse("(LESSTHAN 5)").accept(this.visitor).evaluateCell();
+    this.parser.parse("(< 5)").accept(this.visitor).evaluateCell();
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testLessThanFunction3Numbers() {
     initData();
-    this.parser.parse("(LESSTHAN 13 5 7)").accept(this.visitor).evaluateCell();
+    this.parser.parse("(< 13 5 7)").accept(this.visitor).evaluateCell();
   }
 
   @Test
   public void testLessThanFunctionVisitFunction() {
     initData();
-    assertEquals(true, this.parser.parse("(LESSTHAN (SUM 7 4 3) (SUM 17 5))")
+    assertEquals(true, this.parser.parse("(< (SUM 7 4 3) (SUM 17 5))")
             .accept(this.visitor).evaluateCell());
   }
 
@@ -133,39 +133,39 @@ public class LessThanTest {
   public void testLessThanVisitReference() {
     initData();
     this.model.editCell(10, this.locationA1);
-    this.model.editCell("=(LESSTHAN A1 10)", this.locationA2);
+    this.model.editCell("=(< A1 10)", this.locationA2);
     assertEquals(false, this.model.getCellAt(this.locationA2).evaluateCell());
   }
 
   @Test
   public void testLessThanFunctionVisitFunction2() {
     initData();
-    assertEquals(false, this.parser.parse("(LESSTHAN (PRODUCT 7 4 3) (SUM 17 5))")
+    assertEquals(false, this.parser.parse("(< (PRODUCT 7 4 3) (SUM 17 5))")
             .accept(this.visitor).evaluateCell());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testLessThanFunctionVisitBoolean() {
     initData();
-    this.parser.parse("(LESSTHAN true 5 0)").accept(this.visitor).evaluateCell();
+    this.parser.parse("(< true 5 0)").accept(this.visitor).evaluateCell();
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testLessThanFunctionVisitString() {
     initData();
-    this.parser.parse("(LESSTHAN 5 \"hey\")").accept(this.visitor).evaluateCell();
+    this.parser.parse("(< 5 \"hey\")").accept(this.visitor).evaluateCell();
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testLessThanFunctionVisitStringAfter3() {
     initData();
-    this.parser.parse("(LESSTHAN 5 4 1 \"hello\" 3)").accept(this.visitor).evaluateCell();
+    this.parser.parse("(< 5 4 1 \"hello\" 3)").accept(this.visitor).evaluateCell();
   }
 
   @Test
   public void testAddAllFunctions() {
     initData();
-    assertEquals(false, this.parser.parse("(LESSTHAN (PRODUCT 2.5 4 (REPT \"less\" 4))"
+    assertEquals(false, this.parser.parse("(< (PRODUCT 2.5 4 (REPT \"less\" 4))"
             + " (PRODUCT (SUM 3 true 2) 2))").accept(this.visitor).evaluateCell());
   }
 }

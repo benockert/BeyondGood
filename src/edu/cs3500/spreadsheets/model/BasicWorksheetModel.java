@@ -82,7 +82,7 @@ public class BasicWorksheetModel implements Worksheet {
   @Override
   public CellFormula getCellAt(Coord location) {
     if (this.cells.get(location) == null) {
-      this.cells.put(location, new CellBlank());
+      this.cells.put(location, new CellBlank(""));
     }
     return this.cells.get(location);
   }

@@ -33,14 +33,21 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
   }
 
   private String getAndClipContents(Graphics g, int xPos, int yPos) {
-    String cellValue = String.valueOf(this.model.getCellAt(new Coord(xPos, yPos)).evaluateCell());
+    String cellValueToDisplay;
+
+    try {
+      cellValueToDisplay = String.valueOf(this.model.getCellAt(new Coord(xPos, yPos)).evaluateCell());
+    } catch (IllegalArgumentException e) {
+      cellValueToDisplay = "REF!";
+    }
+
 
     // get metrics from the graphics
     FontMetrics metrics = g.getFontMetrics();
 
-    while (metrics.stringWidth(cellValue) > CELL_WIDTH) {
-      cellValue = cellValue.substring(0, cellValue.length() - 2);
+    while (metrics.stringWidth(cellValueToDisplay) > CELL_WIDTH) {
+      cellValueToDisplay = cellValueToDisplay.substring(0, cellValueToDisplay.length() - 2);
     }
-    return cellValue;
+    return cellValueToDisplay;
   }
 }

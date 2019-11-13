@@ -1,16 +1,61 @@
-# Creates the four coordinates
-A1 3
-B1 4
-C1 9
-D1 12
-D2 = (REPT "hello" 5)
+# Creates cells with numbers
+A1 "Numbers"
+A2 1
+A3 2
+A4 3
+A5 4
+A6 5
 
-# creates cells that compute numbers
-A3 =(PRODUCT (SUM 3 4) (SUM 5 6))
-A4 =(LESSTHAN (SUM 1 1) (PRODUCT 5 1))
-A5 =(SUM (SUM 10003 144) (PRODUCT 54930 6))
+# Computes the sum of some of the numbers
+A8 "sum:"
+A9 =(SUM A1:A6)
+A10 =15
 
+# Computes the product of some of the numbers
+A12 ="product:"
+A13 =(PRODUCT A2:A6)
+A14 =120
 
-Z45 = 10000
+# Computes if some of the numbers are less than others
+A16 ="lessthan:"
+A17 =(< A2 0)
+B17 =false
+A18 =(< A5 A6)
+B18 =true
+A19 =(< 10 (PRODUCT A2:A5))
+B19 =true
 
+# Creates cells with string values
+C1 "Strings"
+C2 "a"
+C3 "b"
+C4 "c"
+C5 "d"
+C6 "e"
+C7 "f"
+C8 "g"
+C9 "h"
+C10 "i"
 
+# Uses the repeat function to repeat some of the strings
+D2 =(REPT C2 1)
+D3 =(REPT C3 2)
+D4 =(REPT C4 3)
+D5 =(REPT C5 4)
+D6 =(REPT C6 5)
+D7 =(REPT C7 6)
+D8 =(REPT C8 7)
+D9 =(REPT C9 8)
+D10 =(REPT C10 9)
+
+# Runs some nested functions with references
+F24 "Functions:"
+F25 =(PRODUCT (SUM 3 4) (SUM 5 6))
+G25 =77
+F26 =(< (SUM 1 1) (PRODUCT 5 1))
+G26 =true
+F27 =(SUM (SUM 10003 144) (PRODUCT 54930 6))
+G27 =339727
+
+# Test references
+P3 =P3
