@@ -45,7 +45,7 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     // get metrics from the graphics
     FontMetrics metrics = g.getFontMetrics();
 
-    while (metrics.stringWidth(cellValueToDisplay) > CELL_WIDTH) {
+    while (metrics.stringWidth(cellValueToDisplay) >= CELL_WIDTH) {
       cellValueToDisplay = cellValueToDisplay.substring(0, cellValueToDisplay.length() - 2);
     }
     return cellValueToDisplay;

@@ -168,10 +168,11 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    * @return A Coord representing the given string.
    */
   private static Coord getCoord(String cellName) {
+    String[] rowColPart = cellName.split("(?<=\\D)(?=\\d)");
     // parses the cellName to get the String representation of the column name
-    int col = Coord.colNameToIndex(cellName.substring(0, 1));
+    int col = Coord.colNameToIndex(rowColPart[0]);
     // parses the cellName to get the row number of the cell
-    int row = cellName.charAt(1) - 48;
+    int row = Integer.parseInt(rowColPart[1]);
     // returns a new coordinate based on the row and column of the given cell name
     return new Coord(col, row);
   }

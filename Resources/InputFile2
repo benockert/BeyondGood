@@ -1,20 +1,16 @@
-A1 "hello"
-A2 "hey"
+BA100 "hello"
+BA101 "hey"
+BA102 "hi"
+BA103 "today i am going to the \"park\" and\\or the \"pool\""
+BA104 true
+BA105 false
 
-A3 "today i am going to the \"park\" and\\or the \"pool\""
-A4 true
-A5 false
+BB100 =(PRODUCT BA101:BA102)
+BB101 =(SUM BA101:BA102 BA103)
+BB102 =(SUM BA101:BA102 BA104)
+BB103 =(PRODUCT BA104 BA105)
+BB104 =(SUM BA104 BA105)
+BB105 =(PRODUCT BA103:BA105)
 
-H1 =(PRODUCT A1:A2)
-I1 =(SUM A1:A2 A3)
-J1 =(SUM A1:A2 A4)
-K24 =(PRODUCT A4 A5)
-S52 =(SUM A4 A5)
-S53 =(PRODUCT A3:A5)
-
-A113 =(REPT A1 2)
-AB7 =(REPT A3 1)
-BA13 =(REPT A4 4)
-
-C12 =A1:A3
-D41 =A4:A5
+BC101 =(REPT BA101 2)
+BC102 =(REPT "my name is" 4)
