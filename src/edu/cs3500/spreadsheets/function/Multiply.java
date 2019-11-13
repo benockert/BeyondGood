@@ -24,7 +24,7 @@ public class Multiply implements CellVisitor<CellFormula, Double> {
   //  // unlikely user input such that it can be identified as a non-numeric cell
   @Override
   public Double visitBoolean(CellBoolean b) {
-    return 0.12345;
+    return 0.0;
   }
 
   // evaluates the function and applies the multiply function object to it to handle what
@@ -50,7 +50,7 @@ public class Multiply implements CellVisitor<CellFormula, Double> {
   // unlikely user input such that it can be identified as a non-numeric cell
   @Override
   public Double visitString(CellString s) {
-    return 0.12345;
+    return 0.0;
   }
 
   // ignores the blank value by multiplying it by 1.0

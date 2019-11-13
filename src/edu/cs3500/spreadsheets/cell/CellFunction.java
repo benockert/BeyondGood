@@ -89,7 +89,7 @@ public class CellFunction implements CellFormula {
           int numOthers = 0;
           // for each cell in the arguments of the function
           for (CellFormula form : this.arguments) {
-            if (product.apply(form) == 0.12345) {
+            if (product.apply(form) == 0.0) {
               numOthers += 1;
             } else {
               // multiply them to the evalProd

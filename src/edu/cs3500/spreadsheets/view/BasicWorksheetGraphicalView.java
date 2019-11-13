@@ -98,9 +98,8 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   private void assembleFrame() {
     // adds the spreadsheet panel to the view along with vertical and horizontal
     // scroll bars and the row/column header panels
-    this.scroller = new JScrollPane(this.spreadsheetPanel,
-            ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+    this.scroller = new JScrollPane();
+    this.scroller.setViewportView(this.spreadsheetPanel);
     this.scroller.setRowHeaderView(this.rowPanel);
     this.scroller.setColumnHeaderView(this.columnPanel);
     this.add(scroller, BorderLayout.CENTER);
