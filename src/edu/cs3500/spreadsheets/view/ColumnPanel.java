@@ -5,16 +5,21 @@ import java.awt.*;
 import edu.cs3500.spreadsheets.model.Coord;
 
 public class ColumnPanel extends javax.swing.JPanel {
+  int numCols;
+
+  public ColumnPanel(int numberOfColumns) {
+    this.numCols = numberOfColumns;
+  }
 
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
 
-    for (int x = 0; x < BasicWorksheetGraphicalView.GRID_CELLS; x++) {
+    for (int x = 0; x < this.numCols; x++) {
       // draws a number of rectangles equal to the specified number of column cells side by side
       // along the x-axis
-      g.drawRect(x * SpreadsheetPanel.CELL_WIDTH,-1, SpreadsheetPanel.CELL_WIDTH,
+      g.drawRect(x * SpreadsheetPanel.CELL_WIDTH, -1, SpreadsheetPanel.CELL_WIDTH,
               SpreadsheetPanel.CELL_HEIGHT);
       // sets the font size to be 14 and bolds the header text
       g.setFont(new Font("default", Font.BOLD, 14));

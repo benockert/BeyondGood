@@ -92,6 +92,27 @@ public class BasicWorksheetModel implements Worksheet {
     return this.cells;
   }
 
+  @Override
+  public int getNumRows() {
+    int numRows = 0;
+    for (Coord coord : this.cells.keySet()) {
+      if (coord.row > numRows) {
+        numRows = coord.row;
+      }
+    }
+    return numRows;
+  }
+
+  @Override
+  public int getNumCols() {
+    int numCols = 0;
+    for (Coord coord : this.cells.keySet()) {
+      if (coord.col > numCols) {
+        numCols = coord.col;
+      }
+    }
+    return numCols;
+  }
 
   /**
    * Reevaluates all of the cells. This method is called every time a cell is edited.

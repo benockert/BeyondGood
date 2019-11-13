@@ -16,5 +16,5 @@ B7 =(REPT A1, 2)
 B8 =(REPT A3, 1)
 B9 =(REPT A4, 4)
 
-B10 =(A1:A3)
-B11 =(A4:A5)
+B10 =A1:A3
+B11 =A4:A5

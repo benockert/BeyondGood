@@ -101,4 +101,16 @@ public class BasicWorksheetModelTest {
     assertEquals(2.1, this.worksheet.getCellAt(location).evaluateCell());
   }
 
+  @Test
+  public void testGetNumRows() {
+    initData();
+    assertEquals(0, this.worksheet.getNumRows());
+    assertEquals(0, this.worksheet.getNumCols());
+    this.worksheet.editCell(5, location);
+    this.worksheet.editCell(2, location2);
+    this.worksheet.editCell("hello", location3);
+    assertEquals(20, this.worksheet.getNumRows());
+    assertEquals(10, this.worksheet.getNumCols());
+  }
+
 }
