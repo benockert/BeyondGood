@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="BeyondGood:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BeyondGood_jar</output-path>
+    <root id="archive" name="BeyondGood.jar">
+      <element id="module-output" name="BeyondGood" />
+    </root>
+  </artifact>
+</component>
