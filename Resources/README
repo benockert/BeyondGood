@@ -1,0 +1,25 @@
+OVERALL DESIGN:
+
+We decided to design our view in a way that separates the graphical and textual views. We decided to split the actual spreadsheet view into three components: A SpreadsheetPanel, RowPanel, and ColumnPanel. The SpreadsheetPanel draws the actual grid of content cells, while the row and column panels draw their respective headers. We then overrided paintComponent for each of these JPanels to draw the actual cells (represented as rectangles). We felt this was more efficient than creating a custom cell panel, as it will take up significantly less memory as the size of the spreadsheet scales up. We also decided to split the views up this way to ensure that the row and panel headers had specific scrolling/freezing capabilities and did not interfere with the content cells.
+
+As for the different types of views (graphical and text), we first created an interface as both types are views. We then implemented two separate classes, one for the graphical view and one for the saved textual view. The graphical view has two constructors which can create both a blank GUI spreadsheet and read a file/model to display that. We then add in row, column, and spreadsheet panels to thee view, as well as scroll bars. We decided to use JScrollFrame to design the scrollers as we felt this was more efficient than creating a custom component. The textual save view takes in a model from the file that needs to be saved and adds it to a new file, while converting the contents of the cells to strings and returning the raw contents in the saved file (as we read files in Assignment 5).
+
+Below lists a more detailed structure for each file we added to the given starter code.
+
+----------
+
+INTERFACE/CLASS STRUCTURE:
+
+(I) BasicWorksheetView - represents any kind of view of a spreadsheet.
+	(C) BasicWorksheetGraphicalView - represents the graphical view of a spreadsheet.
+	(C) BasicWorksheetSaveView - represents the textual view of a spreadsheet.
+(C) ColumnPanel - represents the column header in a spreadsheet.
+(C) RowPanel - represents the row header in a spreadsheet.
+(C) SpreadsheetPanel - represents the actual grid of content cells in a spreadsheet.
+
+----------
+
+CHANGES FROM ASSIGNMENT 5:
+- Added in methods to return the number of rows and columns, as this will be useful for infinite scrolling and constructing larger spreadsheets.
+- Changed our main BeyondGood class to account for the different types of views that the main class will have to run.
+- Fixed the way we check for cyclic references so they can be caught more effectively.

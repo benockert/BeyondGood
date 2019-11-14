@@ -9,6 +9,9 @@ import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 
+/**
+ * Represents the view for a worksheet which saves a given model to a new text file.
+ */
 public class BasicWorksheetSaveView implements BasicWorksheetView {
   private final BasicWorksheetModel model;
   private PrintWriter appendable;

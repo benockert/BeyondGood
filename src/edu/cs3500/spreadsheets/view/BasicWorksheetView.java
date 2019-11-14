@@ -2,6 +2,9 @@ package edu.cs3500.spreadsheets.view;
 
 import java.io.IOException;
 
+/**
+ * Represents a view of a basic worksheet - either graphical or text.
+ */
 public interface BasicWorksheetView {
 
   /**

@@ -50,13 +50,13 @@ public interface Worksheet {
 
   /**
    * Determines the row number of the farthest down cell with contents in this Worksheet.
-   * @return the number of rows needed to display the full model
+   * @return the number of rows needed to display the full model.
    */
   int getNumRows();
 
   /**
    * Determines the column index of the farthest over cell with contents in this Worksheet.
-   * @return the number of columns needed to display the full model
+   * @return the number of columns needed to display the full model.
    */
   int getNumCols();
 

@@ -4,9 +4,17 @@ import java.awt.*;
 
 import edu.cs3500.spreadsheets.model.Coord;
 
+/**
+ * Represents the column header panel in a worksheet.
+ */
 public class ColumnPanel extends javax.swing.JPanel {
   int numCols;
 
+  /**
+   * Constructs a {@code ColumnPanel} object, which is the column header for the spreadsheet.
+   *
+   * @param numberOfColumns The total number of columns that are non-empty in this spreadsheet.
+   */
   public ColumnPanel(int numberOfColumns) {
     this.numCols = numberOfColumns;
   }

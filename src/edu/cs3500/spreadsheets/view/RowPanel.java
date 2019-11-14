@@ -2,9 +2,17 @@ package edu.cs3500.spreadsheets.view;
 
 import java.awt.*;
 
+/**
+ * Represents the row header panel in a worksheet.
+ */
 public class RowPanel extends javax.swing.JPanel {
   int numRows;
 
+  /**
+   * Constructs a {@code RowPanel} object, which is the row header for the spreadsheet.
+   *
+   * @param numberOfRows The total number of rows that are non-empty in this spreadsheet.
+   */
   public RowPanel(int numberOfRows) {
     this.numRows = numberOfRows;
   }

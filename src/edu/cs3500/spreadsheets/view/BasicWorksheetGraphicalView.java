@@ -9,14 +9,22 @@ import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 
+/**
+ * Represents the GUI view of a basic spreadsheeet, so the user can view files and inputs on a
+ * spreadsheet.
+ */
 public class BasicWorksheetGraphicalView extends JFrame implements BasicWorksheetView {
   private SpreadsheetPanel spreadsheetPanel;
   private RowPanel rowPanel;
   private ColumnPanel columnPanel;
   private JScrollPane scroller;
 
+  // sets the total number of cells to be 100
   final static int GRID_CELLS = 100;
 
+  /**
+   * A constructor for the GUI view of a spreadsheet that creates a new blank spreadsheet.
+   */
   public BasicWorksheetGraphicalView() {
     super();
     this.setTitle("Microsoft Excel 2019 - New Spreadsheet"); // sets window title
@@ -47,6 +55,12 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
 
   }
 
+  /**
+   * A constructor for the GUI view of a spreadsheet which reads an existing model and displays that
+   * in the view.
+   *
+   * @param model The given spreadsheet model/file to be displayed
+   */
   public BasicWorksheetGraphicalView(BasicWorksheetModel model) {
     super();
     this.setTitle("Microsoft Excel 2019 - New Spreadsheet"); // sets window title
@@ -95,9 +109,11 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     this.setVisible(true);
   }
 
+  /**W
+   * Adds the spreadsheet panel to the view along with vertical and horizontal scroll bars and the
+   * row/column header panels.
+   */
   private void assembleFrame() {
-    // adds the spreadsheet panel to the view along with vertical and horizontal
-    // scroll bars and the row/column header panels
     this.scroller = new JScrollPane();
     this.scroller.setViewportView(this.spreadsheetPanel);
     this.scroller.setRowHeaderView(this.rowPanel);

@@ -5,14 +5,26 @@ import java.awt.*;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 
+/**
+ * Represents the grid of cells that make up a spreadsheet.
+ */
 public class SpreadsheetPanel extends javax.swing.JPanel {
   private int numRows;
   private int numCols;
   private BasicWorksheetModel model;
 
+  // sets a constant cell width and height
   final static int CELL_WIDTH = 64;
   final static int CELL_HEIGHT = 21;
 
+  /**
+   * Creates a {@code SpreadsheetPanel} object, which is the grid of cells in the view of the
+   * spreadsheet.
+   *
+   * @param numRows The number of rows in this spreadsheet.
+   * @param numCols The number of columns in this spreadsheet.
+   * @param model   The given model which will be  displayed in this spreadsheet.
+   */
   SpreadsheetPanel(int numRows, int numCols, BasicWorksheetModel model) {
     this.numRows = numRows;
     this.numCols = numCols;
@@ -32,6 +44,14 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     }
   }
 
+  /**
+   * Clips the contents of a cell if the contents are longer than the width of the cell.
+   *
+   * @param g    The contents of the cell that need to be potentially clipped.
+   * @param xPos The x coordinate of the cell.
+   * @param yPos The y coordinate of the cell.
+   * @return A string of the new clipped contents of the cell.
+   */
   private String getAndClipContents(Graphics g, int xPos, int yPos) {
     String cellValueToDisplay;
 
