@@ -60,4 +60,10 @@ public interface Worksheet {
    */
   int getNumCols();
 
+  /**
+   * Removes the cell from the given location.
+   * @param location the coordinate location of the cell the user wants to remove
+   */
+  void removeCell(Coord location);
+
 }

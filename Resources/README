@@ -1,8 +1,30 @@
 OVERALL DESIGN:
 
-We decided to design our view in a way that separates the graphical and textual views. We decided to split the actual spreadsheet view into three components: A SpreadsheetPanel, RowPanel, and ColumnPanel. The SpreadsheetPanel draws the actual grid of content cells, while the row and column panels draw their respective headers. We then overrided paintComponent for each of these JPanels to draw the actual cells (represented as rectangles). We felt this was more efficient than creating a custom cell panel, as it will take up significantly less memory as the size of the spreadsheet scales up. We also decided to split the views up this way to ensure that the row and panel headers had specific scrolling/freezing capabilities and did not interfere with the content cells.
+We first created a view interface with a render method. We then implemented two separate classes,
+one for the graphical view and one for the saved textual view.
 
-As for the different types of views (graphical and text), we first created an interface as both types are views. We then implemented two separate classes, one for the graphical view and one for the saved textual view. The graphical view has two constructors which can create both a blank GUI spreadsheet and read a file/model to display that. We then add in row, column, and spreadsheet panels to thee view, as well as scroll bars. We decided to use JScrollFrame to design the scrollers as we felt this was more efficient than creating a custom component. The textual save view takes in a model from the file that needs to be saved and adds it to a new file, while converting the contents of the cells to strings and returning the raw contents in the saved file (as we read files in Assignment 5).
+The textual save view has one constructor that takes in a model and a print writer (for appending
+to the output file). It then reads the model and saves the raw contents of its cells along
+with their location (represented as a String) to the output file such that it can be read
+later and the same model will be created.
+
+The graphical view has two constructors, a blank constructor which can create a blank GUI, and
+then a constructor that takes in a spreadsheet model and displays it in panels, discussed below:
+
+We decided to split the graphical view into three components:
+1) SpreadsheetPanel: this is where the actual grid is drawn along with the text
+2) RowPanel: this panel is the row header for the scroll pane; a 1 column, N rows grid
+3) ColumnPanel: this panel is the column header for the scroll pane; a 1 row, N columns grid
+
+Each of these panels extends JPanel and overrides the paintComponent method so that we can
+implement the drawing of the actual cells (represented as rectangles). We felt this was more
+efficient than creating a custom cell panel, using a FlowLayout or GridBagLayout to put them
+together, as it will take up significantly less memory (one panel with all cells versus one
+panel for each cell). Finally, we decided to use a JScrollFrame to design the scroll bars as
+we felt this was more efficient and robust than creating a custom component.
+
+We expect to implement a refresh method in a future assignment, which in this case would update
+the graphical view after a user action, and updates the save view after a user requests to save.
 
 Below lists a more detailed structure for each file we added to the given starter code.
 
@@ -20,6 +42,15 @@ INTERFACE/CLASS STRUCTURE:
 ----------
 
 CHANGES FROM ASSIGNMENT 5:
-- Added in methods to return the number of rows and columns, as this will be useful for infinite scrolling and constructing larger spreadsheets.
-- Changed our main BeyondGood class to account for the different types of views that the main class will have to run.
-- Fixed the way we check for cyclic references so they can be caught more effectively.
+- We implemented new methods in our model that determine the total number of rows and columns
+  a model has. We used this to help determine the size of a spreadsheet we would need to draw
+  to display all of the content (and be able to scroll so that all non-empty cells can eventually
+  be seen. The default draw size is 100 columns by 50 rows, but these methods help us determine
+  if we need to draw more than that.
+- We also implemented a remove cell function, which helps us with testing the numRows and numCols
+  methods, and we think it may be useful for the controller if we have to handle the delete key
+- Changed our main method in BeyondGood to handle the 2 new command line arguments.
+- We changed the way we check for cyclic references to be more effective in catching all
+  reference errors.
+- We overrode the equals method of the worksheet model for use in round trip testing for the save
+  view.

@@ -8,7 +8,7 @@ import edu.cs3500.spreadsheets.model.Coord;
  * Represents the column header panel in a worksheet.
  */
 public class ColumnPanel extends javax.swing.JPanel {
-  int numCols;
+  private int numCols;
 
   /**
    * Constructs a {@code ColumnPanel} object, which is the column header for the spreadsheet.

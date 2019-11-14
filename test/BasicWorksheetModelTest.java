@@ -1,12 +1,9 @@
 import org.junit.Test;
 
-
-import edu.cs3500.spreadsheets.cell.CellBlank;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 /**
  * A test class to test the functionality of our worksheet model.
@@ -14,12 +11,14 @@ import static org.junit.Assert.assertNull;
 public class BasicWorksheetModelTest {
 
   private BasicWorksheetModel worksheet;
+  private BasicWorksheetModel worksheet2;
   private Coord location;
   private Coord location2;
   private Coord location3;
 
   private void initData() {
     this.worksheet = new BasicWorksheetModel();
+    this.worksheet2 = new BasicWorksheetModel();
     this.location = new Coord(1, 4);
     this.location2 = new Coord(1, 1);
     this.location3 = new Coord(10, 20);
@@ -102,7 +101,7 @@ public class BasicWorksheetModelTest {
   }
 
   @Test
-  public void testGetNumRows() {
+  public void testGetNumRowsAndCols() {
     initData();
     assertEquals(0, this.worksheet.getNumRows());
     assertEquals(0, this.worksheet.getNumCols());
@@ -111,6 +110,44 @@ public class BasicWorksheetModelTest {
     this.worksheet.editCell("hello", location3);
     assertEquals(20, this.worksheet.getNumRows());
     assertEquals(10, this.worksheet.getNumCols());
+  }
+
+  @Test
+  public void testGetNumRowsAndColsFar() {
+    initData();
+    assertEquals(0, this.worksheet.getNumRows());
+    assertEquals(0, this.worksheet.getNumCols());
+    this.worksheet.editCell(5, new Coord(500, 1000));
+    assertEquals(1000, this.worksheet.getNumRows());
+    assertEquals(500, this.worksheet.getNumCols());
+  }
+
+  @Test
+  public void testGetNumRowsAndColsRemove() {
+    initData();
+    assertEquals(0, this.worksheet.getNumRows());
+    assertEquals(0, this.worksheet.getNumCols());
+    this.worksheet.editCell(5, new Coord(500, 1000));
+    this.worksheet.editCell("hey", new Coord(45, 1000));
+    assertEquals(1000, this.worksheet.getNumRows());
+    assertEquals(500, this.worksheet.getNumCols());
+    this.worksheet.removeCell(new Coord(500, 1000));
+    assertEquals(45, this.worksheet.getNumCols());
+    assertEquals(1000, this.worksheet.getNumRows());
+    this.worksheet.removeCell(new Coord(45, 1000));
+    assertEquals(0, this.worksheet.getNumRows());
+    assertEquals(0, this.worksheet.getNumCols());
+  }
+
+  @Test
+  public void testEquals() {
+    initData();
+    this.worksheet.editCell(5, this.location);
+    this.worksheet.editCell("=(< 5 10)", this.location2);
+    this.worksheet.editCell("", this.location3);
+    this.worksheet2.editCell(true, this.location2);
+    this.worksheet2.editCell("=5.0", this.location);
+    assertEquals(true, this.worksheet.equals(this.worksheet2));
   }
 
 }

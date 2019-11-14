@@ -1,13 +1,8 @@
 package edu.cs3500.spreadsheets.view;
 
 import java.awt.*;
-import java.util.HashMap;
-
 import javax.swing.*;
-
-import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
-import edu.cs3500.spreadsheets.model.Coord;
 
 /**
  * Represents the GUI view of a basic spreadsheeet, so the user can view files and inputs on a

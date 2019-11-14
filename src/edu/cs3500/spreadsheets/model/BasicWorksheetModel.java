@@ -1,12 +1,12 @@
 package edu.cs3500.spreadsheets.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import edu.cs3500.spreadsheets.cell.CellBlank;
 import edu.cs3500.spreadsheets.cell.CellFormula;
+import edu.cs3500.spreadsheets.cell.CellString;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.SexpVisitorHandler;
 
@@ -51,7 +51,9 @@ public class BasicWorksheetModel implements Worksheet {
     // initialize an edited cell
     CellFormula editedCell;
     // if the cell is a function or reference
-    if (input.substring(0, 1).equals("=")) {
+    if (input.equals("")) {
+      editedCell = new CellString("");
+    } else if (input.substring(0, 1).equals("=")) {
       // initialize a string of the input without the  "="
       String noEqualsString = input.substring(1);
       // create a new cell with the given string converted to a function or reference
@@ -114,6 +116,11 @@ public class BasicWorksheetModel implements Worksheet {
     return numCols;
   }
 
+  @Override
+  public void removeCell(Coord location) {
+    this.cells.remove(location);
+  }
+
   /**
    * Reevaluates all of the cells. This method is called every time a cell is edited.
    */
@@ -121,5 +128,29 @@ public class BasicWorksheetModel implements Worksheet {
     for (Map.Entry<Coord, CellFormula> cell : this.cells.entrySet()) {
       cell.getValue().evaluateCell();
     }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    boolean returnValue = true;
+    if (this == o) {
+    } else if (o == null || getClass() != o.getClass()) {
+      returnValue = false;
+    } else {
+      BasicWorksheetModel that = (BasicWorksheetModel) o;
+      for (Coord coord : cells.keySet()) {
+        if (this.getCellAt(coord).evaluateCell().equals(that.getCellAt(coord).evaluateCell())) {
+          returnValue = returnValue && true;
+        } else {
+          returnValue = false;
+        }
+      }
+    }
+    return returnValue;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(cells);
   }
 }

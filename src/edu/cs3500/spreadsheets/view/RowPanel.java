@@ -6,7 +6,7 @@ import java.awt.*;
  * Represents the row header panel in a worksheet.
  */
 public class RowPanel extends javax.swing.JPanel {
-  int numRows;
+  private int numRows;
 
   /**
    * Constructs a {@code RowPanel} object, which is the row header for the spreadsheet.
