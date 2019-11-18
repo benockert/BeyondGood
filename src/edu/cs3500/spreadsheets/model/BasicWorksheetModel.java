@@ -134,13 +134,14 @@ public class BasicWorksheetModel implements Worksheet {
   public boolean equals(Object o) {
     boolean returnValue = true;
     if (this == o) {
+    // no empty blocks
     } else if (o == null || getClass() != o.getClass()) {
       returnValue = false;
     } else {
       BasicWorksheetModel that = (BasicWorksheetModel) o;
       for (Coord coord : cells.keySet()) {
         if (this.getCellAt(coord).evaluateCell().equals(that.getCellAt(coord).evaluateCell())) {
-          returnValue = returnValue && true;
+          returnValue = true;
         } else {
           returnValue = false;
         }

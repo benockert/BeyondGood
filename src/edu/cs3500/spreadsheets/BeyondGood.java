@@ -5,11 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.IllegalFormatConversionException;
-import java.util.Map;
 
-import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
@@ -43,6 +40,8 @@ public class BeyondGood {
       runMainInGUI(args);
     } else if (args[0].equals("-gui")) {
       runNewGUI(args);
+    } else {
+      System.out.println("Invalid command line arguments given.");
     }
   }
 
@@ -133,6 +132,7 @@ public class BeyondGood {
     try {
       view.render();
     } catch (IOException io) {
+      // if there is an exception, do nothing
     }
 
   }
@@ -151,6 +151,7 @@ public class BeyondGood {
       // exits if the cells value was a number and it was printed in the proper format
       System.exit(0);
     } catch (IllegalFormatConversionException efce) {
+      // if there is an exception, do nothing
     }
     // if the cell is a string
     String output = parseString(model.getCellAt(evaluateLocation).evaluateCell().toString());
@@ -182,7 +183,7 @@ public class BeyondGood {
   }
 
   /**
-   * Gets the Coordinate representation of the given string cell name
+   * Gets the Coordinate representation of the given string cell name.
    *
    * @param cellName the cell name represented as a string ([col][index])
    * @return the given cell String as a Coord

@@ -1,6 +1,8 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.FontMetrics;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -9,13 +11,11 @@ import edu.cs3500.spreadsheets.model.Coord;
  * Represents the grid of cells that make up a spreadsheet.
  */
 public class SpreadsheetPanel extends javax.swing.JPanel {
+  public static int CELL_WIDTH = 64;
+  public static int CELL_HEIGHT = 21;
   private int numRows;
   private int numCols;
   private BasicWorksheetModel model;
-
-  // sets a constant cell width and height
-  final static int CELL_WIDTH = 64;
-  final static int CELL_HEIGHT = 21;
 
   /**
    * Creates a {@code SpreadsheetPanel} object, which is the grid of cells in the view of the
@@ -56,7 +56,8 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     String cellValueToDisplay;
 
     try {
-      cellValueToDisplay = String.valueOf(this.model.getCellAt(new Coord(xPos, yPos)).evaluateCell());
+      cellValueToDisplay = String.valueOf(this.model.getCellAt(
+              new Coord(xPos, yPos)).evaluateCell());
     } catch (IllegalArgumentException e) {
       cellValueToDisplay = "REF!";
     }

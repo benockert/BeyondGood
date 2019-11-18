@@ -1,6 +1,8 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Font;
 
 import edu.cs3500.spreadsheets.model.Coord;
 

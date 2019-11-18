@@ -12,6 +12,9 @@ import edu.cs3500.spreadsheets.view.BasicWorksheetSaveView;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * A class to test all of the functionality of text view.
+ */
 public class BasicWorksheetSaveViewTest {
 
   @Test

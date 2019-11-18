@@ -1,10 +1,8 @@
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.List;
 
 import edu.cs3500.spreadsheets.cell.CellDouble;
-import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.cell.CellFunction;
 import edu.cs3500.spreadsheets.cell.CellString;
 
@@ -15,9 +13,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class CellFunctionTest {
 
-  private List<CellFormula> formulaList;
-  private CellDouble cellDouble;
-  private CellString cellString;
   private CellFunction cellFunction1;
   private CellFunction cellFunction2;
 
@@ -25,12 +20,10 @@ public class CellFunctionTest {
    * Initializes the data for testing that will be reset before each test is conducted.
    */
   private void initData() {
-    this.cellDouble = new CellDouble(3);
-    this.cellString = new CellString("hi");
     this.cellFunction1 = new CellFunction("REPT",
-            Arrays.asList(this.cellString, this.cellDouble));
+            Arrays.asList(new CellString("hi"), new CellDouble(3)));
     this.cellFunction2 = new CellFunction("REPT",
-            Arrays.asList(cellFunction1, this.cellDouble));
+            Arrays.asList(cellFunction1, new CellDouble(3)));
   }
 
   @Test

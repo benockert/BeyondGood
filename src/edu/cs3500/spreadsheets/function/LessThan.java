@@ -52,6 +52,6 @@ public class LessThan implements CellVisitor<CellFormula, Double> {
 
   @Override
   public Double apply(CellFormula formula) {
-      return (Double) formula.accept(this);
+    return (Double) formula.accept(this);
   }
 }

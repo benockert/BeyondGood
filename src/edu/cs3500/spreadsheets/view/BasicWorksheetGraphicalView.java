@@ -1,7 +1,12 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 
 /**
@@ -12,10 +17,9 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   private SpreadsheetPanel spreadsheetPanel;
   private RowPanel rowPanel;
   private ColumnPanel columnPanel;
-  private JScrollPane scroller;
 
   // sets the total number of cells to be 100
-  final static int GRID_CELLS = 100;
+  final int GRID_CELLS = 100;
 
   /**
    * A constructor for the GUI view of a spreadsheet that creates a new blank spreadsheet.
@@ -63,7 +67,8 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // sets window close button action
 
     // establishes the number of rows and columns of cells to draw, based on the model requirements
-    int numRowsToDraw, numColsToDraw;
+    int numRowsToDraw;
+    int numColsToDraw;
     // the default number of rows to draw is 100, unless the model requires more
     if (model.getNumRows() > 100) {
       numRowsToDraw = model.getNumRows() + 1;
@@ -109,10 +114,10 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
    * row/column header panels.
    */
   private void assembleFrame() {
-    this.scroller = new JScrollPane();
-    this.scroller.setViewportView(this.spreadsheetPanel);
-    this.scroller.setRowHeaderView(this.rowPanel);
-    this.scroller.setColumnHeaderView(this.columnPanel);
-    this.add(scroller, BorderLayout.CENTER);
+    JScrollPane scroller = new JScrollPane();
+    scroller.setViewportView(this.spreadsheetPanel);
+    scroller.setRowHeaderView(this.rowPanel);
+    scroller.setColumnHeaderView(this.columnPanel);
+    add(scroller, BorderLayout.CENTER);
   }
 }

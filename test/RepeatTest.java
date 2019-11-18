@@ -42,16 +42,16 @@ public class RepeatTest {
   public void testRepeatHelloFive() {
     initData();
     this.model.editCell("=(REPT \"hello\" 5)", this.locationB1);
-    assertEquals("hellohellohellohellohello", this.model.
-            getCellAt(this.locationB1).evaluateCell());
+    assertEquals("hellohellohellohellohello",
+            this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
   @Test
   public void testRepeatTrueTen() {
     initData();
     this.model.editCell("=(REPT true 10)", this.locationB1);
-    assertEquals("truetruetruetruetruetruetruetruetruetrue", this.model.
-            getCellAt(this.locationB1).evaluateCell());
+    assertEquals("truetruetruetruetruetruetruetruetruetrue",
+            this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
 
