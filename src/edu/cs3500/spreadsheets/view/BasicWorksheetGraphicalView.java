@@ -101,7 +101,7 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
             numColsToDraw * SpreadsheetPanel.CELL_WIDTH,
             numRowsToDraw * SpreadsheetPanel.CELL_HEIGHT));
 
-    this.assembleFrame();
+    this.assembleFrame(); 
   }
 
   @Override
