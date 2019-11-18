@@ -11,6 +11,7 @@ import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
+import edu.cs3500.spreadsheets.view.BasicWorksheetEditorView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetGraphicalView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetSaveView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetView;
@@ -38,8 +39,12 @@ public class BeyondGood {
       runSaveView(args);
     } else if (args[0].equals("-in") && args[2].equals("-gui")) {
       runMainInGUI(args);
+    } else if (args[0].equals("-in") && args[2].equals("-edit")) {
+      runMainInEditor(args);
     } else if (args[0].equals("-gui")) {
       runNewGUI(args);
+    } else if (args[0].equals("-edit")) {
+      runNewEditBlankGUI(args);
     } else {
       System.out.println("Invalid command line arguments given.");
     }
@@ -67,6 +72,24 @@ public class BeyondGood {
       formatOutput(model, evaluateLocation);
     } catch (FileNotFoundException fnf) {
       System.out.println("Invalid file given");
+    }
+  }
+
+  private static void runMainInEditor(String[] args) {
+    // the worksheet builder
+    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
+    // the file from which the graphical view will be made
+    String fileName = args[1];
+    File file = new File(fileName);
+    try {
+      FileReader readFile = new FileReader(file);
+      BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
+      BasicWorksheetEditorView savedFileEditableView = new BasicWorksheetEditorView(model);
+      savedFileEditableView.render();
+    } catch (FileNotFoundException fnf) {
+      System.out.println("Invalid file given");
+    } catch (IOException io) {
+      System.out.println("Error reading file");
     }
   }
 
@@ -134,7 +157,18 @@ public class BeyondGood {
     } catch (IOException io) {
       // if there is an exception, do nothing
     }
+  }
 
+  private static void runNewEditBlankGUI(String[] args) {
+    // the worksheet builder
+    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
+
+    BasicWorksheetView view = new BasicWorksheetEditorView();
+    try {
+      view.render();
+    } catch (IOException io) {
+      // if there is an exception, do nothing
+    }
   }
 
   /**

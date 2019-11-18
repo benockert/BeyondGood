@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
+import edu.cs3500.spreadsheets.model.Worksheet;
 
 /**
  * Represents the grid of cells that make up a spreadsheet.
@@ -15,7 +16,7 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
   public static int CELL_HEIGHT = 21;
   private int numRows;
   private int numCols;
-  private BasicWorksheetModel model;
+  private Worksheet model;
 
   /**
    * Creates a {@code SpreadsheetPanel} object, which is the grid of cells in the view of the
@@ -25,7 +26,7 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
    * @param numCols The number of columns in this spreadsheet.
    * @param model   The given model which will be  displayed in this spreadsheet.
    */
-  SpreadsheetPanel(int numRows, int numCols, BasicWorksheetModel model) {
+  SpreadsheetPanel(int numRows, int numCols, Worksheet model) {
     this.numRows = numRows;
     this.numCols = numCols;
     this.model = model;
