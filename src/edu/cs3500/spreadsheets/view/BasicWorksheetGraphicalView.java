@@ -109,7 +109,7 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     this.setVisible(true);
   }
 
-  /**W
+  /**
    * Adds the spreadsheet panel to the view along with vertical and horizontal scroll bars and the
    * row/column header panels.
    */
