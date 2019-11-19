@@ -1,17 +1,20 @@
 package edu.cs3500.spreadsheets.view;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 import javax.swing.*;
 
+import edu.cs3500.spreadsheets.controller.HighlightCell;
 import edu.cs3500.spreadsheets.model.Worksheet;
 
 public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetView {
   private BasicWorksheetGraphicalView spreadsheetView;
   private JTextField formulaInput;
   private JPanel buttonPanel;
-  private JButton accept, reject;
+  private JButton enter, clear;
 
   public BasicWorksheetEditorView() {
     super();
@@ -21,10 +24,10 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     // creates a new button panel to house the text fields and accept/reject buttons
     this.buttonPanel = new JPanel();
     this.buttonPanel.setLayout(new FlowLayout());
-    this.accept = new JButton("✔");
-    this.buttonPanel.add(accept);
-    this.reject = new JButton("✘");
-    this.buttonPanel.add(reject);
+    this.enter = new JButton("✔");
+    this.buttonPanel.add(enter);
+    this.clear = new JButton("✘");
+    this.buttonPanel.add(clear);
 
     // creates the text field and sets its size to mostly fill the horizontal space of the view
     int size = this.spreadsheetView.getWidth();
@@ -34,6 +37,9 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     // adds the text field to the button panel and then adds the button panel to the existing view
     this.buttonPanel.add(formulaInput);
     spreadsheetView.add(this.buttonPanel, BorderLayout.NORTH);
+
+    addMouseListener(new HighlightCell(this.spreadsheetView.getSpreadsheetPanel()));
+
   }
 
   public BasicWorksheetEditorView(Worksheet model) {
@@ -44,10 +50,14 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     // creates a new button panel to house the text fields and accept/reject buttons
     this.buttonPanel = new JPanel();
     this.buttonPanel.setLayout(new FlowLayout());
-    this.accept = new JButton("✔");
-    this.buttonPanel.add(accept);
-    this.reject = new JButton("✘");
-    this.buttonPanel.add(reject);
+
+    // accept button
+    this.enter = new JButton("✔");
+    buttonPanel.add(this.enter);
+
+    // reject button
+    this.clear = new JButton("✘");
+    buttonPanel.add(this.clear);
 
     // creates the text field and sets its size to mostly fill the horizontal space of the view
     int size = this.spreadsheetView.getWidth();
@@ -56,6 +66,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
 
     // adds the text field to the button panel and then adds the button panel to the existing view
     this.buttonPanel.add(formulaInput);
+
     spreadsheetView.add(this.buttonPanel, BorderLayout.NORTH);
   }
 

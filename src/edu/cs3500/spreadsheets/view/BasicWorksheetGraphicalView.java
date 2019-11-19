@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+import edu.cs3500.spreadsheets.controller.HighlightCell;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Worksheet;
 
@@ -51,8 +52,6 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
             GRID_CELLS * SpreadsheetPanel.CELL_HEIGHT));
 
     this.assembleFrame();
-
-
   }
 
   /**
@@ -102,7 +101,7 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
             numColsToDraw * SpreadsheetPanel.CELL_WIDTH,
             numRowsToDraw * SpreadsheetPanel.CELL_HEIGHT));
 
-    this.assembleFrame(); 
+    this.assembleFrame();
   }
 
   @Override
@@ -120,5 +119,9 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     scroller.setRowHeaderView(this.rowPanel);
     scroller.setColumnHeaderView(this.columnPanel);
     add(scroller, BorderLayout.CENTER);
+  }
+
+  public SpreadsheetPanel getSpreadsheetPanel() {
+    return this.spreadsheetPanel;
   }
 }

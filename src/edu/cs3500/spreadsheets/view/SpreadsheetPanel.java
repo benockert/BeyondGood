@@ -1,8 +1,6 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.FontMetrics;
+import java.awt.*;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -17,6 +15,8 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
   private int numRows;
   private int numCols;
   private Worksheet model;
+  private int xMouseCellPos;
+  private int yMouseCellPos;
 
   /**
    * Creates a {@code SpreadsheetPanel} object, which is the grid of cells in the view of the
@@ -38,9 +38,14 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     Graphics2D g2d = (Graphics2D) g;
     for (int x = 0; x < this.numCols; x++) {
       for (int y = 0; y < this.numRows; y++) {
-        g.drawRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-        String contentsToDraw = getAndClipContents(g, x + 1, y + 1);
-        g.drawString(contentsToDraw, x * CELL_WIDTH + 3, (y + 1) * CELL_HEIGHT - 3);
+        g2d.drawRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+        g2d.setColor(Color.BLACK);
+        if (x == this.xMouseCellPos && y == this.yMouseCellPos) {
+          paintHighlight(g2d, x, y);
+        } else {
+          String contentsToDraw = getAndClipContents(g2d, x + 1, y + 1);
+          g2d.drawString(contentsToDraw, x * CELL_WIDTH + 3, (y + 1) * CELL_HEIGHT - 3);
+        }
       }
     }
   }
@@ -71,5 +76,19 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
       cellValueToDisplay = cellValueToDisplay.substring(0, cellValueToDisplay.length() - 2);
     }
     return cellValueToDisplay;
+  }
+
+  public void setHighlightLocation(int xPos, int yPos) {
+    this.xMouseCellPos = xPos;
+    this.yMouseCellPos = yPos;
+  }
+
+  private void paintHighlight(Graphics2D g, int x, int y) {
+    g.drawRect(x * CELL_WIDTH + 1, y * CELL_HEIGHT + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2);
+    g.setColor(Color.RED);
+    String contentsToDraw = getAndClipContents(g, x + 1, y + 1);
+    g.drawString(contentsToDraw, x * CELL_WIDTH + 3, (y + 1) * CELL_HEIGHT - 3);
+
+
   }
 }
