@@ -38,12 +38,16 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     Graphics2D g2d = (Graphics2D) g;
     for (int x = 0; x < this.numCols; x++) {
       for (int y = 0; y < this.numRows; y++) {
-        g2d.drawRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
         g2d.setColor(Color.BLACK);
+        g2d.drawRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
         if (x == this.xMouseCellPos && y == this.yMouseCellPos) {
-          paintHighlight(g2d, x, y);
+          g2d.setColor(Color.BLUE);
+          g2d.drawRect(x * CELL_WIDTH + 1, y * CELL_HEIGHT + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2);
+          String contentsToDraw = getAndClipContents(g, x + 1, y + 1);
+          g2d.setColor(Color.BLACK);
+          g2d.drawString(contentsToDraw, x * CELL_WIDTH + 3, (y + 1) * CELL_HEIGHT - 3);
         } else {
-          String contentsToDraw = getAndClipContents(g2d, x + 1, y + 1);
+          String contentsToDraw = getAndClipContents(g, x + 1, y + 1);
           g2d.drawString(contentsToDraw, x * CELL_WIDTH + 3, (y + 1) * CELL_HEIGHT - 3);
         }
       }
@@ -68,7 +72,6 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
       cellValueToDisplay = "REF!";
     }
 
-
     // get metrics from the graphics
     FontMetrics metrics = g.getFontMetrics();
 
@@ -83,12 +86,7 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     this.yMouseCellPos = yPos;
   }
 
-  private void paintHighlight(Graphics2D g, int x, int y) {
-    g.drawRect(x * CELL_WIDTH + 1, y * CELL_HEIGHT + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2);
-    g.setColor(Color.RED);
-    String contentsToDraw = getAndClipContents(g, x + 1, y + 1);
-    g.drawString(contentsToDraw, x * CELL_WIDTH + 3, (y + 1) * CELL_HEIGHT - 3);
-
-
+  public Coord highlightCellLocation() {
+    return new Coord (this.xMouseCellPos + 1, this.yMouseCellPos + 1);
   }
 }

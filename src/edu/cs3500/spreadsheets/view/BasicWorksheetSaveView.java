@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.cs3500.spreadsheets.cell.CellFormula;
-import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
+import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
 
 /**
  * Represents the view for a worksheet which saves a given model to a new text file.
  */
 public class BasicWorksheetSaveView implements BasicWorksheetView {
-  private final BasicWorksheetModel model;
+  private final BasicWorksheetReadOnlyModel model;
   private PrintWriter appendable;
 
   /**
@@ -22,7 +22,7 @@ public class BasicWorksheetSaveView implements BasicWorksheetView {
    * @param model      the model of the worksheet to be saved
    * @param appendable the appendable being added to
    */
-  public BasicWorksheetSaveView(BasicWorksheetModel model, PrintWriter appendable) {
+  public BasicWorksheetSaveView(BasicWorksheetReadOnlyModel model, PrintWriter appendable) {
     this.model = model;
     this.appendable = appendable;
   }

@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import javax.swing.*;
 
 import edu.cs3500.spreadsheets.controller.HighlightCell;
+import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Worksheet;
 
 public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetView {
@@ -16,33 +17,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   private JPanel buttonPanel;
   private JButton enter, clear;
 
-  public BasicWorksheetEditorView() {
-    super();
-    // creates the existing view
-    this.spreadsheetView = new BasicWorksheetGraphicalView();
-
-    // creates a new button panel to house the text fields and accept/reject buttons
-    this.buttonPanel = new JPanel();
-    this.buttonPanel.setLayout(new FlowLayout());
-    this.enter = new JButton("✔");
-    this.buttonPanel.add(enter);
-    this.clear = new JButton("✘");
-    this.buttonPanel.add(clear);
-
-    // creates the text field and sets its size to mostly fill the horizontal space of the view
-    int size = this.spreadsheetView.getWidth();
-    this.formulaInput = new JTextField(size / 14);
-    this.formulaInput.setPreferredSize(new Dimension(size, 30));
-
-    // adds the text field to the button panel and then adds the button panel to the existing view
-    this.buttonPanel.add(formulaInput);
-    spreadsheetView.add(this.buttonPanel, BorderLayout.NORTH);
-
-    addMouseListener(new HighlightCell(this.spreadsheetView.getSpreadsheetPanel()));
-
-  }
-
-  public BasicWorksheetEditorView(Worksheet model) {
+  public BasicWorksheetEditorView(BasicWorksheetReadOnlyModel model) {
     super();
     // creates the existing view
     this.spreadsheetView = new BasicWorksheetGraphicalView(model);
@@ -66,8 +41,15 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
 
     // adds the text field to the button panel and then adds the button panel to the existing view
     this.buttonPanel.add(formulaInput);
-
     spreadsheetView.add(this.buttonPanel, BorderLayout.NORTH);
+
+
+    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, model);
+    this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
+
+    this.formulaInput.setText(highlightedCell.getCellContents());
+
+
   }
 
 
@@ -75,4 +57,5 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   public void render() throws IOException {
     this.spreadsheetView.setVisible(true);
   }
+  
 }

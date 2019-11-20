@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 
 import edu.cs3500.spreadsheets.controller.HighlightCell;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
+import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Worksheet;
 
 /**
@@ -16,7 +17,7 @@ import edu.cs3500.spreadsheets.model.Worksheet;
  * spreadsheet.
  */
 public class BasicWorksheetGraphicalView extends JFrame implements BasicWorksheetView {
-  private SpreadsheetPanel spreadsheetPanel;
+  SpreadsheetPanel spreadsheetPanel;
   private RowPanel rowPanel;
   private ColumnPanel columnPanel;
 
@@ -60,7 +61,7 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
    *
    * @param model The given spreadsheet model/file to be displayed
    */
-  public BasicWorksheetGraphicalView(Worksheet model) {
+  public BasicWorksheetGraphicalView(BasicWorksheetReadOnlyModel model) {
     super();
     this.setTitle("Microsoft Excel 2019 - New Spreadsheet"); // sets window title
     this.setSize(1350, 750); // sets window size
@@ -121,7 +122,4 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     add(scroller, BorderLayout.CENTER);
   }
 
-  public SpreadsheetPanel getSpreadsheetPanel() {
-    return this.spreadsheetPanel;
-  }
 }

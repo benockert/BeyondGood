@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.IllegalFormatConversionException;
 
+import edu.cs3500.spreadsheets.controller.BasicWorksheetEditorController;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
+import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
@@ -84,12 +86,13 @@ public class BeyondGood {
     try {
       FileReader readFile = new FileReader(file);
       BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
-      BasicWorksheetEditorView savedFileEditableView = new BasicWorksheetEditorView(model);
-      savedFileEditableView.render();
+      BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(model);
+      BasicWorksheetEditorView savedFileEditableView = new BasicWorksheetEditorView(readOnlyModel);
+      BasicWorksheetEditorController controller =
+              new BasicWorksheetEditorController(model, savedFileEditableView);
+      controller.run();
     } catch (FileNotFoundException fnf) {
       System.out.println("Invalid file given");
-    } catch (IOException io) {
-      System.out.println("Error reading file");
     }
   }
 
@@ -110,7 +113,8 @@ public class BeyondGood {
       PrintWriter printToFile = new PrintWriter(fileOut);
       FileReader readFile = new FileReader(file);
       BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
-      BasicWorksheetSaveView saveView = new BasicWorksheetSaveView(model, printToFile);
+      BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(model);
+      BasicWorksheetSaveView saveView = new BasicWorksheetSaveView(readOnlyModel, printToFile);
       saveView.render();
     } catch (FileNotFoundException fnf) {
       System.out.println("Invalid file given");
@@ -133,12 +137,11 @@ public class BeyondGood {
     try {
       FileReader readFile = new FileReader(file);
       BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
-      BasicWorksheetGraphicalView savedFileView = new BasicWorksheetGraphicalView(model);
+      BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(model);
+      BasicWorksheetGraphicalView savedFileView = new BasicWorksheetGraphicalView(readOnlyModel);
       savedFileView.render();
     } catch (FileNotFoundException fnf) {
       System.out.println("Invalid file given");
-    } catch (IOException io) {
-      System.out.println("Error reading file");
     }
   }
 
@@ -162,13 +165,12 @@ public class BeyondGood {
   private static void runNewEditBlankGUI(String[] args) {
     // the worksheet builder
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
-
-    BasicWorksheetView view = new BasicWorksheetEditorView();
-    try {
-      view.render();
-    } catch (IOException io) {
-      // if there is an exception, do nothing
-    }
+    BasicWorksheetModel blankModel = new BasicWorksheetModel();
+    BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(blankModel);
+    BasicWorksheetView view = new BasicWorksheetEditorView(readOnlyModel);
+    BasicWorksheetEditorController controller =
+            new BasicWorksheetEditorController(readOnlyModel, view);
+    controller.run();
   }
 
   /**

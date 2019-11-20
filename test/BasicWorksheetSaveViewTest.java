@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
+import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.view.BasicWorksheetSaveView;
@@ -35,7 +36,8 @@ public class BasicWorksheetSaveViewTest {
 
     // creates the initial model and renders it as a file
     BasicWorksheetModel modelIn = WorksheetReader.read(builder, readFile);
-    BasicWorksheetSaveView savedModelInView = new BasicWorksheetSaveView(modelIn, writeFile);
+    BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(modelIn);
+    BasicWorksheetSaveView savedModelInView = new BasicWorksheetSaveView(readOnlyModel, writeFile);
     savedModelInView.render();
 
     // reads the file and creates another model from it
@@ -64,7 +66,8 @@ public class BasicWorksheetSaveViewTest {
 
     // creates the initial model and renders it as a file
     BasicWorksheetModel modelIn = WorksheetReader.read(builder, readFile);
-    BasicWorksheetSaveView savedModelInView = new BasicWorksheetSaveView(modelIn, writeFile);
+    BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(modelIn);
+    BasicWorksheetSaveView savedModelInView = new BasicWorksheetSaveView(readOnlyModel, writeFile);
     savedModelInView.render();
 
     // reads the file and creates another model from it
@@ -93,7 +96,8 @@ public class BasicWorksheetSaveViewTest {
 
     // creates the initial model and renders it as a file
     BasicWorksheetModel modelIn = WorksheetReader.read(builder, readFile);
-    BasicWorksheetSaveView savedModelInView = new BasicWorksheetSaveView(modelIn, writeFile);
+    BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(modelIn);
+    BasicWorksheetSaveView savedModelInView = new BasicWorksheetSaveView(readOnlyModel, writeFile);
     savedModelInView.render();
 
     // reads the file and creates another model from it
