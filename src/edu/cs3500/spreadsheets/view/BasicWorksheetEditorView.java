@@ -44,15 +44,15 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     spreadsheetView.add(this.buttonPanel, BorderLayout.NORTH);
 
 
-    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, model, this);
-    this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
-
+    // sets the text in thee toolbar to be the first highlighted cell
+    this.setTextbox(model);
 
 
   }
 
   /**
    * Sets the text in the toolbar to be the raw contents of the highlighted cell.
+   *
    * @param model The read-only-model used to find the highlighted cell.
    */
   public void setTextbox(BasicWorksheetReadOnlyModel model) {
@@ -62,10 +62,9 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   }
 
 
-
   @Override
   public void render() throws IOException {
     this.spreadsheetView.setVisible(true);
   }
-  
+
 }
