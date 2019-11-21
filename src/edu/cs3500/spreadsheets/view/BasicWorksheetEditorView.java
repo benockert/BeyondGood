@@ -44,13 +44,23 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     spreadsheetView.add(this.buttonPanel, BorderLayout.NORTH);
 
 
-    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, model);
+    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, model, this);
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
 
-    this.formulaInput.setText(highlightedCell.getCellContents());
 
 
   }
+
+  /**
+   * Sets the text in the toolbar to be the raw contents of the highlighted cell.
+   * @param model The read-only-model used to find the highlighted cell.
+   */
+  public void setTextbox(BasicWorksheetReadOnlyModel model) {
+    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, model, this);
+    this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
+    this.formulaInput.setText(highlightedCell.getCellContents());
+  }
+
 
 
   @Override

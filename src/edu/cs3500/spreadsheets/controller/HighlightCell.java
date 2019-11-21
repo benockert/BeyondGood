@@ -12,10 +12,14 @@ import edu.cs3500.spreadsheets.view.SpreadsheetPanel;
 public class HighlightCell implements MouseListener {
   SpreadsheetPanel spreadsheetPanel;
   BasicWorksheetReadOnlyModel model;
+  BasicWorksheetEditorView view;
 
-  public HighlightCell(SpreadsheetPanel spreadsheetPanel, BasicWorksheetReadOnlyModel model) {
+
+
+  public HighlightCell(SpreadsheetPanel spreadsheetPanel, BasicWorksheetReadOnlyModel model, BasicWorksheetEditorView view) {
     this.spreadsheetPanel = spreadsheetPanel;
     this.model = model;
+    this.view = view;
   }
 
   @Override
@@ -29,10 +33,8 @@ public class HighlightCell implements MouseListener {
     this.spreadsheetPanel.setHighlightLocation(xCoord, yCoord);
     this.spreadsheetPanel.revalidate();
     this.spreadsheetPanel.repaint();
-  }
 
-  public String getCellContents() {
-    return this.model.getCellAt(this.spreadsheetPanel.highlightCellLocation()).getRawContents();
+    this.view.setTextbox(this.model);
   }
 
   @Override
@@ -53,6 +55,14 @@ public class HighlightCell implements MouseListener {
   @Override
   public void mouseExited(MouseEvent mouseEvent) {
     // no action taken for a mouse exit
+  }
+
+  /**
+   * Returns the raw contents of the highlighted cell in this model.
+   * @return a String containing the raw contents of the cell.
+   */
+  public String getCellContents() {
+    return this.model.getCellAt(this.spreadsheetPanel.highlightCellLocation()).getRawContents();
   }
 
 }
