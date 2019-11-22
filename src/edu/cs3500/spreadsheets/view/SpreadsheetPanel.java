@@ -54,6 +54,14 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     }
   }
 
+  public void addRow(int numToAdd) {
+    this.numRows += numToAdd;
+  }
+
+  public void addCol(int numToAdd) {
+    this.numCols += numToAdd;
+  }
+
   /**
    * Clips the contents of a cell if the contents are longer than the width of the cell.
    *
@@ -87,6 +95,6 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
   }
 
   public Coord highlightCellLocation() {
-    return new Coord (this.xMouseCellPos + 1, this.yMouseCellPos + 1);
+    return new Coord(this.xMouseCellPos + 1, this.yMouseCellPos + 1);
   }
 }

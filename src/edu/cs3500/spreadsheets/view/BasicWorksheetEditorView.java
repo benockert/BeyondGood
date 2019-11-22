@@ -2,6 +2,7 @@ package edu.cs3500.spreadsheets.view;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.function.Consumer;
 
@@ -61,7 +62,11 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   public void setTextbox(BasicWorksheetReadOnlyModel model) {
     HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, model, this);
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
-    this.formulaInput.setText("=" + highlightedCell.getCellContents());
+    if (highlightedCell.getCellContents().equals("")) {
+      this.formulaInput.setText(highlightedCell.getCellContents());
+    } else {
+      this.formulaInput.setText("=" + highlightedCell.getCellContents());
+    }
   }
 
 

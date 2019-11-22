@@ -7,6 +7,7 @@ import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Worksheet;
 import edu.cs3500.spreadsheets.view.BasicWorksheetEditorView;
+import edu.cs3500.spreadsheets.view.BasicWorksheetGraphicalView;
 import edu.cs3500.spreadsheets.view.SpreadsheetPanel;
 
 public class HighlightCell implements MouseListener {

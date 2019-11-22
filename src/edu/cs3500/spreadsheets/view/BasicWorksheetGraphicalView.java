@@ -3,14 +3,13 @@ package edu.cs3500.spreadsheets.view;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.BorderLayout;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
-import edu.cs3500.spreadsheets.controller.HighlightCell;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
-import edu.cs3500.spreadsheets.model.Worksheet;
 
 /**
  * Represents the GUI view of a basic spreadsheeet, so the user can view files and inputs on a
@@ -20,6 +19,7 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   SpreadsheetPanel spreadsheetPanel;
   private RowPanel rowPanel;
   private ColumnPanel columnPanel;
+  JScrollPane scroller;
 
   // sets the total number of cells to be 100
   final int GRID_CELLS = 100;
@@ -52,7 +52,7 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
             GRID_CELLS * SpreadsheetPanel.CELL_WIDTH,
             GRID_CELLS * SpreadsheetPanel.CELL_HEIGHT));
 
-    this.assembleFrame();
+
   }
 
   /**
@@ -102,7 +102,8 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
             numColsToDraw * SpreadsheetPanel.CELL_WIDTH,
             numRowsToDraw * SpreadsheetPanel.CELL_HEIGHT));
 
-    this.assembleFrame();
+    this.addScrollPane();
+
   }
 
   @Override
@@ -110,16 +111,47 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     this.setVisible(true);
   }
 
-  /**
-   * Adds the spreadsheet panel to the view along with vertical and horizontal scroll bars and the
-   * row/column header panels.
-   */
-  private void assembleFrame() {
-    JScrollPane scroller = new JScrollPane();
+  private void addScrollPane() {
+    final JScrollPane scroller = new JScrollPane();
+    // sets up the scroller panels
     scroller.setViewportView(this.spreadsheetPanel);
     scroller.setRowHeaderView(this.rowPanel);
     scroller.setColumnHeaderView(this.columnPanel);
-    add(scroller, BorderLayout.CENTER);
+    // increases the speed
+    scroller.getVerticalScrollBar().setUnitIncrement(16);
+    scroller.getHorizontalScrollBar().setUnitIncrement(16);
+    // adds a listener for infinite scrolling
+    scroller.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+      @Override
+      public void adjustmentValueChanged(AdjustmentEvent ae) {
+        // checks if the scroll bars has been moved
+        inifinteScroll(ae, true);
+      }
+    });
+    scroller.getHorizontalScrollBar().addAdjustmentListener(ae -> {
+      // checks if the scroll bars has been moved
+      inifinteScroll(ae, false);
+    });
+    this.add(scroller, BorderLayout.CENTER);
   }
 
+  private void inifinteScroll(AdjustmentEvent ae, boolean isVert) {
+    if (!ae.getValueIsAdjusting()) {
+      JScrollBar scrollBar = (JScrollBar) ae.getAdjustable();
+      int extent = scrollBar.getModel().getExtent();
+      int max = scrollBar.getModel().getMaximum();
+      int value = ae.getValue();
+      if (extent + value == max) {
+        if (isVert) {
+          System.out.println("Hi");
+          this.spreadsheetPanel.addRow(5);
+        } else {
+          System.out.println("Hi");
+          this.spreadsheetPanel.addCol(5);
+        }
+        this.spreadsheetPanel.revalidate();
+        this.spreadsheetPanel.repaint();
+      }
+    }
+  }
 }
