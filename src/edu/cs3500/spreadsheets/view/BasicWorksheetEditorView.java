@@ -43,6 +43,9 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.buttonPanel.add(formulaInput);
     spreadsheetView.add(this.buttonPanel, BorderLayout.NORTH);
 
+    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, model, this);
+    this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
+    this.formulaInput.setText(highlightedCell.getCellContents());
 
     // sets the text in thee toolbar to be the first highlighted cell
     this.setTextbox(model);
@@ -58,7 +61,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   public void setTextbox(BasicWorksheetReadOnlyModel model) {
     HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, model, this);
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
-    this.formulaInput.setText(highlightedCell.getCellContents());
+    this.formulaInput.setText("=" + highlightedCell.getCellContents());
   }
 
 

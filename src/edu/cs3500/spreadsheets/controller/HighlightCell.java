@@ -10,9 +10,9 @@ import edu.cs3500.spreadsheets.view.BasicWorksheetEditorView;
 import edu.cs3500.spreadsheets.view.SpreadsheetPanel;
 
 public class HighlightCell implements MouseListener {
-  SpreadsheetPanel spreadsheetPanel;
-  BasicWorksheetReadOnlyModel model;
-  BasicWorksheetEditorView view;
+  private SpreadsheetPanel spreadsheetPanel;
+  private BasicWorksheetReadOnlyModel model;
+  private BasicWorksheetEditorView view;
 
 
 
