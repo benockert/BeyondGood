@@ -1,8 +1,6 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Font;
+import java.awt.*;
 
 import edu.cs3500.spreadsheets.model.Coord;
 
@@ -46,5 +44,12 @@ public class ColumnPanel extends javax.swing.JPanel {
                 SpreadsheetPanel.CELL_HEIGHT / 2 + 6);
       }
     }
+  }
+
+  public void addColAndChangePanelSize() {
+    this.numCols += 1;
+    this.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH * this.numCols,
+            SpreadsheetPanel.CELL_HEIGHT));
+    this.revalidate();
   }
 }

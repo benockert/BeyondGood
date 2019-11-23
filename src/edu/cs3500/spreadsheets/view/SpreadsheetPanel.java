@@ -22,8 +22,8 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
    * Creates a {@code SpreadsheetPanel} object, which is the grid of cells in the view of the
    * spreadsheet.
    *
-   * @param numRows The number of rows in this spreadsheet.
-   * @param numCols The number of columns in this spreadsheet.
+   * @param numCols the number of columns in the panel
+   * @param numRows the number of rows in the panel
    * @param model   The given model which will be  displayed in this spreadsheet.
    */
   SpreadsheetPanel(int numRows, int numCols, Worksheet model) {
@@ -54,12 +54,16 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     }
   }
 
-  public void addRow(int numToAdd) {
-    this.numRows += numToAdd;
+  public void addRowAndChangeSize() {
+    this.numRows += 1;
+    this.setPreferredSize(new Dimension(CELL_WIDTH * numCols, CELL_HEIGHT * numRows));
+    this.revalidate();
   }
 
-  public void addCol(int numToAdd) {
-    this.numCols += numToAdd;
+  public void addColAndChangeSize() {
+    this.numCols += 1;
+    this.setPreferredSize(new Dimension(CELL_WIDTH * numCols, CELL_HEIGHT * numRows));
+    this.revalidate();
   }
 
   /**

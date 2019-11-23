@@ -1,8 +1,6 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Font;
+import java.awt.*;
 
 /**
  * Represents the row header panel in a worksheet.
@@ -27,7 +25,7 @@ public class RowPanel extends javax.swing.JPanel {
     for (int y = 0; y < this.numRows; y++) {
       // draws a number of rectangles equal to the specified number of column cells one on top of
       // the other along the y-axis
-      g2d.drawRect(-1, (y - 1) * SpreadsheetPanel.CELL_HEIGHT, SpreadsheetPanel.CELL_WIDTH,
+      g2d.drawRect(-1, (y) * SpreadsheetPanel.CELL_HEIGHT, SpreadsheetPanel.CELL_WIDTH,
               SpreadsheetPanel.CELL_HEIGHT);
       // sets the font size to be 14 and bolds the text
       g2d.setFont(new Font("default", Font.BOLD, 14));
@@ -47,6 +45,13 @@ public class RowPanel extends javax.swing.JPanel {
                 y * 21 + 16);
       }
     }
+  }
+
+  public void addRowAndChangePanelSize() {
+    this.numRows += 1;
+    this.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH,
+            this.numRows * SpreadsheetPanel.CELL_HEIGHT));
+    this.revalidate();
   }
 
 

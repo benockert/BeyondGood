@@ -22,7 +22,8 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   JScrollPane scroller;
 
   // sets the total number of cells to be 100
-  final int GRID_CELLS = 100;
+  int numRows = 100;
+  int numCols = 50;
 
   /**
    * A constructor for the GUI view of a spreadsheet that creates a new blank spreadsheet.
@@ -34,25 +35,25 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // sets window close button action
 
     // draws the row panel with the index of each row displayed in a grey-ed out cell
-    this.rowPanel = new RowPanel(GRID_CELLS);
+    this.rowPanel = new RowPanel(numRows);
     this.rowPanel.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH,
-            GRID_CELLS * SpreadsheetPanel.CELL_WIDTH));
+            numRows * SpreadsheetPanel.CELL_WIDTH));
     this.rowPanel.setBackground(Color.GRAY);
 
     // draws the column panel with the index of each row displayed as a letter or series of
     // letters in a grey-ed out cell
-    this.columnPanel = new ColumnPanel(GRID_CELLS);
-    this.columnPanel.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH * GRID_CELLS,
+    this.columnPanel = new ColumnPanel(numCols);
+    this.columnPanel.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH * numCols,
             SpreadsheetPanel.CELL_HEIGHT));
     this.columnPanel.setBackground(Color.GRAY);
 
     // draws all of the cells along with their components
-    this.spreadsheetPanel = new SpreadsheetPanel(GRID_CELLS, GRID_CELLS, new BasicWorksheetModel());
+    this.spreadsheetPanel = new SpreadsheetPanel(numRows, numCols, new BasicWorksheetModel());
     this.spreadsheetPanel.setPreferredSize(new Dimension(
-            GRID_CELLS * SpreadsheetPanel.CELL_WIDTH,
-            GRID_CELLS * SpreadsheetPanel.CELL_HEIGHT));
+            numCols * SpreadsheetPanel.CELL_WIDTH,
+            numRows * SpreadsheetPanel.CELL_HEIGHT));
 
-
+    this.addScrollPane();
   }
 
   /**
@@ -71,28 +72,28 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     int numRowsToDraw;
     int numColsToDraw;
     // the default number of rows to draw is 100, unless the model requires more
-    if (model.getNumRows() > 100) {
+    if (model.getNumRows() > numRows) {
       numRowsToDraw = model.getNumRows() + 1;
     } else {
-      numRowsToDraw = 100;
+      numRowsToDraw = numRows;
     }
     // the default number of columns to draw is 50, unless the model requires more
-    if (model.getNumCols() > 50) {
+    if (model.getNumCols() > numCols) {
       numColsToDraw = model.getNumCols() + 1;
     } else {
-      numColsToDraw = 50;
+      numColsToDraw = numCols;
     }
 
     // draws the row panel with the index of each row displayed in a grey-ed out cell
     this.rowPanel = new RowPanel(numRowsToDraw);
     this.rowPanel.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH,
-            GRID_CELLS * SpreadsheetPanel.CELL_WIDTH));
+            numRows * SpreadsheetPanel.CELL_WIDTH));
     this.rowPanel.setBackground(Color.GRAY);
 
     // draws the column panel with the index of each row displayed as a letter or series of
     // letters in a grey-ed out cell
     this.columnPanel = new ColumnPanel(numColsToDraw);
-    this.columnPanel.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH * GRID_CELLS,
+    this.columnPanel.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH * numColsToDraw,
             SpreadsheetPanel.CELL_HEIGHT));
     this.columnPanel.setBackground(Color.GRAY);
 
@@ -143,14 +144,12 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
       int value = ae.getValue();
       if (extent + value == max) {
         if (isVert) {
-          System.out.println("Hi");
-          this.spreadsheetPanel.addRow(5);
+          this.spreadsheetPanel.addRowAndChangeSize();
+          this.rowPanel.addRowAndChangePanelSize();
         } else {
-          System.out.println("Hi");
-          this.spreadsheetPanel.addCol(5);
+          this.spreadsheetPanel.addColAndChangeSize();
+          this.columnPanel.addColAndChangePanelSize();
         }
-        this.spreadsheetPanel.revalidate();
-        this.spreadsheetPanel.repaint();
       }
     }
   }
