@@ -10,10 +10,12 @@ import javax.swing.*;
 
 import edu.cs3500.spreadsheets.controller.HighlightCell;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
+import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Worksheet;
 
 public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetView {
   private BasicWorksheetGraphicalView spreadsheetView;
+  private BasicWorksheetReadOnlyModel modelToDisplayandEdit;
   private JTextField formulaInput;
   private JPanel buttonPanel;
   private JButton enter, clear;
@@ -22,6 +24,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     super();
     // creates the existing view
     this.spreadsheetView = new BasicWorksheetGraphicalView(model);
+    this.modelToDisplayandEdit = model;
 
     // creates a new button panel to house the text fields and accept/reject buttons
     this.buttonPanel = new JPanel();
@@ -29,10 +32,12 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
 
     // accept button
     this.enter = new JButton("✔");
+    this.enter.setActionCommand("Accept button");
     buttonPanel.add(this.enter);
 
     // reject button
     this.clear = new JButton("✘");
+    this.clear.setActionCommand("Reject button");
     buttonPanel.add(this.clear);
 
     // creates the text field and sets its size to mostly fill the horizontal space of the view
@@ -49,18 +54,17 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.formulaInput.setText(highlightedCell.getCellContents());
 
     // sets the text in thee toolbar to be the first highlighted cell
-    this.setTextbox(model);
+    this.setTextbox();
 
 
   }
 
   /**
    * Sets the text in the toolbar to be the raw contents of the highlighted cell.
-   *
-   * @param model The read-only-model used to find the highlighted cell.
    */
-  public void setTextbox(BasicWorksheetReadOnlyModel model) {
-    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, model, this);
+  public void setTextbox() {
+    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel,
+            this.modelToDisplayandEdit, this);
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
     if (highlightedCell.getCellContents().equals("")) {
       this.formulaInput.setText(highlightedCell.getCellContents());
@@ -69,10 +73,22 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     }
   }
 
-
   @Override
   public void render() throws IOException {
     this.spreadsheetView.setVisible(true);
+  }
+
+  public void setListener(ActionListener listener) {
+    this.enter.addActionListener(listener);
+    this.clear.addActionListener(listener);
+  }
+
+  public String getViewTextField() {
+    return this.formulaInput.getText();
+  }
+
+  public Coord getHighlightedCell() {
+    return this.spreadsheetView.getHighlightedCell();
   }
 
 }

@@ -52,7 +52,7 @@ public class BasicWorksheetModel implements Worksheet {
     CellFormula editedCell;
     // if the cell is a function or reference
     if (input.equals("")) {
-      editedCell = new CellString("");
+      editedCell = new CellBlank("");
     } else if (input.substring(0, 1).equals("=")) {
       // initialize a string of the input without the  "="
       String noEqualsString = input.substring(1);

@@ -167,7 +167,7 @@ public class BeyondGood {
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
     BasicWorksheetModel blankModel = new BasicWorksheetModel();
     BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(blankModel);
-    BasicWorksheetView view = new BasicWorksheetEditorView(readOnlyModel);
+    BasicWorksheetEditorView view = new BasicWorksheetEditorView(readOnlyModel);
     BasicWorksheetEditorController controller =
             new BasicWorksheetEditorController(readOnlyModel, view);
     controller.run();

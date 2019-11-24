@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.view;
 
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -33,6 +34,11 @@ public class BasicWorksheetSaveView implements BasicWorksheetView {
     this.appendable.append(this.toString());
     // writes the file and closes it
     this.appendable.close();
+  }
+
+  @Override
+  public void setListener(ActionListener listener) {
+    // this textual view does not accept any actions on it
   }
 
   @Override

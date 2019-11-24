@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets.view;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
@@ -10,6 +11,7 @@ import javax.swing.*;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
+import edu.cs3500.spreadsheets.model.Coord;
 
 /**
  * Represents the GUI view of a basic spreadsheeet, so the user can view files and inputs on a
@@ -110,6 +112,15 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   @Override
   public void render() {
     this.setVisible(true);
+  }
+
+  @Override
+  public void setListener(ActionListener listener) {
+    // this non-editable graphical view does not accept any actions
+  }
+
+  public Coord getHighlightedCell() {
+    return this.spreadsheetPanel.highlightCellLocation();
   }
 
   private void addScrollPane() {

@@ -35,7 +35,7 @@ public class HighlightCell implements MouseListener {
     this.spreadsheetPanel.revalidate();
     this.spreadsheetPanel.repaint();
 
-    this.view.setTextbox(this.model);
+    this.view.setTextbox();
   }
 
   @Override

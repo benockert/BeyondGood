@@ -92,8 +92,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    * @param referenceSymbol a string representing the region of cells being referenced.
    * @return a list of CellFormula representing the cells being referenced.
    */
-  // TODO check here for references
-  private List<CellFormula> getReferencedCells(String referenceSymbol, Coord location) {
+  public List<CellFormula> getReferencedCells(String referenceSymbol, Coord location) {
     List<CellFormula> referencedCells = new ArrayList<>();
     Coord cell1coordinate;
     Coord cell2coordinate;
