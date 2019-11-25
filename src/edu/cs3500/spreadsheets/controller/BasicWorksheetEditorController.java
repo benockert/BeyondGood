@@ -44,15 +44,8 @@ public class BasicWorksheetEditorController implements WorksheetController, Acti
         Sexp exp = Parser.parse(text);
         Coord editLocation = this.view.getHighlightedCell();
         // edits the cell at this location and reevaluates all cells
-        //System.out.println();
-        try {
-          this.model.editCell(text, editLocation);
-        } catch (IllegalArgumentException e) {
-
-        }
-
-
-
+        this.model.editCell(text, editLocation);
+        this.view.repaintSpreadsheet();
       case "Reject button":
         this.view.setTextbox();
     }

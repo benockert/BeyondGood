@@ -1,6 +1,7 @@
 package edu.cs3500.spreadsheets.sexp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.cs3500.spreadsheets.cell.CellBlank;
@@ -75,9 +76,9 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
   // returns a new CellReference with the given name and computed list
   @Override
   public CellReference visitSymbol(String s) {
-    List<CellFormula> listOfReferencedCells = getReferencedCells(s, this.locationOfCell);
+    HashMap<Coord, CellFormula> referencedCellsAndLocation = getReferencedCells(s, this.locationOfCell);
     // creates a new cell reference, whose constructor checks for direct or indirect references
-    return new CellReference(s, listOfReferencedCells);
+    return new CellReference(s, referencedCellsAndLocation, this.locationOfCell);
   }
 
   // returns a new CellString with the given string
@@ -92,32 +93,15 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    * @param referenceSymbol a string representing the region of cells being referenced.
    * @return a list of CellFormula representing the cells being referenced.
    */
-  public List<CellFormula> getReferencedCells(String referenceSymbol, Coord location) {
-    List<CellFormula> referencedCells = new ArrayList<>();
+  public HashMap<Coord, CellFormula> getReferencedCells(String referenceSymbol, Coord location) {
+    HashMap<Coord, CellFormula> referencedCells = new HashMap<>();
     Coord cell1coordinate;
     Coord cell2coordinate;
     // if the reference is just to one cell
     if (!referenceSymbol.contains(":")) {
       // set the coordinate of the cell
       cell1coordinate = getCoord(referenceSymbol);
-      // CYCLES
-      // checks if there is a direct cyclic reference
-      if (cell1coordinate.equals(location)) {
-        throw new IllegalArgumentException("Cycle reference");
-      } else {
-        if (this.model.getCellAt(cell1coordinate) == null) {
-          referencedCells.add(new CellBlank(""));
-        } else {
-          // get the cell from the worksheet at that coordinate, makes a blank cell if necessary
-          CellFormula refCell = this.model.getCellAt(cell1coordinate);
-          if (refCell instanceof CellReference &&
-                  ((CellReference) refCell).coordString.equals(location.toString())) {
-            throw new IllegalArgumentException("Cyclic reference");
-          } else {
-            referencedCells.add(refCell);
-          }
-        }
-      }
+      referencedCells.put(cell1coordinate, this.model.getCellAt(cell1coordinate));
     } else {
       // else the reference is to two cells, split the string at the colon
       String[] splitSymbol = referenceSymbol.split(":");
@@ -126,7 +110,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
       // set the coordinate of the second cell
       cell2coordinate = getCoord(splitSymbol[1]);
       // add all the cells in that area to the referenced list
-      referencedCells = referenceCellArea(cell1coordinate, cell2coordinate, this.locationOfCell);
+      referencedCells = referenceCellArea(cell1coordinate, cell2coordinate);
     }
     return referencedCells;
   }
@@ -138,22 +122,17 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    * @param c2 the bottom right coordinate of the region.
    * @return
    */
-  private List<CellFormula> referenceCellArea(Coord c1, Coord c2, Coord locationOfCell) {
+  private HashMap<Coord, CellFormula> referenceCellArea(Coord c1, Coord c2) {
     // set a result list
-    List<CellFormula> result = new ArrayList<>();
+    HashMap<Coord, CellFormula> result = new HashMap<>();
     // for every column in the region
     for (int i = c1.col; i < c2.col + 1; i++) {
       // for every row in the region
       for (int j = c1.row; j < c2.row + 1; j++) {
         // set a new coordinate
         Coord tempCoord = new Coord(i, j);
-        // checks for direct cyclic references in multi-cell references
-        if (tempCoord.equals(locationOfCell)) {
-          throw new IllegalArgumentException("Cyclic reference.");
-        } else {
-          // add the cell at that coordinate to the result list
-          result.add(this.model.getCellAt(tempCoord));
-        }
+        // add the cell at that coordinate to the result list
+        result.put(tempCoord, this.model.getCellAt(tempCoord));
       }
     }
     return result;

@@ -44,6 +44,7 @@ public class BasicWorksheetModel implements Worksheet {
     this.cells.put(location, editedCell);
     // updates the contents of all cells
     this.updateAllCells();
+    this.evaluateAllCells();
   }
 
   @Override
@@ -69,6 +70,7 @@ public class BasicWorksheetModel implements Worksheet {
     this.cells.put(location, editedCell);
     // updates the contents all cells
     this.updateAllCells();
+    this.evaluateAllCells();
   }
 
   @Override
@@ -79,6 +81,7 @@ public class BasicWorksheetModel implements Worksheet {
     this.cells.put(location, editedCell);
     // updates the contents of all cells
     this.updateAllCells();
+    this.evaluateAllCells();
   }
 
   @Override
@@ -126,6 +129,12 @@ public class BasicWorksheetModel implements Worksheet {
    */
   private void updateAllCells() {
     for (Map.Entry<Coord, CellFormula> cell : this.cells.entrySet()) {
+      this.cells.put(cell.getKey(), cell.getValue());
+    }
+  }
+
+  private void evaluateAllCells() {
+    for (Map.Entry<Coord, CellFormula> cell : this.cells.entrySet()) {
       cell.getValue().evaluateCell();
     }
   }
@@ -134,7 +143,7 @@ public class BasicWorksheetModel implements Worksheet {
   public boolean equals(Object o) {
     boolean returnValue = true;
     if (this == o) {
-    // no empty blocks
+      // no empty blocks
     } else if (o == null || getClass() != o.getClass()) {
       returnValue = false;
     } else {

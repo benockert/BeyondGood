@@ -7,6 +7,7 @@ import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.cell.CellFunction;
 import edu.cs3500.spreadsheets.cell.CellReference;
 import edu.cs3500.spreadsheets.cell.CellString;
+import edu.cs3500.spreadsheets.model.Coord;
 
 /**
  * A function object for the LessThan function of a spreadsheet, which compares the value of two
@@ -36,7 +37,8 @@ public class LessThan implements CellVisitor<CellFormula, Double> {
   // evaluates the first cell of a given reference for use in the less than function
   @Override
   public Double visitReference(CellReference r) {
-    return this.apply(r.cells.get(0));
+    Coord location = (Coord) r.referencedCells.keySet().toArray()[0];
+    return this.apply(r.referencedCells.get(location));
   }
 
   // since a boolean is a non-numeric value, we throw an exception

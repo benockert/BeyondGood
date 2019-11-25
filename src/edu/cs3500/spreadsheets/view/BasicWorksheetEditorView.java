@@ -91,4 +91,8 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     return this.spreadsheetView.getHighlightedCell();
   }
 
+  public void repaintSpreadsheet() {
+    this.spreadsheetView.spreadsheetPanel.revalidate();
+    this.spreadsheetView.spreadsheetPanel.repaint();
+  }
 }

@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.function;
 
+import java.util.Map;
+
 import edu.cs3500.spreadsheets.cell.CellBlank;
 import edu.cs3500.spreadsheets.cell.CellBoolean;
 import edu.cs3500.spreadsheets.cell.CellDouble;
@@ -7,6 +9,7 @@ import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.cell.CellFunction;
 import edu.cs3500.spreadsheets.cell.CellReference;
 import edu.cs3500.spreadsheets.cell.CellString;
+import edu.cs3500.spreadsheets.model.Coord;
 
 /**
  * A function object for the Sum function of a spreadsheet, which adds an arbitrary number of values
@@ -39,9 +42,9 @@ public class Add implements CellVisitor<CellFormula, Double> {
   public Double visitReference(CellReference r) {
     Double result = 0.0;
     // for each cell in r.cells
-    for (CellFormula cell : r.cells) {
+    for (Map.Entry<Coord, CellFormula> cell : r.referencedCells.entrySet()) {
       // if it is a double, add it to the result
-      result += this.apply(cell);
+      result += this.apply(cell.getValue());
     }
     return result;
   }
