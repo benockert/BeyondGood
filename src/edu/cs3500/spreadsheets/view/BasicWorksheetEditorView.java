@@ -99,14 +99,27 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.clear.addActionListener(listener);
   }
 
+  /**
+   * Returns the current text in the textbox.
+   *
+   * @return A string representing the text in the box.
+   */
   public String getViewTextField() {
     return this.formulaInput.getText();
   }
 
+  /**
+   * Returns the location of the cell which is currently highlighted.
+   *
+   * @return A coordinate representing the location of the highlighted cell.
+   */
   public Coord getHighlightedCell() {
     return this.spreadsheetView.getHighlightedCell();
   }
 
+  /**
+   * A method which both revalidates and repaints the spreadsheet.
+   */
   public void repaintSpreadsheet() {
     this.spreadsheetView.spreadsheetPanel.revalidate();
     this.spreadsheetView.spreadsheetPanel.repaint();
