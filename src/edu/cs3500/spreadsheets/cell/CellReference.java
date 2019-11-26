@@ -37,9 +37,9 @@ public class CellReference implements CellFormula {
   public Object evaluateCell() {
     for (Map.Entry<Coord, CellFormula> cell : referencedCells.entrySet()) {
       cell.getValue().evaluateCell();
-      if (cell.getKey().equals(this.thisLocation) ||
-              cell.getValue().getRawContents().equals(this.thisLocation.toString()) ||
-              cell.getValue().getRawContents().equals("REF!")) {
+      if (cell.getKey().equals(this.thisLocation)
+              || cell.getValue().getRawContents().equals(this.thisLocation.toString())
+              || cell.getValue().getRawContents().equals("REF!")) {
         return "REF!";
       }
     }

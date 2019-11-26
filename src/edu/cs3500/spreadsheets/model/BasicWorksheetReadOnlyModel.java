@@ -4,9 +4,17 @@ import java.util.HashMap;
 
 import edu.cs3500.spreadsheets.cell.CellFormula;
 
+/**
+ * Represents a read-only version of a given model and is non-mutable.
+ */
 public class BasicWorksheetReadOnlyModel implements Worksheet {
   Worksheet mutableModel;
 
+  /**
+   * Constructs a {@code BasicWorksheetReadOnlyModel}, which is a non-mutable version of a model.
+   *
+   * @param model The mutable version of the model that becomes a read-only.
+   */
   public BasicWorksheetReadOnlyModel(Worksheet model) {
     this.mutableModel = model;
   }

@@ -3,19 +3,23 @@ package edu.cs3500.spreadsheets.controller;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
-import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
-import edu.cs3500.spreadsheets.model.Worksheet;
 import edu.cs3500.spreadsheets.view.BasicWorksheetEditorView;
-import edu.cs3500.spreadsheets.view.BasicWorksheetGraphicalView;
 import edu.cs3500.spreadsheets.view.SpreadsheetPanel;
 
+/**
+ * Represents the act of highlighting a cell in a worksheet.
+ */
 public class HighlightCell implements MouseListener {
   private SpreadsheetPanel spreadsheetPanel;
   private BasicWorksheetEditorView view;
 
-
-
+  /**
+   * Constructs a {@code HighlightCell} object, which takes in a model and a view and
+   * determines/displays the highlighted cell.
+   *
+   * @param spreadsheetPanel The spreadsheet panel with all the cells, one of which is highlighted.
+   * @param view             The given view which will display the highlighted cell.
+   */
   public HighlightCell(SpreadsheetPanel spreadsheetPanel, BasicWorksheetEditorView view) {
     this.spreadsheetPanel = spreadsheetPanel;
     this.view = view;

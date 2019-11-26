@@ -1,6 +1,9 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Font;
 
 /**
  * Represents the row header panel in a worksheet.
@@ -47,6 +50,9 @@ public class RowPanel extends javax.swing.JPanel {
     }
   }
 
+  /**
+   * Adds a row to the spreadsheet and adjusts the size of the spreadsheet panel accordingly.
+   */
   public void addRowAndChangePanelSize() {
     this.numRows += 1;
     this.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH,

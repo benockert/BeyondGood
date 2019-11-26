@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.cs3500.spreadsheets.cell.CellBlank;
 import edu.cs3500.spreadsheets.cell.CellBoolean;
 import edu.cs3500.spreadsheets.cell.CellDouble;
 import edu.cs3500.spreadsheets.cell.CellFormula;
@@ -77,7 +76,8 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
   // returns a new CellReference with the given name and computed list
   @Override
   public CellReference visitSymbol(String s) {
-    HashMap<Coord, CellFormula> referencedCellsAndLocation = getReferencedCells(s, this.locationOfCell);
+    HashMap<Coord, CellFormula>
+            referencedCellsAndLocation = getReferencedCells(s, this.locationOfCell);
     // creates a new cell reference, whose constructor checks for direct or indirect references
     return new CellReference(s, referencedCellsAndLocation, this.locationOfCell, this.cyclic);
   }
@@ -105,7 +105,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
       if (cell1coordinate.equals(location)) {
         this.cyclic = true;
       }
-        referencedCells.put(cell1coordinate, this.model.getCellAt(cell1coordinate));
+      referencedCells.put(cell1coordinate, this.model.getCellAt(cell1coordinate));
 
     } else {
       // else the reference is to two cells, split the string at the colon

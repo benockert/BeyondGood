@@ -1,6 +1,11 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.FontMetrics;
+
 
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -53,12 +58,18 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     }
   }
 
+  /**
+   * Adds a row to the spreadsheet and adjusts the size of the panel accordingly.
+   */
   void addRowAndChangeSize() {
     this.numRows += 1;
     this.setPreferredSize(new Dimension(CELL_WIDTH * numCols, CELL_HEIGHT * numRows));
     this.revalidate();
   }
 
+  /**
+   * Adds a column to the spreadsheet and adjusts the size of the panel accordingly.
+   */
   void addColAndChangeSize() {
     this.numCols += 1;
     this.setPreferredSize(new Dimension(CELL_WIDTH * numCols, CELL_HEIGHT * numRows));

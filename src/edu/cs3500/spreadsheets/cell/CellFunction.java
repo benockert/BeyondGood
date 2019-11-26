@@ -150,8 +150,8 @@ public class CellFunction implements CellFormula {
           // set a result boolean
           Boolean evalLess;
           // determine the value of the first argument
-          if (this.arguments.get(0).evaluateCell().equals("REF!") ||
-                  this.arguments.get(1).evaluateCell().equals("REF!")) {
+          if (this.arguments.get(0).evaluateCell().equals("REF!")
+                  || this.arguments.get(1).evaluateCell().equals("REF!")) {
             this.containsReference = true;
           }
           double value1 = less.apply(this.arguments.get(0));
