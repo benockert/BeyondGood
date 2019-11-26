@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import edu.cs3500.spreadsheets.cell.CellBlank;
 import edu.cs3500.spreadsheets.cell.CellFormula;
-import edu.cs3500.spreadsheets.cell.CellString;
 import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.SexpVisitorHandler;
 
@@ -44,7 +43,6 @@ public class BasicWorksheetModel implements Worksheet {
     this.cells.put(location, editedCell);
     // updates the contents of all cells
     this.updateAllCells();
-    this.evaluateAllCells();
   }
 
   @Override
@@ -52,7 +50,7 @@ public class BasicWorksheetModel implements Worksheet {
     // initialize an edited cell
     CellFormula editedCell;
     // if the cell is a function or reference
-    if (input.equals("") || input.equals("=") || input.equals(null)) {
+    if (input.equals("") || input.equals("=")) {
       editedCell = new CellBlank("");
     } else if (input.substring(0, 1).equals("=")) {
       // initialize a string of the input without the  "="
@@ -61,16 +59,15 @@ public class BasicWorksheetModel implements Worksheet {
       editedCell = Parser.parse(noEqualsString).accept(
               new SexpVisitorHandler(this, location));
     } else {
-      // else the cell is a string, format it correctly
-      String escapedString = "\"" + input + "\"";
-      // create a new cell with the given string
-      editedCell = Parser.parse(escapedString).accept(new SexpVisitorHandler());
+
+        editedCell = Parser.parse(input).accept(new SexpVisitorHandler());
+
+
     }
     // put the cell at the given locationC
     this.cells.put(location, editedCell);
     // updates the contents all cells
     this.updateAllCells();
-    this.evaluateAllCells();
   }
 
   @Override
@@ -81,7 +78,6 @@ public class BasicWorksheetModel implements Worksheet {
     this.cells.put(location, editedCell);
     // updates the contents of all cells
     this.updateAllCells();
-    this.evaluateAllCells();
   }
 
   @Override
@@ -130,12 +126,6 @@ public class BasicWorksheetModel implements Worksheet {
   private void updateAllCells() {
     for (Map.Entry<Coord, CellFormula> cell : this.cells.entrySet()) {
       this.cells.put(cell.getKey(), cell.getValue());
-    }
-  }
-
-  private void evaluateAllCells() {
-    for (Map.Entry<Coord, CellFormula> cell : this.cells.entrySet()) {
-      cell.getValue().evaluateCell();
     }
   }
 

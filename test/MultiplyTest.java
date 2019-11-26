@@ -106,7 +106,7 @@ public class MultiplyTest {
   public void testProductNoValids() {
     initData();
     this.model.editCell(true, this.locationB1);
-    this.model.editCell("hello", this.locationA1);
+    this.model.editCell("\"hello\"", this.locationA1);
     this.model.editCell("=(PRODUCT A1 B1)", this.locationA2);
     assertEquals(0.0, this.model.getCellAt(this.locationA2).evaluateCell());
   }

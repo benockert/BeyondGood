@@ -14,6 +14,7 @@ public class CellReference implements CellFormula {
   private String coordString;
   public HashMap<Coord, CellFormula> referencedCells;
   private Coord thisLocation;
+  private boolean isCyclic;
 
   /**
    * Constructs a {@code CellReference} object. A constructor for this CellReference that takes in
@@ -23,10 +24,12 @@ public class CellReference implements CellFormula {
    * @param referencedCells the cells and their locations referenced by this cell.
    * @param loc             the location of this cell.
    */
-  public CellReference(String coordString, HashMap<Coord, CellFormula> referencedCells, Coord loc) {
+  public CellReference(String coordString, HashMap<Coord, CellFormula> referencedCells, Coord loc,
+                       boolean cyclicOrNot) {
     this.coordString = coordString;
     this.referencedCells = referencedCells;
     this.thisLocation = loc;
+    this.isCyclic = cyclicOrNot;
   }
 
   // to evaluate just a reference (ex: =A1:A3), just return the value of the first cell
@@ -34,12 +37,19 @@ public class CellReference implements CellFormula {
   public Object evaluateCell() {
     for (Map.Entry<Coord, CellFormula> cell : referencedCells.entrySet()) {
       cell.getValue().evaluateCell();
-      if (cell.getKey().equals(this.thisLocation)) {
+      if (cell.getKey().equals(this.thisLocation) ||
+              cell.getValue().getRawContents().equals(this.thisLocation.toString()) ||
+              cell.getValue().getRawContents().equals("REF!")) {
         return "REF!";
       }
     }
-    Coord evaluateCoord = (Coord) referencedCells.keySet().toArray()[0];
-    return this.referencedCells.get(evaluateCoord).evaluateCell();
+    if (this.isCyclic) {
+      return "REF!";
+    } else {
+      Coord evaluateCoord = (Coord) referencedCells.keySet().toArray()[0];
+      return this.referencedCells.get(evaluateCoord).evaluateCell();
+    }
+
   }
 
 

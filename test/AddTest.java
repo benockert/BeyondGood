@@ -168,8 +168,8 @@ public class AddTest {
   @Test
   public void testAddTwoProductCyclicA1B1() {
     initData();
-    this.model.editCell("=A1", this.locationB1);
     this.model.editCell("=B1", this.locationA1);
+    this.model.editCell("=A1", this.locationB1);
     assertEquals("REF!", this.model.getCellAt(this.locationB1).evaluateCell());
   }
 

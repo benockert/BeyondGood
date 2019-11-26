@@ -2,9 +2,8 @@ package edu.cs3500.spreadsheets.view;
 
 import java.awt.*;
 
-import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
+import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
-import edu.cs3500.spreadsheets.model.Worksheet;
 
 /**
  * Represents the grid of cells that make up a spreadsheet.
@@ -14,7 +13,7 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
   public static int CELL_HEIGHT = 21;
   private int numRows;
   private int numCols;
-  private Worksheet model;
+  private BasicWorksheetReadOnlyModel model;
   private int xMouseCellPos;
   private int yMouseCellPos;
 
@@ -26,7 +25,7 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
    * @param numRows the number of rows in the panel
    * @param model   The given model which will be  displayed in this spreadsheet.
    */
-  SpreadsheetPanel(int numRows, int numCols, Worksheet model) {
+  public SpreadsheetPanel(int numRows, int numCols, BasicWorksheetReadOnlyModel model) {
     this.numRows = numRows;
     this.numCols = numCols;
     this.model = model;
@@ -54,13 +53,13 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     }
   }
 
-  public void addRowAndChangeSize() {
+  void addRowAndChangeSize() {
     this.numRows += 1;
     this.setPreferredSize(new Dimension(CELL_WIDTH * numCols, CELL_HEIGHT * numRows));
     this.revalidate();
   }
 
-  public void addColAndChangeSize() {
+  void addColAndChangeSize() {
     this.numCols += 1;
     this.setPreferredSize(new Dimension(CELL_WIDTH * numCols, CELL_HEIGHT * numRows));
     this.revalidate();
@@ -98,7 +97,7 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     this.yMouseCellPos = yPos;
   }
 
-  public Coord highlightCellLocation() {
+  Coord highlightCellLocation() {
     return new Coord(this.xMouseCellPos + 1, this.yMouseCellPos + 1);
   }
 }

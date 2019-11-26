@@ -50,7 +50,8 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     this.columnPanel.setBackground(Color.GRAY);
 
     // draws all of the cells along with their components
-    this.spreadsheetPanel = new SpreadsheetPanel(numRows, numCols, new BasicWorksheetModel());
+    this.spreadsheetPanel = new SpreadsheetPanel(numRows, numCols,
+            new BasicWorksheetReadOnlyModel(new BasicWorksheetModel()));
     this.spreadsheetPanel.setPreferredSize(new Dimension(
             numCols * SpreadsheetPanel.CELL_WIDTH,
             numRows * SpreadsheetPanel.CELL_HEIGHT));

@@ -20,6 +20,7 @@ import edu.cs3500.spreadsheets.model.Coord;
 public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
   private BasicWorksheetModel model;
   private Coord locationOfCell;
+  private boolean cyclic = false;
 
   /**
    * Constructs a {@code SexpVisitorHandler} object. The default constructor for a Sexp visitor.
@@ -78,7 +79,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
   public CellReference visitSymbol(String s) {
     HashMap<Coord, CellFormula> referencedCellsAndLocation = getReferencedCells(s, this.locationOfCell);
     // creates a new cell reference, whose constructor checks for direct or indirect references
-    return new CellReference(s, referencedCellsAndLocation, this.locationOfCell);
+    return new CellReference(s, referencedCellsAndLocation, this.locationOfCell, this.cyclic);
   }
 
   // returns a new CellString with the given string
@@ -93,7 +94,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    * @param referenceSymbol a string representing the region of cells being referenced.
    * @return a list of CellFormula representing the cells being referenced.
    */
-  public HashMap<Coord, CellFormula> getReferencedCells(String referenceSymbol, Coord location) {
+  private HashMap<Coord, CellFormula> getReferencedCells(String referenceSymbol, Coord location) {
     HashMap<Coord, CellFormula> referencedCells = new HashMap<>();
     Coord cell1coordinate;
     Coord cell2coordinate;
@@ -101,7 +102,11 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
     if (!referenceSymbol.contains(":")) {
       // set the coordinate of the cell
       cell1coordinate = getCoord(referenceSymbol);
-      referencedCells.put(cell1coordinate, this.model.getCellAt(cell1coordinate));
+      if (cell1coordinate.equals(location)) {
+        this.cyclic = true;
+      }
+        referencedCells.put(cell1coordinate, this.model.getCellAt(cell1coordinate));
+
     } else {
       // else the reference is to two cells, split the string at the colon
       String[] splitSymbol = referenceSymbol.split(":");
@@ -111,6 +116,12 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
       cell2coordinate = getCoord(splitSymbol[1]);
       // add all the cells in that area to the referenced list
       referencedCells = referenceCellArea(cell1coordinate, cell2coordinate);
+      for (Coord coord : referencedCells.keySet()) {
+        if (coord.equals(location)) {
+          this.cyclic = true;
+          break;
+        }
+      }
     }
     return referencedCells;
   }
@@ -120,7 +131,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
    *
    * @param c1 the top left coordinate of the region.
    * @param c2 the bottom right coordinate of the region.
-   * @return
+   * @return the hashmap of cells in the reference area
    */
   private HashMap<Coord, CellFormula> referenceCellArea(Coord c1, Coord c2) {
     // set a result list

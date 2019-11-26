@@ -87,7 +87,7 @@ public class RepeatTest {
   @Test
   public void testRepeatReference() {
     initData();
-    this.model.editCell("t", this.locationA1);
+    this.model.editCell("\"t\"", this.locationA1);
     this.model.editCell("=(REPT A1 5)", this.locationB1);
     assertEquals("ttttt", this.model.getCellAt(this.locationB1).evaluateCell());
   }
@@ -95,7 +95,7 @@ public class RepeatTest {
   @Test
   public void testRepeatReferenceB2() {
     initData();
-    this.model.editCell("OOD", this.locationB2);
+    this.model.editCell("\"OOD\"", this.locationB2);
     this.model.editCell("=(REPT B2 0)", this.locationB1);
     assertEquals("", this.model.getCellAt(this.locationB1).evaluateCell());
   }
@@ -146,7 +146,7 @@ public class RepeatTest {
   @Test
   public void testRepeatFunctionVisitReference() {
     initData();
-    this.model.editCell("hey", this.locationB3);
+    this.model.editCell("\"hey\"", this.locationB3);
     this.model.editCell("=B3", this.locationA1);
     this.model.editCell("=(REPT A1 3)", this.locationA2);
     assertEquals("heyheyhey", this.model.getCellAt(this.locationA2).evaluateCell());

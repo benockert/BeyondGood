@@ -15,6 +15,7 @@ public class CellFunction implements CellFormula {
   private String func;
   private List<CellFormula> arguments;
   public CellFormula cellFunctionEvaluated;
+  private boolean containsReference;
 
   /**
    * Constructs a {@code CellFunction} object. A constructor for this CellFunction that takes in the
@@ -31,7 +32,11 @@ public class CellFunction implements CellFormula {
 
   @Override
   public Object evaluateCell() {
-    return this.cellFunctionEvaluated.evaluateCell();
+    if (containsReference) {
+      return "REF!";
+    } else {
+      return this.cellFunctionEvaluated.evaluateCell();
+    }
   }
 
   @Override
@@ -68,8 +73,12 @@ public class CellFunction implements CellFormula {
           double evalSum = 0;
           // for every cell in the arguments of the function
           for (CellFormula form : this.arguments) {
-            // add them to the evalSum
-            evalSum += sum.apply(form);
+            if (form.evaluateCell().equals("REF!")) {
+              this.containsReference = true;
+            } else {
+              // add them to the evalSum
+              evalSum += sum.apply(form);
+            }
           }
           // replace the CellFunction with the now evaluated CellDouble
           return new CellDouble(evalSum);
@@ -88,16 +97,20 @@ public class CellFunction implements CellFormula {
           int numOthers = 0;
           // for each cell in the arguments of the function
           for (CellFormula form : this.arguments) {
-            if (product.apply(form) == 0.0) {
-              numOthers += 1;
+            if (form.evaluateCell().equals("REF!")) {
+              this.containsReference = true;
             } else {
-              // multiply them to the evalProd
-              evalProd *= product.apply(form);
-            }
-            // sets the product to the default value of 0, if there are no
-            // doubles in the multiplication function
-            if (numOthers == this.arguments.size()) {
-              evalProd *= 0;
+              if (product.apply(form) == 0.0) {
+                numOthers += 1;
+              } else {
+                // multiply them to the evalProd
+                evalProd *= product.apply(form);
+              }
+              // sets the product to the default value of 0, if there are no
+              // doubles in the multiplication function
+              if (numOthers == this.arguments.size()) {
+                evalProd *= 0;
+              }
             }
           }
           // replace the CellFunction with the now evaluated CellDouble
@@ -116,8 +129,12 @@ public class CellFunction implements CellFormula {
           int i;
           double num = (Double) this.arguments.get(1).evaluateCell();
           for (i = 0; i < num; i++) {
-            // for each time we repeat, append the result to evalRept
-            evalRept += rept.apply(this.arguments.get(0));
+            if (this.arguments.get(0).evaluateCell().equals("REF!")) {
+              this.containsReference = true;
+            } else {
+              // for each time we repeat, append the result to evalRept
+              evalRept += rept.apply(this.arguments.get(0));
+            }
           }
           // replace the CellFunction with the now evaluated CellString
           return new CellString(evalRept);
@@ -133,6 +150,10 @@ public class CellFunction implements CellFormula {
           // set a result boolean
           Boolean evalLess;
           // determine the value of the first argument
+          if (this.arguments.get(0).evaluateCell().equals("REF!") ||
+                  this.arguments.get(1).evaluateCell().equals("REF!")) {
+            this.containsReference = true;
+          }
           double value1 = less.apply(this.arguments.get(0));
           // determine the value of the second argument
           double value2 = less.apply(this.arguments.get(1));
@@ -140,6 +161,7 @@ public class CellFunction implements CellFormula {
           evalLess = value1 < value2;
           // replace the CellFunction with the now evaluated CellBoolean
           return new CellBoolean(evalLess);
+
         }
         // else, the function name is not supported
       default:

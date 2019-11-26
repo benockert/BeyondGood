@@ -34,4 +34,5 @@ public interface CellFormula<K> {
    * @return a type K (boolean, string, double) based on the cell that is being evaluated.
    */
   <K> K accept(CellVisitor<CellFormula, K> visit);
+
 }

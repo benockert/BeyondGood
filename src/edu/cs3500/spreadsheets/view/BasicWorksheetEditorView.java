@@ -49,9 +49,9 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.buttonPanel.add(formulaInput);
     spreadsheetView.add(this.buttonPanel, BorderLayout.NORTH);
 
-    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, model, this);
+    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, this);
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
-    this.formulaInput.setText(highlightedCell.getCellContents());
+    this.formulaInput.setText(this.modelToDisplayandEdit.getCellAt(this.getHighlightedCell()).getRawContents());
 
     // sets the text in thee toolbar to be the first highlighted cell
     this.setTextbox();
@@ -63,13 +63,13 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
    * Sets the text in the toolbar to be the raw contents of the highlighted cell.
    */
   public void setTextbox() {
-    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel,
-            this.modelToDisplayandEdit, this);
+    HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, this);
+    String contents = this.modelToDisplayandEdit.getCellAt(this.getHighlightedCell()).getRawContents();
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
-    if (highlightedCell.getCellContents().equals("")) {
-      this.formulaInput.setText(highlightedCell.getCellContents());
+    if (contents.equals("")) {
+      this.formulaInput.setText(contents);
     } else {
-      this.formulaInput.setText("=" + highlightedCell.getCellContents());
+      this.formulaInput.setText("=" + contents);
     }
   }
 

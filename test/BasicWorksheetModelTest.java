@@ -37,7 +37,7 @@ public class BasicWorksheetModelTest {
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
-    this.worksheet.editCell("hello", this.location);
+    this.worksheet.editCell("\"hello\"", this.location);
     this.worksheet.editCell(10.0, this.location2);
     this.worksheet.editCell(true, this.location3);
     assertEquals("hello", this.worksheet.getCellAt(this.location).evaluateCell());
@@ -59,7 +59,7 @@ public class BasicWorksheetModelTest {
   public void editCellString() {
     initData();
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
-    this.worksheet.editCell("hello", location);
+    this.worksheet.editCell("\"hello\"", location);
     assertEquals("hello", this.worksheet.getCellAt(location).evaluateCell());
   }
 
@@ -107,7 +107,7 @@ public class BasicWorksheetModelTest {
     assertEquals(0, this.worksheet.getNumCols());
     this.worksheet.editCell(5, location);
     this.worksheet.editCell(2, location2);
-    this.worksheet.editCell("hello", location3);
+    this.worksheet.editCell("\"hello\"", location3);
     assertEquals(20, this.worksheet.getNumRows());
     assertEquals(10, this.worksheet.getNumCols());
   }
@@ -128,7 +128,7 @@ public class BasicWorksheetModelTest {
     assertEquals(0, this.worksheet.getNumRows());
     assertEquals(0, this.worksheet.getNumCols());
     this.worksheet.editCell(5, new Coord(500, 1000));
-    this.worksheet.editCell("hey", new Coord(45, 1000));
+    this.worksheet.editCell("\"hey\"", new Coord(45, 1000));
     assertEquals(1000, this.worksheet.getNumRows());
     assertEquals(500, this.worksheet.getNumCols());
     this.worksheet.removeCell(new Coord(500, 1000));
