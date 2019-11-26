@@ -13,7 +13,7 @@ import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.view.BasicWorksheetEditorView;
 import edu.cs3500.spreadsheets.view.SpreadsheetPanel;
-import javafx.scene.input.KeyEvent;
+//import javafx.scene.input.KeyEvent;
 
 import static org.junit.Assert.assertEquals;
 

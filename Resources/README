@@ -52,7 +52,7 @@ CHANGES FROM ASSIGNMENT 5:
 - We implemented new methods in our model update and reevaluate all the cells in the model. This
   method is called every time a cell is edited.
 - We added a read-only version of the model which is passed to the view. This is so the view does
-  not have direct mutable access to the model. 
+  not have direct mutable access to the model.
 - Changed our main method in BeyondGood to handle the new command line arguments.
 - We changed the way we check for cyclic references to be more effective in catching all
   reference errors.
