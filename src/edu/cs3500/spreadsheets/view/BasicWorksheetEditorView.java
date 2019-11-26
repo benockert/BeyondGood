@@ -74,7 +74,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   }
 
   @Override
-  public void render() throws IOException {
+  public void render() {
     this.spreadsheetView.setVisible(true);
   }
 

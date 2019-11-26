@@ -1,7 +1,7 @@
 BA105 =false
 BA104 =true
 BB105 =(PRODUCT BA103:BA105)
-BA103 ="today i am going to the "park" and\or the "pool""
+BA103 ="today i am going to the \"park\" and\\or the \"pool\""
 BB104 =(SUM BA104 BA105)
 BA102 ="hi"
 BB103 =(PRODUCT BA104 BA105)

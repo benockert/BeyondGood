@@ -29,11 +29,7 @@ public class BasicWorksheetEditorController implements WorksheetController, Acti
 
   @Override
   public void run() {
-    try {
       this.view.render();
-    } catch (IOException io) {
-      throw new IllegalArgumentException("Error rendering view");
-    }
   }
 
   @Override
@@ -41,10 +37,15 @@ public class BasicWorksheetEditorController implements WorksheetController, Acti
     switch (actionEvent.getActionCommand()) {
       case "Accept button":
         String text = this.view.getViewTextField();
-        Sexp exp = Parser.parse(text);
         Coord editLocation = this.view.getHighlightedCell();
         // edits the cell at this location and reevaluates all cells
         this.model.editCell(text, editLocation);
+        for (Coord coord : this.model.getCells().keySet()) {
+          String cellsRawContents = this.model.getCellAt(coord).getRawContents();
+          this.model.editCell("=" + cellsRawContents, coord);
+        }
+
+
         this.view.repaintSpreadsheet();
       case "Reject button":
         this.view.setTextbox();

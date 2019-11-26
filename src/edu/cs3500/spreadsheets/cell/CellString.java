@@ -25,8 +25,23 @@ public class CellString implements CellFormula {
 
   @Override
   public String getRawContents() {
-    return "\"" + this.value + "\"";
+    return "\"" + this.addEscapes(this.value) + "\"";
 
+  }
+
+  private String addEscapes(String value) {
+    int i;
+    String result = "";
+
+    for (i = 0; i < value.length(); i++) {
+      if (value.substring(i, i + 1).equals("\"") || value.substring(i, i + 1).equals("\\")) {
+        result += "\\" + value.substring(i, i + 1);
+      } else {
+        result += value.substring(i, i + 1);
+      }
+
+    }
+    return result;
   }
 
   @Override
