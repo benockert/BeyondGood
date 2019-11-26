@@ -39,7 +39,6 @@ public class CellString implements CellFormula {
       } else {
         result += value.substring(i, i + 1);
       }
-
     }
     return result;
   }

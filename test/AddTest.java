@@ -119,58 +119,58 @@ public class AddTest {
     assertEquals(11.0, this.model.getCellAt(this.locationB3).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddDirectCycle() {
     initData();
     this.model.editCell("=A1", this.locationA1);
-    this.model.getCellAt(this.locationA1).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationA1).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddInDirectCycle() {
     initData();
     this.model.editCell("=B1", this.locationA1);
     this.model.editCell("=A1", this.locationB1);
-    this.model.getCellAt(this.locationB1).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddInDirectCycle2() {
     initData();
     this.model.editCell("=B1", this.locationA1);
     this.model.editCell("=(SUM A1 1)", this.locationB1);
-    this.model.getCellAt(this.locationB1).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddDirectCycleRange() {
     initData();
     this.model.editCell("=(SUM A1:C3)", this.locationB2);
-    this.model.getCellAt(this.locationB2).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationB2).evaluateCell());
   }
 
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddTwoProductCyclicThree() {
     initData();
     this.model.editCell("=(SUM 2 (PRODUCT B1 3))", this.locationB1);
     this.model.editCell("=B1", this.locationA1);
-    assertEquals(20.0, this.model.getCellAt(this.locationA1).evaluateCell());
+    assertEquals("REF!", this.model.getCellAt(this.locationA1).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddTwoProductCyclicA1() {
     initData();
     this.model.editCell("=B1", this.locationB1);
-    this.model.getCellAt(this.locationB1).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddTwoProductCyclicA1B1() {
     initData();
-    this.model.editCell("=A1)", this.locationB1);
-    this.model.editCell("=B1)", this.locationA1);
-    this.model.getCellAt(this.locationB1).evaluateCell();
+    this.model.editCell("=A1", this.locationB1);
+    this.model.editCell("=B1", this.locationA1);
+    assertEquals("REF!", this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
   @Test
@@ -191,7 +191,7 @@ public class AddTest {
     assertEquals(9.0, this.model.getCellAt(new Coord(1, 3)).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddFunctionWithIndirectReference2() {
     initData();
     model.editCell("=B3", this.locationA1);
@@ -200,7 +200,7 @@ public class AddTest {
     model.editCell("=B3", this.locationB2);
     // set equal to B1 above fails
     model.editCell("=(SUM B2 10)", this.locationB3);
-    this.model.getCellAt(this.locationB3).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationB3).evaluateCell());
   }
 
   @Test
@@ -213,19 +213,19 @@ public class AddTest {
     //swap first two order fails
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddFunctionWithReference3() {
     initData();
     model.editCell(5, this.locationA1);
     model.editCell("=(SUM A1 A2)", this.locationA2);
-    this.model.getCellAt(this.locationA2).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationA2).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testFunctionWithReference() {
     initData();
     model.editCell("=A1", this.locationA1);
-    this.model.getCellAt(this.locationA1).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationA1).evaluateCell());
   }
 
   // TESTS FOR THE ADD FUNCTION OBJECT AND THE SEXP VISITOR HANDLER

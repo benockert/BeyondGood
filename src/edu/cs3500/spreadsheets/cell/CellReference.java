@@ -1,7 +1,6 @@
 package edu.cs3500.spreadsheets.cell;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import edu.cs3500.spreadsheets.function.CellVisitor;
@@ -12,9 +11,9 @@ import edu.cs3500.spreadsheets.model.Coord;
  * pointer to either another cell in the spreadsheet, or a rectangular region of cells.
  */
 public class CellReference implements CellFormula {
-  public String coordString;
+  private String coordString;
   public HashMap<Coord, CellFormula> referencedCells;
-  public Coord thisLocation;
+  private Coord thisLocation;
 
   /**
    * Constructs a {@code CellReference} object. A constructor for this CellReference that takes in
@@ -28,7 +27,6 @@ public class CellReference implements CellFormula {
     this.coordString = coordString;
     this.referencedCells = referencedCells;
     this.thisLocation = loc;
-
   }
 
   // to evaluate just a reference (ex: =A1:A3), just return the value of the first cell
@@ -37,7 +35,7 @@ public class CellReference implements CellFormula {
     for (Map.Entry<Coord, CellFormula> cell : referencedCells.entrySet()) {
       cell.getValue().evaluateCell();
       if (cell.getKey().equals(this.thisLocation)) {
-        throw new IllegalArgumentException("Direct cyclic reference");
+        return "REF!";
       }
     }
     Coord evaluateCoord = (Coord) referencedCells.keySet().toArray()[0];

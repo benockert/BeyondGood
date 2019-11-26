@@ -100,12 +100,12 @@ public class RepeatTest {
     assertEquals("", this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddTwoProductCyclicThree() {
     initData();
     this.model.editCell("=B1", this.locationA1);
     this.model.editCell("=(REPT A1 5)", this.locationB1);
-    this.model.getCellAt(this.locationB1).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
   // TESTS FOR THE ADD FUNCTION OBJECT AND THE SEXP VISITOR HANDLER

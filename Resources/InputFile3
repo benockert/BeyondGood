@@ -2,7 +2,7 @@
 A1 "abcdefghijklmnopqrstuvwxyz"
 A2 12345678910112131415
 
-F3 = (SUM (PRODUCT "hello" "hi" true) (< 5 10) (PRODUCT 15 10)
+F3 = (SUM (PRODUCT "hello" "hi" true) (< 5 10) (PRODUCT 15 10))
 
 # draws a box thingy
 A10 "----------------------"

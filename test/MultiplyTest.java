@@ -6,6 +6,7 @@ import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.SexpVisitorHandler;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * A class to test all of the functionality of the product function. Tests both the evaluate method
@@ -151,19 +152,19 @@ public class MultiplyTest {
     assertEquals(400.0, this.model.getCellAt(this.locationA3).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddTwoProductCyclicThree() {
     initData();
     this.model.editCell("=(PRODUCT 2 (PRODUCT B1 3))", this.locationB1);
-    this.model.getCellAt(this.locationB1).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testAddTwoProductCyclicIndirect() {
     initData();
     this.model.editCell("=B1", this.locationA1);
     this.model.editCell("=(PRODUCT 5 (SUM A1 2))", this.locationB1);
-    this.model.getCellAt(this.locationB1).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
   // TESTS FOR THE ADD FUNCTION OBJECT AND THE SEXP VISITOR HANDLER

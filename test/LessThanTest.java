@@ -6,6 +6,8 @@ import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.SexpVisitorHandler;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * A class to test all of the functionality of the less than function. Tests both the evaluate
@@ -79,20 +81,20 @@ public class LessThanTest {
     assertEquals(false, this.model.getCellAt(this.locationA2).evaluateCell());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testLessThanA1B2InA1() {
     initData();
     this.model.editCell("=(SUM 6 (PRODUCT 2 7))", this.locationB1);
     this.model.editCell("=(PRODUCT (SUM 2 (PRODUCT 5 3)) 4)", this.locationA1);
     this.model.editCell("=(< A1 B1)", this.locationA1);
-    assertEquals(false, this.model.getCellAt(this.locationA1).evaluateCell());
+    assertEquals("REF!", this.model.getCellAt(this.locationA1).evaluateCell());
   }
-  
-  @Test(expected = IllegalArgumentException.class)
+
+  @Test
   public void testLessThanCyclic() {
     initData();
     this.model.editCell("=(< 2 (PRODUCT B1 3))", this.locationB1);
-    this.model.getCellAt(this.locationB1).evaluateCell();
+    assertEquals("REF!", this.model.getCellAt(this.locationB1).evaluateCell());
   }
 
   // TESTS FOR THE ADD FUNCTION OBJECT AND THE SEXP VISITOR HANDLER
