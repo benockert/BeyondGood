@@ -7,9 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JScrollBar;
+import javax.swing.*;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
@@ -23,7 +21,6 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   SpreadsheetPanel spreadsheetPanel;
   private RowPanel rowPanel;
   private ColumnPanel columnPanel;
-  JScrollPane scroller;
 
   // sets the total number of cells to be 100
   int numRows = 100;
@@ -118,14 +115,45 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   }
 
   @Override
-  public void setListener(ActionListener listener) {
-    // this non-editable graphical view does not accept any actions
+  public void refresh() {
+    this.revalidate();
+    this.repaint();
   }
 
-  public Coord getHighlightedCell() {
+  @Override
+  public void addErrorMessage(String message) {
+    JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+  }
+
+
+  Coord getHighlightedCell() {
     return this.spreadsheetPanel.highlightCellLocation();
   }
 
+  /**
+   * Moves the location of the highlighted cell by given row and column factors.
+   * @param columnFactor how many cells to move left or right (back or through columns); negative
+   *                     means move left, positive means move right
+   * @param rowFactor how many cells up or down to move (up or down rows); negative means move up,
+   *                  positive means move down
+   */
+  void moveHighlightedCell(int columnFactor, int rowFactor) {
+    Coord currentLocation = this.spreadsheetPanel.highlightCellLocation();
+    int xLoc = currentLocation.col;
+    int yLoc = currentLocation.row;
+    this.spreadsheetPanel.setHighlightLocation(xLoc + columnFactor, yLoc + rowFactor);
+  }
+
+
+
+
+
+
+
+  /**
+   * A method that adds a horizontal and vertical scroll pane to our worksheet view. Allows
+   * a user to scroll through the entire spreadsheet of cells.
+   */
   private void addScrollPane() {
     final JScrollPane scroller = new JScrollPane();
     // sets up the scroller panels
@@ -150,6 +178,14 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     this.add(scroller, BorderLayout.CENTER);
   }
 
+  /**
+   * Uses the position of the scroll bars within the frame to determine when to add more rows
+   * and or columns, thus handling infinite scrolling functionality.
+   *
+   * @param ae an event that takes place when either scrollbar is moved.
+   * @param isVert signifies if the vertical scrollbar was moved (true if vertical,
+   *               false if horizontal)
+   */
   private void inifinteScroll(AdjustmentEvent ae, boolean isVert) {
     if (!ae.getValueIsAdjusting()) {
       JScrollBar scrollBar = (JScrollBar) ae.getAdjustable();

@@ -68,7 +68,7 @@ public class SexpVisitorHandler implements SexpVisitor<CellFormula> {
       result.add(expr.accept(new SexpVisitorHandler(this.model, this.locationOfCell)));
     }
     // return a new cell function with the first item (name) and the result list
-    return new CellFunction(l.get(0).toString(), result);
+    return new CellFunction(l.get(0).toString(), result, this.locationOfCell);
   }
 
   // a symbol is guaranteed to be a reference with our implementation

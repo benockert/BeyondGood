@@ -6,8 +6,6 @@ import edu.cs3500.spreadsheets.sexp.Parser;
 import edu.cs3500.spreadsheets.sexp.SexpVisitorHandler;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 /**
  * A class to test all of the functionality of the less than function. Tests both the evaluate

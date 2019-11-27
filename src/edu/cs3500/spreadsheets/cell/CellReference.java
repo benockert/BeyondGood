@@ -13,7 +13,7 @@ import edu.cs3500.spreadsheets.model.Coord;
 public class CellReference implements CellFormula {
   private String coordString;
   public HashMap<Coord, CellFormula> referencedCells;
-  private Coord thisLocation;
+  public Coord thisLocation;
   private boolean isCyclic;
 
   /**

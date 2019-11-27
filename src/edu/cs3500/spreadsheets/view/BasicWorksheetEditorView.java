@@ -1,17 +1,13 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.Dimension;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-import javax.swing.JTextField;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-
+import javax.swing.*;
 
 import edu.cs3500.spreadsheets.controller.HighlightCell;
+import edu.cs3500.spreadsheets.controller.IFeatures;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
 
@@ -22,10 +18,8 @@ import edu.cs3500.spreadsheets.model.Coord;
 public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetView {
   private BasicWorksheetGraphicalView spreadsheetView;
   private BasicWorksheetReadOnlyModel modelToDisplayandEdit;
-  private JTextField formulaInput;
-  private JPanel buttonPanel;
-  private JButton enter;
-  private JButton clear;
+  private ButtonEditPanel buttonPanel;
+
 
   /**
    * A constructor for the editable GUI view of a spreadsheet which reads an existing model and
@@ -39,39 +33,17 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.spreadsheetView = new BasicWorksheetGraphicalView(model);
     this.modelToDisplayandEdit = model;
 
-    // creates a new button panel to house the text fields and accept/reject buttons
-    this.buttonPanel = new JPanel();
-    this.buttonPanel.setLayout(new FlowLayout());
-
-    // accept button
-    this.enter = new JButton("✔");
-    this.enter.setActionCommand("Accept button");
-    buttonPanel.add(this.enter);
-
-    // reject button
-    this.clear = new JButton("✘");
-    this.clear.setActionCommand("Reject button");
-    buttonPanel.add(this.clear);
-
-    // creates the text field and sets its size to mostly fill the horizontal space of the view
-    int size = this.spreadsheetView.getWidth();
-    this.formulaInput = new JTextField(size / 14);
-    this.formulaInput.setPreferredSize(new Dimension(size, 30));
-
-    // adds the text field to the button panel and then adds the button panel to the existing view
-    this.buttonPanel.add(formulaInput);
+    this.buttonPanel = new ButtonEditPanel(this.spreadsheetView.getWidth());
     spreadsheetView.add(this.buttonPanel, BorderLayout.NORTH);
 
     HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel,
             this);
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
-    this.formulaInput.setText(this.modelToDisplayandEdit
+    this.buttonPanel.setTextField(this.modelToDisplayandEdit
             .getCellAt(this.getHighlightedCell()).getRawContents());
 
     // sets the text in thee toolbar to be the first highlighted cell
     this.setTextbox();
-
-
   }
 
   /**
@@ -83,9 +55,9 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
             this.modelToDisplayandEdit.getCellAt(this.getHighlightedCell()).getRawContents();
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
     if (contents.equals("")) {
-      this.formulaInput.setText(contents);
+      this.buttonPanel.setTextField(contents);
     } else {
-      this.formulaInput.setText("=" + contents);
+      this.buttonPanel.setTextField("=" + contents);
     }
   }
 
@@ -94,9 +66,20 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.spreadsheetView.setVisible(true);
   }
 
-  public void setListener(ActionListener listener) {
-    this.enter.addActionListener(listener);
-    this.clear.addActionListener(listener);
+
+  /**
+   * A method which both revalidates and repaints the spreadsheet.
+   */
+  @Override
+  public void refresh() {
+    this.spreadsheetView.spreadsheetPanel.revalidate();
+    this.spreadsheetView.spreadsheetPanel.repaint();
+  }
+
+  @Override
+  public void addErrorMessage(String message) {
+    JOptionPane.showMessageDialog(this, message, "Error",
+            JOptionPane.ERROR_MESSAGE);
   }
 
   /**
@@ -104,8 +87,8 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
    *
    * @return A string representing the text in the box.
    */
-  public String getViewTextField() {
-    return this.formulaInput.getText();
+  private String getViewTextField() {
+    return this.buttonPanel.getInputText();
   }
 
   /**
@@ -118,10 +101,55 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   }
 
   /**
-   * A method which both revalidates and repaints the spreadsheet.
+   * Changes the location of the highlighted cell in this spreadsheet view.
+   *
+   * @param columnFactor the number of columns the highlighted cell is moving
+   * @param rowFactor    the number of rows the highlighted cell is moving
    */
-  public void repaintSpreadsheet() {
-    this.spreadsheetView.spreadsheetPanel.revalidate();
-    this.spreadsheetView.spreadsheetPanel.repaint();
+  public void changeHighlightedCellLocation(int columnFactor, int rowFactor) {
+    this.spreadsheetView.moveHighlightedCell(columnFactor - 1, rowFactor - 1);
   }
+
+  /**
+   * Determines what features should be executed based on the action that occurs is pressed (either
+   * the cell's contents are mutated or the edits are denied).
+   *
+   * @param feature the feature of the spreadsheet that will be added
+   */
+
+  public void addIFeatures(IFeatures feature) {
+    this.buttonPanel.accept.addActionListener(actionEvent -> {
+      String text = getViewTextField();
+      Coord location = getHighlightedCell();
+      feature.acceptCellEdit(location, text);
+    });
+    this.buttonPanel.reject.addActionListener(actionEvent -> feature.rejectCellEdit());
+    this.buttonPanel.textInput.addKeyListener(new KeyListener() {
+      @Override
+      public void keyTyped(KeyEvent keyEvent) {
+        //nothing else to do
+      }
+
+      @Override
+      public void keyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_UP) {
+          feature.moveHighlightedCell("up arrow");
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_DOWN) {
+          feature.moveHighlightedCell("down arrow");
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
+          feature.moveHighlightedCell("right arrow");
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
+          feature.moveHighlightedCell("left arrow");
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
+          feature.deleteCellContents(getHighlightedCell());
+        }
+      }
+
+      @Override
+      public void keyReleased(KeyEvent keyEvent) {
+        //nothing else to do
+      }
+    });
+  }
+
 }

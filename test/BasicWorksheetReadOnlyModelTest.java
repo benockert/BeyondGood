@@ -4,7 +4,6 @@ import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
 
-import java.lang.UnsupportedOperationException;
 
 import static org.junit.Assert.assertEquals;
 

@@ -29,16 +29,26 @@ public class BasicWorksheetSaveView implements BasicWorksheetView {
   }
 
   @Override
-  public void render() throws IOException {
-    // adds the model (as a line-separated-String of spreadsheet cell raw contents) to a file
-    this.appendable.append(this.toString());
-    // writes the file and closes it
-    this.appendable.close();
+  public void render() {
+    try {
+      // adds the model (as a line-separated-String of spreadsheet cell raw contents) to a file
+      this.appendable.append(this.toString());
+      // writes the file and closes it
+      this.appendable.close();
+    } catch (IllegalArgumentException iae) {
+      this.addErrorMessage("Unable to save this worksheet.");
+    }
+
   }
 
   @Override
-  public void setListener(ActionListener listener) {
-    // this textual view does not accept any actions on it
+  public void refresh() {
+    this.render();
+  }
+
+  @Override
+  public void addErrorMessage(String message) {
+    this.appendable.append(message);
   }
 
   @Override

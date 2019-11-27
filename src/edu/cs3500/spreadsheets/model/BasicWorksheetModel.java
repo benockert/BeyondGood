@@ -59,9 +59,11 @@ public class BasicWorksheetModel implements Worksheet {
       editedCell = Parser.parse(noEqualsString).accept(
               new SexpVisitorHandler(this, location));
     } else {
-      editedCell = Parser.parse(input).accept(new SexpVisitorHandler());
-
-
+      if (input.substring(0,1).equals("\"")) {
+        editedCell = Parser.parse(input).accept(new SexpVisitorHandler());
+      } else {
+        editedCell = Parser.parse("\"" + input + "\"").accept(new SexpVisitorHandler());
+      }
     }
     // put the cell at the given locationC
     this.cells.put(location, editedCell);

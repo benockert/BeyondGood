@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.IllegalFormatConversionException;
 
-import edu.cs3500.spreadsheets.controller.BasicWorksheetEditorController;
+import edu.cs3500.spreadsheets.controller.BasicWorksheetController;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -88,8 +88,8 @@ public class BeyondGood {
       BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
       BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(model);
       BasicWorksheetEditorView savedFileEditableView = new BasicWorksheetEditorView(readOnlyModel);
-      BasicWorksheetEditorController controller =
-              new BasicWorksheetEditorController(model, savedFileEditableView);
+      BasicWorksheetController controller =
+              new BasicWorksheetController(model, savedFileEditableView);
       controller.run();
     } catch (FileNotFoundException fnf) {
       System.out.println("Invalid file given");
@@ -155,11 +155,7 @@ public class BeyondGood {
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
 
     BasicWorksheetView view = new BasicWorksheetGraphicalView();
-    try {
-      view.render();
-    } catch (IOException io) {
-      // if there is an exception, do nothing
-    }
+    view.render();
   }
 
   private static void runNewEditBlankGUI(String[] args) {
@@ -168,8 +164,8 @@ public class BeyondGood {
     BasicWorksheetModel blankModel = new BasicWorksheetModel();
     BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(blankModel);
     BasicWorksheetEditorView view = new BasicWorksheetEditorView(readOnlyModel);
-    BasicWorksheetEditorController controller =
-            new BasicWorksheetEditorController(readOnlyModel, view);
+    BasicWorksheetController controller =
+            new BasicWorksheetController(readOnlyModel, view);
     controller.run();
   }
 

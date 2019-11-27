@@ -30,10 +30,6 @@ public class HighlightCell implements MouseListener {
     int xPos = e.getX();
     int yPos = e.getY();
 
-    System.out.println(xPos);
-
-    System.out.println(yPos);
-
     int xCoord = xPos / SpreadsheetPanel.CELL_WIDTH;
     int yCoord = yPos / SpreadsheetPanel.CELL_HEIGHT;
 
