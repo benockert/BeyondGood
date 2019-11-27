@@ -1,0 +1,58 @@
+OVERALL DESIGN:
+
+We first created a read-only model class in order to create a non-mutable version of the model to
+pass to the view. To do this, we simply implemented the Worksheet interface and passed in a model
+as the mutable version to the read-only version. We then threw exceptions for all methods which
+mutated the model.
+
+We then created a controller interface with a run method. We then created two separate classes,
+one for the editor's controller, and one for highlighting a cell which does not implement the
+interface. We decided to create a separate HighlightCell class for added readability, as we thought
+that separating the mouse handling functionality would be more efficient and easier to maintain
+from a separate class.
+
+The editor controller takes in any kind of model and the editor view, as this controller
+implementation is specific for the editor view. We then set the listener and implement a method to
+handle what should happen when a user clicks either the accept or reject button.
+
+We also had to add a new view to the view package, and editor view, which is separate from the GUI
+visual view. This editor view contains all the functionality of the visual view, while adding
+capabilities for the user to edit cells and view a cell's raw contents. Moreover, it also leaves
+the existing visual view intact so users can switch between them.
+
+The editor view has a constructor that takes in a read-only model and displays it in panels
+based on the graphical view (which is given as a field to the editor view). The editor view uses
+a read only model for reading cell contents and locations, so that the view itself cannot directly
+mutate the model. The constructor of this view creates the buttons, text field for viewing raw
+contents and editing cells, as well as the first highlighted cell (the top left cell in the
+spreadsheet). We then have a method in this view which changes the text in the textbox to display
+the raw contents of the cell which is currently highlighted. We felt that putting this in a
+separate method was best, as it could be called in the constructor as well as in the HighlightCell
+class.
+
+Below lists a more detailed structure for each file we added to our previous code.
+
+----------
+
+INTERFACE/CLASS STRUCTURE:
+
+(I) WorksheetController - represents any kind of controller of a spreadsheet.
+	(C) BasicWorksheetEditorController - represents the editor's controller of a spreadsheet.
+(C) HighlightCell - represents the highlighting of a cell in a worksheet.
+
+(I) BasicWorksheetView - represents any kind of view of a spreadsheet.
+    (C) BasicWorksheetEditorView - represents the editable view of a spreadsheet.
+
+(I) Worksheet - represents any kind of representation of a spreadsheet.
+    (C) BasicWorksheetReadOnlyModel - represents a non-mutable version of any kind of model.
+
+----------
+
+CHANGES FROM ASSIGNMENT 5:
+- We implemented new methods in our model update and reevaluate all the cells in the model. This
+  method is called every time a cell is edited.
+- We added a read-only version of the model which is passed to the view. This is so the view does
+  not have direct mutable access to the model.
+- Changed our main method in BeyondGood to handle the new command line arguments.
+- We changed the way we check for cyclic references to be more effective in catching all
+  reference errors.

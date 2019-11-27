@@ -43,4 +43,8 @@ public class ButtonEditPanel extends javax.swing.JPanel {
     return this.textInput.getText();
   }
 
+  public void addIFeatures(IFeatures feature) {
+
+  }
+
 }

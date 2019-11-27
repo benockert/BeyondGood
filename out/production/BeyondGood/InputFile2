@@ -1,0 +1,16 @@
+BA100 "hello"
+BA101 "hey"
+BA102 "hi"
+BA103 "today i am going to the \"park\" and\\or the \"pool\""
+BA104 true
+BA105 false
+
+BB100 =(PRODUCT BA101:BA102)
+BB101 =(SUM BA101:BA102 BA103)
+BB102 =(SUM BA101:BA102 BA104)
+BB103 =(PRODUCT BA104 BA105)
+BB104 =(SUM BA104 BA105)
+BB105 =(PRODUCT BA103:BA105)
+
+BC101 =(REPT BA101 2)
+BC102 =(REPT "my name is" 4)

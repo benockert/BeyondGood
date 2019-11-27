@@ -116,8 +116,9 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
    *
    * @param feature the feature of the spreadsheet that will be added
    */
-
   public void addIFeatures(IFeatures feature) {
+    this.buttonPanel.addIFeatures(feature);
+
     this.buttonPanel.accept.addActionListener(actionEvent -> {
       String text = getViewTextField();
       Coord location = getHighlightedCell();
