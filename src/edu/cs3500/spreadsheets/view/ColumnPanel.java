@@ -18,7 +18,7 @@ public class ColumnPanel extends javax.swing.JPanel {
    *
    * @param numberOfColumns The total number of columns that are non-empty in this spreadsheet.
    */
-  public ColumnPanel(int numberOfColumns) {
+  ColumnPanel(int numberOfColumns) {
     this.numCols = numberOfColumns;
   }
 
@@ -52,7 +52,7 @@ public class ColumnPanel extends javax.swing.JPanel {
   /**
    * Adds a column the spreadsheet and adjusts the size of the spreadsheet panel accordingly.
    */
-  public void addColAndChangePanelSize() {
+  void addColAndChangePanelSize() {
     this.numCols += 1;
     this.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH * this.numCols,
             SpreadsheetPanel.CELL_HEIGHT));

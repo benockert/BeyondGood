@@ -36,12 +36,14 @@ Below lists a more detailed structure for each file we added to our previous cod
 
 INTERFACE/CLASS STRUCTURE:
 
-(I) WorksheetController - represents any kind of controller of a spreadsheet.
-	(C) BasicWorksheetEditorController - represents the editor's controller of a spreadsheet.
+(I) IFeatures - represents a interface of controller features for use on any spreadsheet controller.
+	(C) BasicWorksheetController - represents the editor's controller of a spreadsheet.
 (C) HighlightCell - represents the highlighting of a cell in a worksheet.
 
 (I) BasicWorksheetView - represents any kind of view of a spreadsheet.
     (C) BasicWorksheetEditorView - represents the editable view of a spreadsheet.
+    (C) ButtonEditPanel - we abstracted some of the graphic view functionality (specifically, the
+     edit panel) into a sepearate class.
 
 (I) Worksheet - represents any kind of representation of a spreadsheet.
     (C) BasicWorksheetReadOnlyModel - represents a non-mutable version of any kind of model.
@@ -56,3 +58,17 @@ CHANGES FROM ASSIGNMENT 5:
 - Changed our main method in BeyondGood to handle the new command line arguments.
 - We changed the way we check for cyclic references to be more effective in catching all
   reference errors.
+- We changed the way we edit cells. Previously, we had three different methods to edit a cell: one
+  took in a boolean, one a double, and the other a string (which would also handle reference and
+  function inputs). We now only have one edit method, which takes in a string, that parses the
+  string input and puts the proper cell type at that location.
+
+NOTES ON USAGE:
+- to edit a cell, click the text field and type in the field what you want the cell to display
+- once you update the text field, either click the check mark button, or hit the ENTER key on
+  your keyboard
+- if you would like to undo your changes to the text field, hit the X button
+- if you would like to delete any cell, first click on the cell you would like to delete, then click
+  in the text field, then click the DELETE key
+- if you would like to navigate around the spreadsheet with the arrow keys, click into the text
+  field, and use the arrow keys as you feel free

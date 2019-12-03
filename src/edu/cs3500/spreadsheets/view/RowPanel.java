@@ -16,7 +16,7 @@ public class RowPanel extends javax.swing.JPanel {
    *
    * @param numberOfRows The total number of rows that are non-empty in this spreadsheet.
    */
-  public RowPanel(int numberOfRows) {
+  RowPanel(int numberOfRows) {
     this.numRows = numberOfRows;
   }
 
@@ -53,7 +53,7 @@ public class RowPanel extends javax.swing.JPanel {
   /**
    * Adds a row to the spreadsheet and adjusts the size of the spreadsheet panel accordingly.
    */
-  public void addRowAndChangePanelSize() {
+  void addRowAndChangePanelSize() {
     this.numRows += 1;
     this.setPreferredSize(new Dimension(SpreadsheetPanel.CELL_WIDTH,
             this.numRows * SpreadsheetPanel.CELL_HEIGHT));

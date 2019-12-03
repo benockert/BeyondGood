@@ -105,7 +105,7 @@ public class AddTest {
   @Test
   public void testAddA1A1() {
     initData();
-    this.model.editCell(5, this.locationA1);
+    this.model.editCell("5", this.locationA1);
     this.model.editCell("=(SUM A1 A1)", this.locationB1);
     assertEquals(10.0, this.model.getCellAt(this.locationB1).evaluateCell());
   }
@@ -113,8 +113,8 @@ public class AddTest {
   @Test
   public void testAddA1ToB1() {
     initData();
-    this.model.editCell(5, this.locationA1);
-    this.model.editCell(6, this.locationB1);
+    this.model.editCell("5", this.locationA1);
+    this.model.editCell("6", this.locationB1);
     this.model.editCell("=(SUM A1:B1)", this.locationB3);
     assertEquals(11.0, this.model.getCellAt(this.locationB3).evaluateCell());
   }
@@ -176,8 +176,8 @@ public class AddTest {
   @Test
   public void testAddAllInRangeA1B1() {
     initData();
-    this.model.editCell(4.0, this.locationA1);
-    this.model.editCell(5.0, this.locationB1);
+    this.model.editCell("4.0", this.locationA1);
+    this.model.editCell("5.0", this.locationB1);
     this.model.editCell("=(SUM A1:B1)", this.locationB2);
     assertEquals(9.0, this.model.getCellAt(this.locationB2).evaluateCell());
   }
@@ -185,8 +185,8 @@ public class AddTest {
   @Test
   public void testAddAllInRangeA1B2() {
     initData();
-    this.model.editCell(4.0, this.locationA1);
-    this.model.editCell(5.0, this.locationB2);
+    this.model.editCell("4.0", this.locationA1);
+    this.model.editCell("5.0", this.locationB2);
     this.model.editCell("=(SUM A1:B2)", new Coord(1, 3));
     assertEquals(9.0, this.model.getCellAt(new Coord(1, 3)).evaluateCell());
   }
@@ -206,7 +206,7 @@ public class AddTest {
   @Test
   public void testAddFunctionReferenceOppositeOrder() {
     initData();
-    model.editCell(5, this.locationB2);
+    model.editCell("5", this.locationB2);
     model.editCell("=B2", this.locationA1);
     model.editCell("=(SUM A1 10)", this.locationB3);
     assertEquals(15.0, this.model.getCellAt(this.locationB3).evaluateCell());
@@ -216,7 +216,7 @@ public class AddTest {
   @Test
   public void testAddFunctionWithReference3() {
     initData();
-    model.editCell(5, this.locationA1);
+    model.editCell("5", this.locationA1);
     model.editCell("=(SUM A1 A2)", this.locationA2);
     assertEquals("REF!", this.model.getCellAt(this.locationA2).evaluateCell());
   }
@@ -266,10 +266,10 @@ public class AddTest {
   @Test
   public void testAddFunctionWithReference() {
     initData();
-    model.editCell(5, this.locationA1);
-    model.editCell(10, this.locationA2);
-    model.editCell(15, this.locationB1);
-    model.editCell(25, this.locationB2);
+    model.editCell("5", this.locationA1);
+    model.editCell("10", this.locationA2);
+    model.editCell("15", this.locationB1);
+    model.editCell("25", this.locationB2);
     model.editCell("=(SUM A1:B2 5)", this.locationB3);
     assertEquals(60.0, this.model.getCellAt(this.locationB3).evaluateCell());
   }

@@ -15,13 +15,6 @@ public interface BasicWorksheetView {
    */
   void refresh();
 
-  /**
-   * Informs the user of an error in rendering a view.
-   * @param message
-   */
-  void addErrorMessage(String message);
-
-
 }
 
 

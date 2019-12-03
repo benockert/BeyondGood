@@ -13,7 +13,7 @@ import edu.cs3500.spreadsheets.model.Coord;
 public class CellReference implements CellFormula {
   private String coordString;
   public HashMap<Coord, CellFormula> referencedCells;
-  public Coord thisLocation;
+  private Coord thisLocation;
   private boolean isCyclic;
 
   /**
@@ -52,7 +52,6 @@ public class CellReference implements CellFormula {
 
   }
 
-
   // raw contents should just be a string of the coordinates (ex: "A1:A3")
   @Override
   public String getRawContents() {
@@ -62,6 +61,12 @@ public class CellReference implements CellFormula {
   @Override
   public Object accept(CellVisitor visit) {
     return visit.visitReference(this);
+  }
+
+  @Override
+  public String toString() {
+    Coord evaluateCoord = (Coord) referencedCells.keySet().toArray()[0];
+    return this.referencedCells.get(evaluateCoord).toString();
   }
 
 }

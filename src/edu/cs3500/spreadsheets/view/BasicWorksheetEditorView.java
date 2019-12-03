@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import edu.cs3500.spreadsheets.controller.HighlightCell;
 import edu.cs3500.spreadsheets.controller.IFeatures;
@@ -44,6 +44,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
 
     // sets the text in thee toolbar to be the first highlighted cell
     this.setTextbox();
+
   }
 
   /**
@@ -66,7 +67,6 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.spreadsheetView.setVisible(true);
   }
 
-
   /**
    * A method which both revalidates and repaints the spreadsheet.
    */
@@ -74,12 +74,6 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   public void refresh() {
     this.spreadsheetView.spreadsheetPanel.revalidate();
     this.spreadsheetView.spreadsheetPanel.repaint();
-  }
-
-  @Override
-  public void addErrorMessage(String message) {
-    JOptionPane.showMessageDialog(this, message, "Error",
-            JOptionPane.ERROR_MESSAGE);
   }
 
   /**
@@ -101,13 +95,29 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   }
 
   /**
+   * Returns the current graphical view.
+   * @return A BasicWorksheetGraphical view.
+   */
+  public BasicWorksheetGraphicalView getGraphicalView() {
+    return this.spreadsheetView;
+  }
+
+  public SpreadsheetPanel getSpreadsheetPanel() {
+    return this.spreadsheetView.spreadsheetPanel;
+  }
+
+  /**
    * Changes the location of the highlighted cell in this spreadsheet view.
    *
    * @param columnFactor the number of columns the highlighted cell is moving
    * @param rowFactor    the number of rows the highlighted cell is moving
    */
   public void changeHighlightedCellLocation(int columnFactor, int rowFactor) {
-    this.spreadsheetView.moveHighlightedCell(columnFactor - 1, rowFactor - 1);
+    try {
+      this.spreadsheetView.moveHighlightedCell(columnFactor - 1, rowFactor - 1);
+    } catch (IllegalArgumentException e) {
+      // nothing to do... don't move the highlighted cell
+    }
   }
 
   /**
@@ -117,8 +127,6 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
    * @param feature the feature of the spreadsheet that will be added
    */
   public void addIFeatures(IFeatures feature) {
-    this.buttonPanel.addIFeatures(feature);
-
     this.buttonPanel.accept.addActionListener(actionEvent -> {
       String text = getViewTextField();
       Coord location = getHighlightedCell();
@@ -143,6 +151,10 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
           feature.moveHighlightedCell("left arrow");
         } else if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
           feature.deleteCellContents(getHighlightedCell());
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+          String text = getViewTextField();
+          Coord location = getHighlightedCell();
+          feature.acceptCellEdit(location, text);
         }
       }
 
@@ -152,5 +164,4 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
       }
     });
   }
-
 }

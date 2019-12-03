@@ -29,7 +29,7 @@ public class BasicWorksheetReadOnlyModelTest {
   public void editCellBoolean() {
     initData();
     assertEquals("", this.readOnly.getCellAt(location).getRawContents());
-    this.readOnly.editCell(true, location);
+    this.readOnly.editCell("true", location);
     assertEquals("", this.readOnly.getCellAt(location).getRawContents());
   }
 
@@ -53,7 +53,7 @@ public class BasicWorksheetReadOnlyModelTest {
   public void editCellReference() {
     initData();
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
-    this.worksheet.editCell(5.0, location2);
+    this.worksheet.editCell("5.0", location2);
     this.readOnly.editCell("=(SUM 5 6 A1)", location);
     assertEquals("", this.readOnly.getCellAt(location).getRawContents());
   }
@@ -62,7 +62,7 @@ public class BasicWorksheetReadOnlyModelTest {
   public void editCellDouble() {
     initData();
     assertEquals("", this.readOnly.getCellAt(location).getRawContents());
-    this.readOnly.editCell(4.0, location);
+    this.readOnly.editCell("4.0", location);
     assertEquals("", this.readOnly.getCellAt(location).getRawContents());
   }
 
@@ -70,7 +70,7 @@ public class BasicWorksheetReadOnlyModelTest {
   public void testGetCellAt() {
     initData();
     assertEquals("", this.readOnly.getCellAt(location).getRawContents());
-    this.worksheet.editCell(5.0, location);
+    this.worksheet.editCell("5.0", location);
     assertEquals("5.0", this.readOnly.getCellAt(location).getRawContents());
 
   }
@@ -79,8 +79,8 @@ public class BasicWorksheetReadOnlyModelTest {
   public void testGetNumRows() {
     initData();
     assertEquals(0, this.readOnly.getNumRows());
-    this.worksheet.editCell(5, location);
-    this.worksheet.editCell(2, location2);
+    this.worksheet.editCell("5", location);
+    this.worksheet.editCell("2", location2);
     this.worksheet.editCell("\"hello\"", location3);
     assertEquals(20, this.readOnly.getNumRows());
   }
@@ -89,8 +89,8 @@ public class BasicWorksheetReadOnlyModelTest {
   public void testGetNumCols() {
     initData();
     assertEquals(0, this.readOnly.getNumCols());
-    this.worksheet.editCell(true, location);
-    this.worksheet.editCell(4, location2);
+    this.worksheet.editCell("true", location);
+    this.worksheet.editCell("4", location2);
     this.worksheet.editCell("\"goodbye\"", location3);
     assertEquals(10, this.readOnly.getNumCols());
   }
@@ -110,7 +110,7 @@ public class BasicWorksheetReadOnlyModelTest {
     initData();
     assertEquals(0, this.readOnly.getNumRows());
     assertEquals(0, this.readOnly.getNumCols());
-    this.worksheet.editCell(false, new Coord(500, 1000));
+    this.worksheet.editCell("false", new Coord(500, 1000));
     this.worksheet.editCell("\"hi\"", new Coord(45, 1000));
     assertEquals(1000, this.readOnly.getNumRows());
     assertEquals(500, this.readOnly.getNumCols());

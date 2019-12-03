@@ -38,8 +38,8 @@ public class BasicWorksheetModelTest {
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
     this.worksheet.editCell("\"hello\"", this.location);
-    this.worksheet.editCell(10.0, this.location2);
-    this.worksheet.editCell(true, this.location3);
+    this.worksheet.editCell("10.0", this.location2);
+    this.worksheet.editCell("true", this.location3);
     assertEquals("hello", this.worksheet.getCellAt(this.location).evaluateCell());
     assertEquals(10.0, this.worksheet.getCellAt(this.location2).evaluateCell());
     assertEquals(true, this.worksheet.getCellAt(this.location3).evaluateCell());
@@ -49,9 +49,9 @@ public class BasicWorksheetModelTest {
   public void editCellBoolean() {
     initData();
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
-    this.worksheet.editCell(false, location);
+    this.worksheet.editCell("false", location);
     assertEquals(false, this.worksheet.getCellAt(location).evaluateCell());
-    this.worksheet.editCell(true, this.location);
+    this.worksheet.editCell("true", this.location);
     assertEquals(true, this.worksheet.getCellAt(this.location).evaluateCell());
   }
 
@@ -76,7 +76,7 @@ public class BasicWorksheetModelTest {
   public void editCellReference() {
     initData();
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
-    this.worksheet.editCell(5.0, location2);
+    this.worksheet.editCell("5.0", location2);
     this.worksheet.editCell("=(SUM 5 6 A1)", location);
     assertEquals("(SUM 5.0 6.0 A1)", this.worksheet.getCellAt(location).getRawContents());
     assertEquals(16.0, this.worksheet.getCellAt(location).evaluateCell());
@@ -86,9 +86,9 @@ public class BasicWorksheetModelTest {
   public void editCellDouble() {
     initData();
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
-    this.worksheet.editCell(2.1, location);
+    this.worksheet.editCell("2.1", location);
     assertEquals(2.1, this.worksheet.getCellAt(location).evaluateCell());
-    this.worksheet.editCell(4.0, location);
+    this.worksheet.editCell("4.0", location);
     assertEquals(4.0, this.worksheet.getCellAt(location).evaluateCell());
   }
 
@@ -96,7 +96,7 @@ public class BasicWorksheetModelTest {
   public void getCellAt() {
     initData();
     assertEquals("", this.worksheet.getCellAt(location).getRawContents());
-    this.worksheet.editCell(2.1, location);
+    this.worksheet.editCell("2.1", location);
     assertEquals(2.1, this.worksheet.getCellAt(location).evaluateCell());
   }
 
@@ -105,8 +105,8 @@ public class BasicWorksheetModelTest {
     initData();
     assertEquals(0, this.worksheet.getNumRows());
     assertEquals(0, this.worksheet.getNumCols());
-    this.worksheet.editCell(5, location);
-    this.worksheet.editCell(2, location2);
+    this.worksheet.editCell("5", location);
+    this.worksheet.editCell("2", location2);
     this.worksheet.editCell("\"hello\"", location3);
     assertEquals(20, this.worksheet.getNumRows());
     assertEquals(10, this.worksheet.getNumCols());
@@ -117,7 +117,7 @@ public class BasicWorksheetModelTest {
     initData();
     assertEquals(0, this.worksheet.getNumRows());
     assertEquals(0, this.worksheet.getNumCols());
-    this.worksheet.editCell(5, new Coord(500, 1000));
+    this.worksheet.editCell("5", new Coord(500, 1000));
     assertEquals(1000, this.worksheet.getNumRows());
     assertEquals(500, this.worksheet.getNumCols());
   }
@@ -127,7 +127,7 @@ public class BasicWorksheetModelTest {
     initData();
     assertEquals(0, this.worksheet.getNumRows());
     assertEquals(0, this.worksheet.getNumCols());
-    this.worksheet.editCell(5, new Coord(500, 1000));
+    this.worksheet.editCell("5", new Coord(500, 1000));
     this.worksheet.editCell("\"hey\"", new Coord(45, 1000));
     assertEquals(1000, this.worksheet.getNumRows());
     assertEquals(500, this.worksheet.getNumCols());
@@ -142,10 +142,10 @@ public class BasicWorksheetModelTest {
   @Test
   public void testEquals() {
     initData();
-    this.worksheet.editCell(5, this.location);
+    this.worksheet.editCell("5", this.location);
     this.worksheet.editCell("=(< 5 10)", this.location2);
     this.worksheet.editCell("", this.location3);
-    this.worksheet2.editCell(true, this.location2);
+    this.worksheet2.editCell("true", this.location2);
     this.worksheet2.editCell("=5.0", this.location);
     assertEquals(true, this.worksheet.equals(this.worksheet2));
   }

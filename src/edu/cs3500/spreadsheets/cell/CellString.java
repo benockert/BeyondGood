@@ -47,4 +47,9 @@ public class CellString implements CellFormula {
   public Object accept(CellVisitor visit) {
     return visit.visitString(this);
   }
+
+  @Override
+  public String toString() {
+    return this.value;
+  }
 }

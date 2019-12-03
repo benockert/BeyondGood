@@ -5,7 +5,7 @@ import edu.cs3500.spreadsheets.function.CellVisitor;
 /**
  * A class that represents a cell in a spreadsheet that contains a double.
  */
-public class CellDouble implements CellFormula {
+public class CellDouble<R> implements CellFormula {
   private double value;
 
   /**
@@ -31,5 +31,10 @@ public class CellDouble implements CellFormula {
   @Override
   public Object accept(CellVisitor visit) {
     return visit.visitDouble(this);
+  }
+
+  @Override
+  public String toString() {
+    return Double.toString(this.value);
   }
 }

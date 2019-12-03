@@ -27,16 +27,20 @@ public class HighlightCell implements MouseListener {
 
   @Override
   public void mouseClicked(MouseEvent e) {
+    // gets the position of the mouse click
     int xPos = e.getX();
     int yPos = e.getY();
 
+    // determines the coordinate of the cell that the mouse was clicked in
     int xCoord = xPos / SpreadsheetPanel.CELL_WIDTH;
     int yCoord = yPos / SpreadsheetPanel.CELL_HEIGHT;
 
+    // sets the highlighted location of the spreadsheet panel, so that the highlighted cell
+    // will be clearly displayed; then repaints the view and sets the text field to be the
+    // cell contents
     this.spreadsheetPanel.setHighlightLocation(xCoord, yCoord);
     this.spreadsheetPanel.revalidate();
     this.spreadsheetPanel.repaint();
-
     this.view.setTextbox();
   }
 

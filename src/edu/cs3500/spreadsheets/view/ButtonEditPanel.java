@@ -1,19 +1,28 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
-import edu.cs3500.spreadsheets.controller.IFeatures;
 
+/**
+ * Represents an editor panel in a basic spreadsheet editor. Contains a text field to input text
+ * into a cell, and has an accept or reject button to either change a cell to the inputted text, or
+ * reset the cell to the previous text.
+ */
 public class ButtonEditPanel extends javax.swing.JPanel {
   public JButton accept;
-  public JButton reject;
-  public JTextField textInput;
+  JButton reject;
+  JTextField textInput;
 
-  public ButtonEditPanel(int width) {
+  /**
+   * The constructor for a editor panel.
+   *
+   * @param width the width of the fram that this panel will be added to
+   */
+  ButtonEditPanel(int width) {
     // creates a new button panel to house the text fields and accept/reject buttons
     this.setLayout(new FlowLayout());
 
@@ -35,16 +44,23 @@ public class ButtonEditPanel extends javax.swing.JPanel {
     this.add(textInput);
   }
 
-  public void setTextField(String contents) {
+  /**
+   * Sets the text field of this panel. Useful for updating the text when the highlighted cell
+   * location changes.
+   *
+   * @param contents the raw contents to be displayed in the text field
+   */
+  void setTextField(String contents) {
     this.textInput.setText(contents);
   }
 
-  public String getInputText() {
+  /**
+   * Gets the current text in the input field. Useful for determining what the user has typed.
+   *
+   * @return the String contents of this panel's text field
+   */
+  String getInputText() {
     return this.textInput.getText();
-  }
-
-  public void addIFeatures(IFeatures feature) {
-
   }
 
 }

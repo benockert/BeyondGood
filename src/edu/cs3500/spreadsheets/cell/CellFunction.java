@@ -13,10 +13,9 @@ import edu.cs3500.spreadsheets.model.Coord;
  * A class that represents a cell in a spreadsheet that contains a function.
  */
 public class CellFunction implements CellFormula {
-  private String func;
-  private List<CellFormula> arguments;
+  public String func;
+  public List<CellFormula> arguments;
   public CellFormula cellFunctionEvaluated;
-  private Coord location;
   private boolean containsReference;
 
   /**
@@ -26,10 +25,9 @@ public class CellFunction implements CellFormula {
    * @param func      a String representing the name of the desired function.
    * @param arguments the list of CellFormulas to be evaluated and applied to the given function.
    */
-  public CellFunction(String func, List<CellFormula> arguments, Coord locationOfCell) {
+  public CellFunction(String func, List<CellFormula> arguments) {
     this.func = func;
     this.arguments = arguments;
-    this.location = locationOfCell;
     this.cellFunctionEvaluated = this.evaluateToCellFormula();
   }
 
@@ -170,6 +168,11 @@ public class CellFunction implements CellFormula {
       default:
         throw new IllegalArgumentException("Unsupported function");
     }
+  }
+
+  @Override
+  public String toString() {
+    return this.cellFunctionEvaluated.toString();
   }
 }
 

@@ -6,16 +6,16 @@ import edu.cs3500.spreadsheets.function.CellVisitor;
  * Represents a cell in a worksheet. Each cell can be represented as a formula, with either a value,
  * reference, or function.
  *
- * @param <K> the object class that the cell represents.
+ * @param <R> the object class that the cell represents.
  */
-public interface CellFormula<K> {
+public interface CellFormula<R> {
 
   /**
    * Evaluates the contents of a cell.
    *
    * @return a type K (boolean, string, double) based on the cell that is being evaluated.
    */
-  K evaluateCell();
+  R evaluateCell();
 
   /**
    * Returns the raw contents (not evaluated) that the user inputs into a cell.
@@ -30,9 +30,9 @@ public interface CellFormula<K> {
    * it is being called on.
    *
    * @param visit the visitor that the cell will be given to.
-   * @param <K>   the type that the visitor returns (either a double or a string).
+   * @param <R>   the type that the visitor returns (either a double or a string).
    * @return a type K (boolean, string, double) based on the cell that is being evaluated.
    */
-  <K> K accept(CellVisitor<CellFormula, K> visit);
+  <R> R accept(CellVisitor<CellFormula, R> visit);
 
 }

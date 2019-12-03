@@ -103,12 +103,28 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     return cellValueToDisplay;
   }
 
+  /**
+   * Sets the highlight location of the cell in this panel, based on row and column input.
+   *
+   * @param xPos the column of the cell being highlighted
+   * @param yPos the row of the cell being highlighted
+   */
   public void setHighlightLocation(int xPos, int yPos) {
     this.xMouseCellPos = xPos;
     this.yMouseCellPos = yPos;
   }
 
+  /**
+   * Returns the location of the cell that is being drawn with an extra box around it, to signify a
+   * "highlight".
+   *
+   * @return the Coord location of the cell being highlighted in this panel
+   */
   Coord highlightCellLocation() {
-    return new Coord(this.xMouseCellPos + 1, this.yMouseCellPos + 1);
+    if (this.xMouseCellPos == -1 || this.yMouseCellPos == -1) {
+      throw new IllegalArgumentException();
+    } else {
+      return new Coord(this.xMouseCellPos + 1, this.yMouseCellPos + 1);
+    }
   }
 }

@@ -132,7 +132,7 @@ public class LessThanTest {
   @Test
   public void testLessThanVisitReference() {
     initData();
-    this.model.editCell(10, this.locationA1);
+    this.model.editCell("10", this.locationA1);
     this.model.editCell("=(< A1 10)", this.locationA2);
     assertEquals(false, this.model.getCellAt(this.locationA2).evaluateCell());
   }

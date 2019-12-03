@@ -1,7 +1,5 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,25 +28,15 @@ public class BasicWorksheetSaveView implements BasicWorksheetView {
 
   @Override
   public void render() {
-    try {
-      // adds the model (as a line-separated-String of spreadsheet cell raw contents) to a file
-      this.appendable.append(this.toString());
-      // writes the file and closes it
-      this.appendable.close();
-    } catch (IllegalArgumentException iae) {
-      this.addErrorMessage("Unable to save this worksheet.");
-    }
-
+    // adds the model (as a line-separated-String of spreadsheet cell raw contents) to a file
+    this.appendable.append(this.toString());
+    // writes the file and closes it
+    this.appendable.close();
   }
 
   @Override
   public void refresh() {
     this.render();
-  }
-
-  @Override
-  public void addErrorMessage(String message) {
-    this.appendable.append(message);
   }
 
   @Override

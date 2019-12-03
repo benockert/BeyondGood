@@ -20,17 +20,7 @@ public class BasicWorksheetReadOnlyModel implements Worksheet {
   }
 
   @Override
-  public void editCell(boolean input, Coord location) {
-    throw new UnsupportedOperationException("we do not allow this model to be edited");
-  }
-
-  @Override
   public void editCell(String input, Coord location) {
-    throw new UnsupportedOperationException("we do not allow this model to be edited");
-  }
-
-  @Override
-  public void editCell(double input, Coord location) {
     throw new UnsupportedOperationException("we do not allow this model to be edited");
   }
 

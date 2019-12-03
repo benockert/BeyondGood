@@ -27,4 +27,9 @@ public class CellBlank implements CellFormula {
     return visit.visitBlank(this);
   }
 
+  @Override
+  public String toString() {
+    return "";
+  }
+
 }

@@ -32,4 +32,13 @@ public class CellBoolean implements CellFormula {
   public Object accept(CellVisitor visit) {
     return visit.visitBoolean(this);
   }
+
+  @Override
+  public String toString() {
+    if (this.value) {
+      return "true";
+    } else {
+      return "false";
+    }
+  }
 }

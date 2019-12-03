@@ -1,8 +1,5 @@
 package edu.cs3500.spreadsheets.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Worksheet;
 import edu.cs3500.spreadsheets.view.BasicWorksheetEditorView;
@@ -39,6 +36,10 @@ public class BasicWorksheetController implements IFeatures {
   @Override
   public void acceptCellEdit(Coord location, String rawContents) {
     this.model.editCell(rawContents, location);
+    for (Coord coord : this.model.getCells().keySet()) {
+      String cellsRawContents = this.model.getCellAt(coord).getRawContents();
+      this.model.editCell("=" + cellsRawContents, coord);
+    }
     this.view.refresh();
   }
 
@@ -65,6 +66,8 @@ public class BasicWorksheetController implements IFeatures {
       case "right arrow":
         this.view.changeHighlightedCellLocation(1, 0);
         this.view.setTextbox();
+        break;
+      default :
         break;
     }
     this.view.refresh();

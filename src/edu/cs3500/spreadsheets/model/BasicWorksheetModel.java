@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import edu.cs3500.spreadsheets.adapters.FormulaAdapter;
 import edu.cs3500.spreadsheets.cell.CellBlank;
 import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.sexp.Parser;
@@ -36,16 +37,6 @@ public class BasicWorksheetModel implements Worksheet {
   }
 
   @Override
-  public void editCell(boolean input, Coord location) {
-    // create a new cell with the given boolean
-    CellFormula editedCell = Parser.parse(Boolean.toString(input)).accept(new SexpVisitorHandler());
-    // put the cell at the given location
-    this.cells.put(location, editedCell);
-    // updates the contents of all cells
-    this.updateAllCells();
-  }
-
-  @Override
   public void editCell(String input, Coord location) {
     // initialize an edited cell
     CellFormula editedCell;
@@ -72,16 +63,6 @@ public class BasicWorksheetModel implements Worksheet {
     // put the cell at the given locationC
     this.cells.put(location, editedCell);
     // updates the contents all cells
-    this.updateAllCells();
-  }
-
-  @Override
-  public void editCell(double input, Coord location) {
-    // create a new cell with the given double
-    CellFormula editedCell = Parser.parse(Double.toString(input)).accept(new SexpVisitorHandler());
-    // put the cell at the given location
-    this.cells.put(location, editedCell);
-    // updates the contents of all cells
     this.updateAllCells();
   }
 

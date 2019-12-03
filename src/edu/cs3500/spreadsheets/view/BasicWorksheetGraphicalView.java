@@ -3,11 +3,11 @@ package edu.cs3500.spreadsheets.view;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
 
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
@@ -23,8 +23,8 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   private ColumnPanel columnPanel;
 
   // sets the total number of cells to be 100
-  int numRows = 100;
-  int numCols = 50;
+  private int numRows = 100;
+  private int numCols = 50;
 
   /**
    * A constructor for the GUI view of a spreadsheet that creates a new blank spreadsheet.
@@ -120,39 +120,38 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     this.repaint();
   }
 
-  @Override
-  public void addErrorMessage(String message) {
-    JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-  }
-
-
+  /**
+   * Gets the location of the cell that is highlighted in this view.
+   *
+   * @return the location (Coord) of the highlighted cell
+   */
   Coord getHighlightedCell() {
     return this.spreadsheetPanel.highlightCellLocation();
   }
 
   /**
    * Moves the location of the highlighted cell by given row and column factors.
+   *
    * @param columnFactor how many cells to move left or right (back or through columns); negative
    *                     means move left, positive means move right
-   * @param rowFactor how many cells up or down to move (up or down rows); negative means move up,
-   *                  positive means move down
+   * @param rowFactor    how many cells up or down to move (up or down rows); negative means move
+   *                     up, positive means move down
    */
   void moveHighlightedCell(int columnFactor, int rowFactor) {
     Coord currentLocation = this.spreadsheetPanel.highlightCellLocation();
     int xLoc = currentLocation.col;
     int yLoc = currentLocation.row;
-    this.spreadsheetPanel.setHighlightLocation(xLoc + columnFactor, yLoc + rowFactor);
+    if (xLoc == 0 || yLoc == 0) {
+      throw new IllegalArgumentException("At the edge of the speadsheet");
+    } else {
+      this.spreadsheetPanel.setHighlightLocation(xLoc + columnFactor, yLoc + rowFactor);
+    }
   }
 
 
-
-
-
-
-
   /**
-   * A method that adds a horizontal and vertical scroll pane to our worksheet view. Allows
-   * a user to scroll through the entire spreadsheet of cells.
+   * A method that adds a horizontal and vertical scroll pane to our worksheet view. Allows a user
+   * to scroll through the entire spreadsheet of cells.
    */
   private void addScrollPane() {
     final JScrollPane scroller = new JScrollPane();
@@ -164,12 +163,9 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     scroller.getVerticalScrollBar().setUnitIncrement(16);
     scroller.getHorizontalScrollBar().setUnitIncrement(16);
     // adds a listener for infinite scrolling
-    scroller.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-      @Override
-      public void adjustmentValueChanged(AdjustmentEvent ae) {
-        // checks if the scroll bars has been moved
-        inifinteScroll(ae, true);
-      }
+    scroller.getVerticalScrollBar().addAdjustmentListener(ae -> {
+      // checks if the scroll bars has been moved
+      inifinteScroll(ae, true);
     });
     scroller.getHorizontalScrollBar().addAdjustmentListener(ae -> {
       // checks if the scroll bars has been moved
@@ -179,12 +175,12 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   }
 
   /**
-   * Uses the position of the scroll bars within the frame to determine when to add more rows
-   * and or columns, thus handling infinite scrolling functionality.
+   * Uses the position of the scroll bars within the frame to determine when to add more rows and or
+   * columns, thus handling infinite scrolling functionality.
    *
-   * @param ae an event that takes place when either scrollbar is moved.
-   * @param isVert signifies if the vertical scrollbar was moved (true if vertical,
-   *               false if horizontal)
+   * @param ae     an event that takes place when either scrollbar is moved.
+   * @param isVert signifies if the vertical scrollbar was moved (true if vertical, false if
+   *               horizontal)
    */
   private void inifinteScroll(AdjustmentEvent ae, boolean isVert) {
     if (!ae.getValueIsAdjusting()) {
