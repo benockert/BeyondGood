@@ -1,5 +1,8 @@
 package edu.cs3500.spreadsheets.view;
 
+import edu.cs3500.spreadsheets.controller.BasicWorksheetController;
+import edu.cs3500.spreadsheets.controller.IFeatures;
+
 /**
  * Represents a view of a basic worksheet - either graphical or text.
  */

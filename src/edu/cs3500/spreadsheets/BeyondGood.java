@@ -7,12 +7,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.IllegalFormatConversionException;
 
+import edu.cs3500.spreadsheets.adapters.ProviderModelAdapter;
+import edu.cs3500.spreadsheets.adapters.ProviderViewAdapater;
 import edu.cs3500.spreadsheets.controller.BasicWorksheetController;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
+import edu.cs3500.spreadsheets.model.Worksheet;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
+import edu.cs3500.spreadsheets.provider.view.view.EditableView;
+import edu.cs3500.spreadsheets.provider.view.view.IView;
+import edu.cs3500.spreadsheets.provider.view.view.VisualView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetEditorView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetGraphicalView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetSaveView;
@@ -47,6 +53,8 @@ public class BeyondGood {
       runNewGUI(args);
     } else if (args[0].equals("-edit")) {
       runNewEditBlankGUI(args);
+    } else if (args[0].equals("-in") && args[2].equals("-provider")) {
+      runProviderEditor(args);
     } else {
       System.out.println("Invalid command line arguments given.");
     }
@@ -169,6 +177,31 @@ public class BeyondGood {
     controller.run();
   }
 
+  private static void runProviderEditor(String[] args) {
+    // the worksheet builder
+    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
+    // the file from which the graphical view will be made
+    String fileName = args[1];
+    File file = new File(fileName);
+    try {
+      FileReader readFile = new FileReader(file);
+      BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
+      Worksheet readOnlyModel = new BasicWorksheetReadOnlyModel(model);
+
+      // building the providers view
+      ProviderModelAdapter providerModel = new ProviderModelAdapter(readOnlyModel);
+      VisualView visualView = new VisualView(providerModel, fileName);
+      EditableView editableView = new EditableView(visualView, fileName);
+      BasicWorksheetView providerView = new ProviderViewAdapater(editableView);
+      BasicWorksheetController controller =
+              new BasicWorksheetController(model, providerView);
+      controller.run();
+
+    } catch (FileNotFoundException fnf) {
+      System.out.println("Invalid file given");
+    }
+  }
+
   /**
    * Formats a cell's contents based on assignment specifications.
    *
@@ -221,11 +254,9 @@ public class BeyondGood {
    * @return the given cell String as a Coord
    */
   private static Coord getCoord(String cellName) {
-    // parses the cellName to get the String representation of the column name
-    int col = Coord.colNameToIndex(cellName.substring(0, 1));
-    // parses the cellName to get the row number of the cell
-    int row = Integer.parseInt(cellName.substring(1));
-    // returns a new coordinate based on the row and column of the given cell name
+    String[] part = cellName.split("(?<=\\D)(?=\\d)");
+    int col = Coord.colNameToIndex(part[0]);
+    int row = Integer.parseInt(part[1]);
     return new Coord(col, row);
   }
 }

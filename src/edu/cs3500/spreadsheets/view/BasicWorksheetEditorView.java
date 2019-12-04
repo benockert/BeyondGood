@@ -96,6 +96,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
 
   /**
    * Returns the current graphical view.
+   *
    * @return A BasicWorksheetGraphical view.
    */
   public BasicWorksheetGraphicalView getGraphicalView() {

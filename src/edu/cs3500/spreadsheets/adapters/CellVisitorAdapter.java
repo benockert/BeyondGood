@@ -57,8 +57,12 @@ public class CellVisitorAdapter implements CellVisitor {
   }
 
   @Override
-  public Object visitString(CellString s) throws InvalidFormulaException {
-    return theirVisitor.visitStringValue(s.getRawContents(), s.evaluateCell());
+  public Object visitString(CellString s) {
+    try {
+      return theirVisitor.visitStringValue(s.getRawContents(), s.evaluateCell());
+    } catch (InvalidFormulaException ife) {
+      throw new IllegalArgumentException("Invalid input");
+    }
   }
 
   @Override

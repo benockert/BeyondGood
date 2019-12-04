@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets.provider.view.model.cellcontents;
 import java.util.ArrayList;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Worksheet;
+import edu.cs3500.spreadsheets.provider.view.model.ISpreadsheet;
 import edu.cs3500.spreadsheets.provider.view.model.cellcontents.formulas.IFormulaVisitor;
 
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.Objects;
 public final class Reference implements IFormula {
 
   private final ArrayList<Coord> coords;
-  private Worksheet model;
+  private ISpreadsheet model;
 
   /**
    * Constructs a new Reference using the given Cells. This has already been determined to not
@@ -26,7 +27,7 @@ public final class Reference implements IFormula {
    * @throws IllegalArgumentException if any of the Cells in the List refer to the Cell it is
    *                                  contained within.
    */
-  public Reference(ArrayList<Coord> references, Worksheet m) {
+  public Reference(ArrayList<Coord> references, ISpreadsheet m) {
     this.coords = references;
     this.model = m;
   }

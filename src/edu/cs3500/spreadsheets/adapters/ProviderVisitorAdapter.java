@@ -10,7 +10,6 @@ import edu.cs3500.spreadsheets.cell.CellString;
 import edu.cs3500.spreadsheets.function.CellVisitor;
 import edu.cs3500.spreadsheets.provider.view.model.ISpreadsheet;
 import edu.cs3500.spreadsheets.provider.view.model.cellcontents.Function;
-import edu.cs3500.spreadsheets.provider.view.model.cellcontents.InvalidFormulaException;
 import edu.cs3500.spreadsheets.provider.view.model.cellcontents.formulas.IFormulaVisitor;
 
 public class ProviderVisitorAdapter implements IFormulaVisitor {
@@ -31,17 +30,17 @@ public class ProviderVisitorAdapter implements IFormulaVisitor {
   }
 
   @Override
-  public Object visitStringValue(String s, String error) throws InvalidFormulaException {
+  public Object visitStringValue(String s, String error) {
     return this.ourVisitor.visitString(new CellString(s));
   }
 
   @Override
-  public Object visitReference(ArrayList arrayList, ISpreadsheet model) throws InvalidFormulaException {
+  public Object visitReference(ArrayList arrayList, ISpreadsheet model) {
     return null; // not enough information to visit our cell reference class
   }
 
   @Override
-  public Object visitFunction(Function.Func o, List args) throws InvalidFormulaException {
+  public Object visitFunction(Function.Func o, List args) {
     String functionName = o.name();
     List<CellFormula> formulaList = new ArrayList<>();
     //for (Object form : args) {

@@ -59,7 +59,7 @@ public interface CellVisitor<T, R> extends IFunction<T, R> {
    * @param s the CellString that this method will be visiting to handle it's value.
    * @return an arbitrary type R that will either be a Double, String, or Boolean
    */
-  R visitString(CellString s) throws InvalidFormulaException;
+  R visitString(CellString s);
 
   /**
    * A method for visitng CellBlank and determining how to handle a blank cell.

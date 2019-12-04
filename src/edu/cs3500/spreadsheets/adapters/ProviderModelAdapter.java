@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.cs3500.spreadsheets.cell.CellFormula;
-import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.Coord;
+import edu.cs3500.spreadsheets.model.Worksheet;
 import edu.cs3500.spreadsheets.provider.view.model.ISpreadsheet;
 import edu.cs3500.spreadsheets.provider.view.model.cellcontents.IFormula;
 
 public class ProviderModelAdapter implements ISpreadsheet {
-  private BasicWorksheetModel ourModel;
+  private Worksheet ourModel;
 
-  ProviderModelAdapter(BasicWorksheetModel ourModel) {
+  public ProviderModelAdapter(Worksheet ourModel) {
     this.ourModel = ourModel;
   }
 

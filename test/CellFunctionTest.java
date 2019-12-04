@@ -22,10 +22,9 @@ public class CellFunctionTest {
    */
   private void initData() {
     this.cellFunction1 = new CellFunction("REPT",
-            Arrays.asList(new CellString("hi"), new CellDouble(3)),
-            new Coord(1, 1));
+            Arrays.asList(new CellString("hi"), new CellDouble(3)));
     this.cellFunction2 = new CellFunction("REPT",
-            Arrays.asList(cellFunction1, new CellDouble(3)), new Coord(2, 1));
+            Arrays.asList(cellFunction1, new CellDouble(3)));
   }
 
   @Test
