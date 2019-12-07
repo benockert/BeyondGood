@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.cs3500.spreadsheets.cell.CellFormula;
-import edu.cs3500.spreadsheets.controller.BasicWorksheetController;
+import edu.cs3500.spreadsheets.controller.IFeatures;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
 
@@ -38,6 +38,21 @@ public class BasicWorksheetSaveView implements BasicWorksheetView {
   @Override
   public void refresh() {
     this.render();
+  }
+
+  @Override
+  public void addIFeatures(IFeatures feature) {
+    // this view does not have any features
+  }
+
+  @Override
+  public void setTextbox() {
+    // this view does not have a textbox
+  }
+
+  @Override
+  public void changeHighlightedCellLocation(int i, int i1) {
+    // this view does not support changing the highlighted cell
   }
 
   @Override

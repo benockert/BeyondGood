@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.FontMetrics;
+import java.util.ArrayList;
 
 
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
@@ -21,6 +22,7 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
   private BasicWorksheetReadOnlyModel model;
   private int xMouseCellPos;
   private int yMouseCellPos;
+  private ArrayList<Coord> cellRegion = new ArrayList<>();
 
   /**
    * Creates a {@code SpreadsheetPanel} object, which is the grid of cells in the view of the
@@ -40,18 +42,19 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
-    for (int x = 0; x < this.numCols; x++) {
-      for (int y = 0; y < this.numRows; y++) {
+    for (int x = 1; x <= this.numCols; x++) {
+      for (int y = 1; y <= this.numRows; y++) {
         g2d.setColor(Color.BLACK);
         g2d.drawRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-        if (x == this.xMouseCellPos && y == this.yMouseCellPos) {
+        Coord checkRegion = new Coord(x, y);
+        if (x == this.xMouseCellPos && y == this.yMouseCellPos || this.cellRegion.contains(checkRegion)) {
           g2d.setColor(Color.BLUE);
           g2d.drawRect(x * CELL_WIDTH + 1, y * CELL_HEIGHT + 1, CELL_WIDTH - 2, CELL_HEIGHT - 2);
-          String contentsToDraw = getAndClipContents(g, x + 1, y + 1);
+          String contentsToDraw = getAndClipContents(g, x, y);
           g2d.setColor(Color.BLACK);
           g2d.drawString(contentsToDraw, x * CELL_WIDTH + 3, (y + 1) * CELL_HEIGHT - 3);
         } else {
-          String contentsToDraw = getAndClipContents(g, x + 1, y + 1);
+          String contentsToDraw = getAndClipContents(g, x, y);
           g2d.drawString(contentsToDraw, x * CELL_WIDTH + 3, (y + 1) * CELL_HEIGHT - 3);
         }
       }
@@ -126,5 +129,20 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
     } else {
       return new Coord(this.xMouseCellPos + 1, this.yMouseCellPos + 1);
     }
+  }
+
+
+
+  public ArrayList<Coord> getHighlightRegion() {
+    return this.cellRegion;
+  }
+
+  public void addToHighlightRegion(Coord cell) {
+    this.cellRegion.add(cell);
+  }
+
+
+  public void unhighlightRegion() {
+    this.cellRegion.clear();
   }
 }

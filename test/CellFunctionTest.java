@@ -5,7 +5,6 @@ import java.util.Arrays;
 import edu.cs3500.spreadsheets.cell.CellDouble;
 import edu.cs3500.spreadsheets.cell.CellFunction;
 import edu.cs3500.spreadsheets.cell.CellString;
-import edu.cs3500.spreadsheets.model.Coord;
 
 import static org.junit.Assert.assertEquals;
 

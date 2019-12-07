@@ -14,53 +14,74 @@ import edu.cs3500.spreadsheets.provider.view.model.cellcontents.Function;
 import edu.cs3500.spreadsheets.provider.view.model.cellcontents.InvalidFormulaException;
 import edu.cs3500.spreadsheets.provider.view.model.cellcontents.formulas.IFormulaVisitor;
 
+/**
+ * Represents a class which adapts the provider's visitor to our visitor interface.
+ */
 public class CellVisitorAdapter implements CellVisitor {
   private IFormulaVisitor theirVisitor;
   private ProviderModelAdapter model;
 
+  /**
+   * Constructs a {@code CellVisitorAdapter} object which adapts the provider's visitor to our.
+   *
+   * @param theirVisitor The provider's visitor interface.
+   * @param model        The adapted model (our model adapted to their interface).
+   */
   public CellVisitorAdapter(IFormulaVisitor theirVisitor, ProviderModelAdapter model) {
     this.theirVisitor = theirVisitor;
     this.model = model;
   }
 
+  // visits a double using their visitor and evaluates the value
   @Override
   public Object visitDouble(CellDouble d) {
     return theirVisitor.visitDoubleValue(d.evaluateCell());
   }
 
+  // visits a boolean using their visitor and evaluates the value
   @Override
   public Object visitBoolean(CellBoolean b) {
     return theirVisitor.visitBooleanVal(b.evaluateCell());
   }
 
+  // visits a function using their visitor and evaluates the value
   @Override
   public Object visitFunction(CellFunction f) {
     Function.Func function = Function.Func.valueOf(f.func);
     try {
+      // tries to visit the function
       return theirVisitor.visitFunction(function, f.arguments);
     } catch (InvalidFormulaException ife) {
+      // or throws an exception
       throw new IllegalArgumentException("Invalid formula");
     }
   }
 
+  // visits a reference using their visitor and evaluates the value
   @Override
   public Object visitReference(CellReference r) {
     ArrayList<Coord> referencedCoords = new ArrayList<>();
     for (Coord coord : r.referencedCells.keySet()) {
+      // adds every cord in our hashmap to their arraylist
       referencedCoords.add(coord);
     }
+    // tries to visit the reference
     try {
       return theirVisitor.visitReference(referencedCoords, this.model);
     } catch (InvalidFormulaException ife) {
+      // or throws an exception
       throw new IllegalArgumentException("Invalid formula");
     }
   }
 
+  // visits a string using their visitor and evaluates the value
   @Override
   public Object visitString(CellString s) {
     try {
+      // tries to visit the string
       return theirVisitor.visitStringValue(s.getRawContents(), s.evaluateCell());
     } catch (InvalidFormulaException ife) {
+      // or throws an exception
       throw new IllegalArgumentException("Invalid input");
     }
   }

@@ -27,7 +27,7 @@ public class EditableView extends JFrame implements IEditableView {
 
   private final JButton rejectButton;
   private final JButton acceptButton;
-  private final JTextField formulaBox;
+  public final JTextField formulaBox;
   private final VisualView oldView;
 
   /**

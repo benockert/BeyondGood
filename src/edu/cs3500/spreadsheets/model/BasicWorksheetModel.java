@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import edu.cs3500.spreadsheets.adapters.FormulaAdapter;
 import edu.cs3500.spreadsheets.cell.CellBlank;
 import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.sexp.Parser;

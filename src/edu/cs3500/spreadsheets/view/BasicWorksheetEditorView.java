@@ -39,6 +39,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel,
             this);
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
+    this.spreadsheetView.spreadsheetPanel.addMouseMotionListener(highlightedCell);
     this.buttonPanel.setTextField(this.modelToDisplayandEdit
             .getCellAt(this.getHighlightedCell()).getRawContents());
 
@@ -75,6 +76,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.spreadsheetView.spreadsheetPanel.revalidate();
     this.spreadsheetView.spreadsheetPanel.repaint();
   }
+
 
   /**
    * Returns the current text in the textbox.

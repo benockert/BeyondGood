@@ -13,11 +13,9 @@ import edu.cs3500.spreadsheets.controller.BasicWorksheetController;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
-import edu.cs3500.spreadsheets.model.Worksheet;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.provider.view.view.EditableView;
-import edu.cs3500.spreadsheets.provider.view.view.IView;
 import edu.cs3500.spreadsheets.provider.view.view.VisualView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetEditorView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetGraphicalView;
@@ -34,27 +32,37 @@ public class BeyondGood {
    * @param args any command-line arguments.
    */
   public static void main(String[] args) {
-    /*
-      TODO: For now, look in the args array to obtain a filename and a cell name,
-      - read the file and build a model from it, 
-      - evaluate all the cells, and
-      - report any errors, or print the evaluated value of the requested cell.
-    */
-
+    // -eval command line
     if (args[0].equals("-in") && args[2].equals("-eval")) {
       runMainInEval(args);
-    } else if (args[0].equals("-in") && args[2].equals("-save")) {
+    }
+    // -save command line
+    else if (args[0].equals("-in") && args[2].equals("-save")) {
       runSaveView(args);
-    } else if (args[0].equals("-in") && args[2].equals("-gui")) {
+    }
+    // -gui from file command line
+    else if (args[0].equals("-in") && args[2].equals("-gui")) {
       runMainInGUI(args);
-    } else if (args[0].equals("-in") && args[2].equals("-edit")) {
+    }
+    // -edit from file command line
+    else if (args[0].equals("-in") && args[2].equals("-edit")) {
       runMainInEditor(args);
-    } else if (args[0].equals("-gui")) {
+    }
+    // new -gui command line
+    else if (args[0].equals("-gui")) {
       runNewGUI(args);
-    } else if (args[0].equals("-edit")) {
+    }
+    // new -edit command line
+    else if (args[0].equals("-edit")) {
       runNewEditBlankGUI(args);
-    } else if (args[0].equals("-in") && args[2].equals("-provider")) {
+    }
+    // -provider from file command line
+    else if (args[0].equals("-in") && args[2].equals("-provider")) {
       runProviderEditor(args);
+    }
+    // new -provider command line
+    else if (args[0].equals("-provider")) {
+      runNewBlankProviderEditor(args);
     } else {
       System.out.println("Invalid command line arguments given.");
     }
@@ -85,6 +93,11 @@ public class BeyondGood {
     }
   }
 
+  /**
+   * Creates a model from a user-given file path and renders an editable view of the model.
+   *
+   * @param args the command line arguments from the client.
+   */
   private static void runMainInEditor(String[] args) {
     // the worksheet builder
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
@@ -166,6 +179,12 @@ public class BeyondGood {
     view.render();
   }
 
+
+  /**
+   * Creates an editable view of a blank spreadsheet.
+   *
+   * @param args the command line arguments from the client.
+   */
   private static void runNewEditBlankGUI(String[] args) {
     // the worksheet builder
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
@@ -177,6 +196,11 @@ public class BeyondGood {
     controller.run();
   }
 
+  /**
+   * Creates an editable view of a spreadsheet from a file using the provider's view.
+   *
+   * @param args the command line arguments from the client.
+   */
   private static void runProviderEditor(String[] args) {
     // the worksheet builder
     WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
@@ -186,13 +210,13 @@ public class BeyondGood {
     try {
       FileReader readFile = new FileReader(file);
       BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
-      Worksheet readOnlyModel = new BasicWorksheetReadOnlyModel(model);
+      BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(model);
 
       // building the providers view
       ProviderModelAdapter providerModel = new ProviderModelAdapter(readOnlyModel);
       VisualView visualView = new VisualView(providerModel, fileName);
       EditableView editableView = new EditableView(visualView, fileName);
-      BasicWorksheetView providerView = new ProviderViewAdapater(editableView);
+      BasicWorksheetView providerView = new ProviderViewAdapater(editableView, readOnlyModel);
       BasicWorksheetController controller =
               new BasicWorksheetController(model, providerView);
       controller.run();
@@ -200,6 +224,26 @@ public class BeyondGood {
     } catch (FileNotFoundException fnf) {
       System.out.println("Invalid file given");
     }
+  }
+
+  /**
+   * Creates a new blank editable view of a spreadsheet using the provider's view.
+   *
+   * @param args the command line arguments from the client.
+   */
+  private static void runNewBlankProviderEditor(String[] args) {
+    // the worksheet builder
+    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
+    BasicWorksheetModel blankModel = new BasicWorksheetModel();
+    BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(blankModel);
+    // building the providers view
+    ProviderModelAdapter providerModel = new ProviderModelAdapter(readOnlyModel);
+    VisualView visualView = new VisualView(providerModel, "New Provider View");
+    EditableView editableView = new EditableView(visualView, "New Provider View");
+    BasicWorksheetView providerView = new ProviderViewAdapater(editableView, readOnlyModel);
+    BasicWorksheetController controller =
+            new BasicWorksheetController(blankModel, providerView);
+    controller.run();
   }
 
   /**

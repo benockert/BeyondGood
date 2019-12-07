@@ -6,7 +6,6 @@ import edu.cs3500.spreadsheets.cell.CellDouble;
 import edu.cs3500.spreadsheets.cell.CellFunction;
 import edu.cs3500.spreadsheets.cell.CellReference;
 import edu.cs3500.spreadsheets.cell.CellString;
-import edu.cs3500.spreadsheets.provider.view.model.cellcontents.InvalidFormulaException;
 
 /**
  * A visitor interface to handle evaluating different types of cells with function objects.

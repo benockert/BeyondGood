@@ -35,4 +35,11 @@ public interface CellFormula<R> {
    */
   <R> R accept(CellVisitor<CellFormula, R> visit);
 
+  /**
+   * Converts a cell's contents to a string.
+   *
+   * @return A string with the cell's contents.
+   */
+  String toString();
+
 }

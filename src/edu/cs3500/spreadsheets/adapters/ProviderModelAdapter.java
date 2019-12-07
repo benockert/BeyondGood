@@ -9,9 +9,17 @@ import edu.cs3500.spreadsheets.model.Worksheet;
 import edu.cs3500.spreadsheets.provider.view.model.ISpreadsheet;
 import edu.cs3500.spreadsheets.provider.view.model.cellcontents.IFormula;
 
+/**
+ * Represents a class which adapts our model interface to the provider's model interface.
+ */
 public class ProviderModelAdapter implements ISpreadsheet {
   private Worksheet ourModel;
 
+  /**
+   * Constructs a {@code ProviderModelAdapter} object, which adapts our model interface to theirs.
+   *
+   * @param ourModel Our model interface.
+   */
   public ProviderModelAdapter(Worksheet ourModel) {
     this.ourModel = ourModel;
   }
@@ -20,7 +28,7 @@ public class ProviderModelAdapter implements ISpreadsheet {
   public List<Coord> getNonEmpty() {
     List<Coord> nonEmpty = new ArrayList<>();
     for (Coord c : this.ourModel.getCells().keySet()) {
-      if (this.ourModel.getCellAt(c).evaluateCell() != "") {
+      if (!this.ourModel.getCellAt(c).evaluateCell().equals("")) {
         nonEmpty.add(c);
       }
     }
@@ -39,7 +47,7 @@ public class ProviderModelAdapter implements ISpreadsheet {
 
   @Override
   public void changeAt(Coord c, IFormula contents) {
-    //this.ourModel.editCell(contents.accept());
+    // this method is not used
 
   }
 

@@ -1,0 +1,7 @@
+Review of Experience
+
+After seeing another team’s implementation of a Spreadsheet, we identified several details that we wish we had done differently in our design. To start, we wish we had implemented our cell highlighting functionality in the features interface, rather than encapsulating it entirely in our view. By implementing it in our features interface, we would have been able to test its functionality and we also would have been able to more easily use the methods that support the highlight cell functionality (i.e. getHighlightedCellLocation and moveHighlightedCellLocation) to implement the arrow key bonus feature. Although we did not receive a request from our customers to change the way we added Mouse Listeners, we anticipate them having to write additional adapters to make the highlight cell functionality work.
+
+Through the code given to us, we learned how to create a custom exception class, and we wish we had done the same in our design. This assignment also further enforced the importance of loose coupling and as such, we changed our controller to take in our view interface, rather than our implementation of the editor view. 
+
+Our experience with the providers was overall positive. Although we did receive the initial code late, every communication after the initial receipt went well. They responded quickly to our emails with the changes we requested or responses to our questions about their code. 

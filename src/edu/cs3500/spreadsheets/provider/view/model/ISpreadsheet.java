@@ -43,7 +43,8 @@ public interface ISpreadsheet<K> {
   void changeAt(Coord c, IFormula contents);
 
   /**
-   * Returns the IFormula of the K at the input Coord
+   * Returns the IFormula of the K at the input Coord.
+   *
    * @param c the Coord
    * @return the IFormula at the Cell there
    */

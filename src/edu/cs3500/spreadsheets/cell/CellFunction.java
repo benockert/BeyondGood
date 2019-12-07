@@ -7,7 +7,6 @@ import edu.cs3500.spreadsheets.function.CellVisitor;
 import edu.cs3500.spreadsheets.function.LessThan;
 import edu.cs3500.spreadsheets.function.Multiply;
 import edu.cs3500.spreadsheets.function.Repeat;
-import edu.cs3500.spreadsheets.model.Coord;
 
 /**
  * A class that represents a cell in a spreadsheet that contains a function.

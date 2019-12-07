@@ -2,14 +2,16 @@ package edu.cs3500.spreadsheets.controller;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
+import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.view.BasicWorksheetEditorView;
 import edu.cs3500.spreadsheets.view.SpreadsheetPanel;
 
 /**
  * Represents the act of highlighting a cell in a worksheet.
  */
-public class HighlightCell implements MouseListener {
+public class HighlightCell implements MouseListener, MouseMotionListener {
   private SpreadsheetPanel spreadsheetPanel;
   private BasicWorksheetEditorView view;
 
@@ -39,6 +41,7 @@ public class HighlightCell implements MouseListener {
     // will be clearly displayed; then repaints the view and sets the text field to be the
     // cell contents
     this.spreadsheetPanel.setHighlightLocation(xCoord, yCoord);
+    this.spreadsheetPanel.unhighlightRegion();
     this.spreadsheetPanel.revalidate();
     this.spreadsheetPanel.repaint();
     this.view.setTextbox();
@@ -46,7 +49,34 @@ public class HighlightCell implements MouseListener {
 
   @Override
   public void mousePressed(MouseEvent e) {
-    // no action taken for a mouse press
+    // nothing to do
+  }
+
+  @Override
+  public void mouseDragged(MouseEvent e) {
+    // gets the position of the mouse
+    int xPos = e.getX();
+    int yPos = e.getY();
+
+    // determines the coordinate of the cell that the mouse is currently over
+    int xCoord = xPos / SpreadsheetPanel.CELL_WIDTH;
+    int yCoord = yPos / SpreadsheetPanel.CELL_HEIGHT;
+
+    this.spreadsheetPanel.setHighlightLocation(xCoord, yCoord);
+
+    Coord mouseCoord = new Coord(xCoord, yCoord);
+    if (!this.spreadsheetPanel.getHighlightRegion().contains(mouseCoord)) {
+      this.spreadsheetPanel.addToHighlightRegion(mouseCoord);
+    } else {
+      // nothing to do, the cell is already highlighted
+    }
+    this.spreadsheetPanel.revalidate();
+    this.spreadsheetPanel.repaint();
+  }
+
+  @Override
+  public void mouseMoved(MouseEvent mouseEvent) {
+    // nothing to do
   }
 
   @Override

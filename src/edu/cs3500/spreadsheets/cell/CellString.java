@@ -29,6 +29,12 @@ public class CellString implements CellFormula {
 
   }
 
+  /**
+   * Adds escapes to the string contents of a CellString.
+   *
+   * @param value The value of the CellString.
+   * @return A string with escapes added.
+   */
   private String addEscapes(String value) {
     int i;
     String result = "";

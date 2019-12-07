@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
 
-import edu.cs3500.spreadsheets.controller.BasicWorksheetController;
 import edu.cs3500.spreadsheets.controller.IFeatures;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
@@ -120,6 +119,21 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   public void refresh() {
     this.revalidate();
     this.repaint();
+  }
+
+  @Override
+  public void addIFeatures(IFeatures feature) {
+    // there are no features to add to this view
+  }
+
+  @Override
+  public void setTextbox() {
+    // this view does not have a textbox
+  }
+
+  @Override
+  public void changeHighlightedCellLocation(int i, int i1) {
+    // this view does not support changing the highlighted cell
   }
 
   /**
