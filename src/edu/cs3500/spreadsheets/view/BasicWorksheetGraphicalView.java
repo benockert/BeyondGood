@@ -141,7 +141,7 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   }
 
   @Override
-  public void updateGraph(List<Coord> cellLocations, HashMap<CellFormula, CellFormula> cellValues) {
+  public void updateGraph(List<Coord> cellLocations, HashMap<Double, Double> cellValues) {
     // this view does not have a graph to update
   }
 

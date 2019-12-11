@@ -48,7 +48,7 @@ public interface BasicWorksheetView {
    * @param cellLocations the list of coordinates that are referenced within the graph
    * @param cellValues the hashmap of lef column to right column cells
    */
-  void updateGraph(List<Coord> cellLocations, HashMap<CellFormula, CellFormula> cellValues);
+  void updateGraph(List<Coord> cellLocations, HashMap<Double, Double> cellValues);
 
   /**
    * Gets the list of cells from the spreadsheet model that the graph references, such that the

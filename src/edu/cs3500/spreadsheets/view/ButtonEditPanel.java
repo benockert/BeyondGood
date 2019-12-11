@@ -2,15 +2,9 @@ package edu.cs3500.spreadsheets.view;
 
 import java.awt.FlowLayout;
 import java.awt.Dimension;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
-
-import edu.cs3500.spreadsheets.bonus.IllegalGraphConstruct;
-import edu.cs3500.spreadsheets.controller.IFeatures;
-import edu.cs3500.spreadsheets.model.Coord;
-
 
 /**
  * Represents an editor panel in a basic spreadsheet editor. Contains a text field to input text
@@ -18,8 +12,8 @@ import edu.cs3500.spreadsheets.model.Coord;
  * reset the cell to the previous text.
  */
 class ButtonEditPanel extends javax.swing.JPanel {
-  private JButton accept;
-  private JButton reject;
+  JButton accept;
+  JButton reject;
   private JTextField textInput;
   JButton graph;
 
@@ -73,24 +67,6 @@ class ButtonEditPanel extends javax.swing.JPanel {
    */
   String getInputText() {
     return this.textInput.getText();
-  }
-
-  void addRejectAction(IFeatures feature) {
-    this.reject.addActionListener(actionEvent -> feature.rejectCellEdit());
-  }
-
-  void addAcceptAction(IFeatures feature, Coord coord, String text) {
-    this.accept.addActionListener(actionEvent -> feature.acceptCellEdit(coord, text));
-  }
-
-  void addGraphAction(IFeatures feature, List<Coord> cellsToGraph) {
-    this.graph.addActionListener(actionEvent -> {
-      try {
-        feature.updateGraphView(cellsToGraph);
-      } catch (IllegalGraphConstruct igc) {
-        System.out.println("Illegal graph");
-      }
-    });
   }
 
 }

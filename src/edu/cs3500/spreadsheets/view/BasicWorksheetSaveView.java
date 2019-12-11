@@ -58,7 +58,7 @@ public class BasicWorksheetSaveView implements BasicWorksheetView {
   }
 
   @Override
-  public void updateGraph(List<Coord> cellLocs, HashMap<CellFormula, CellFormula> cellVals) {
+  public void updateGraph(List<Coord> cellLocs, HashMap<Double, Double> cellVals) {
     // nothing to do yet
   }
 

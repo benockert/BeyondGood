@@ -3,13 +3,17 @@ package edu.cs3500.spreadsheets.view;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.*;
 
+import edu.cs3500.spreadsheets.bonus.IllegalGraphConstruct;
 import edu.cs3500.spreadsheets.bonus.LineGraph;
+import edu.cs3500.spreadsheets.cell.CellDouble;
 import edu.cs3500.spreadsheets.cell.CellFormula;
+import edu.cs3500.spreadsheets.cell.CellFunction;
 import edu.cs3500.spreadsheets.controller.HighlightCell;
 import edu.cs3500.spreadsheets.controller.IFeatures;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
@@ -21,7 +25,7 @@ import edu.cs3500.spreadsheets.model.Coord;
  */
 public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetView {
   private BasicWorksheetGraphicalView spreadsheetView;
-  private BasicWorksheetReadOnlyModel modelToDisplayandEdit;
+  private BasicWorksheetReadOnlyModel modelToDisplay;
   private ButtonEditPanel buttonPanel;
   private LineGraph graphPanel;
 
@@ -36,7 +40,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.setSize(1750, 800);
     // creates the existing view
     this.spreadsheetView = new BasicWorksheetGraphicalView(model);
-    this.modelToDisplayandEdit = model;
+    this.modelToDisplay = model;
 
     this.buttonPanel = new ButtonEditPanel(this.spreadsheetView.getWidth());
     spreadsheetView.add(this.buttonPanel, BorderLayout.NORTH);
@@ -45,7 +49,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
             this);
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
     this.spreadsheetView.spreadsheetPanel.addMouseMotionListener(highlightedCell);
-    this.buttonPanel.setTextField(this.modelToDisplayandEdit
+    this.buttonPanel.setTextField(this.modelToDisplay
             .getCellAt(this.getHighlightedCell()).getRawContents());
 
     // adds the graph panel
@@ -63,7 +67,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   public void setTextbox() {
     HighlightCell highlightedCell = new HighlightCell(this.spreadsheetView.spreadsheetPanel, this);
     String contents =
-            this.modelToDisplayandEdit.getCellAt(this.getHighlightedCell()).getRawContents();
+            this.modelToDisplay.getCellAt(this.getHighlightedCell()).getRawContents();
     this.spreadsheetView.spreadsheetPanel.addMouseListener(highlightedCell);
     if (contents.equals("")) {
       this.buttonPanel.setTextField(contents);
@@ -84,6 +88,8 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   public void refresh() {
     this.spreadsheetView.spreadsheetPanel.revalidate();
     this.spreadsheetView.spreadsheetPanel.repaint();
+    this.graphPanel.revalidate();
+    this.graphPanel.repaint();
   }
 
   /**
@@ -121,7 +127,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   //________________________________________________________________________________________________
   // GRAPH METHODS
   @Override
-  public void updateGraph(List<Coord> cellLocations, HashMap<CellFormula, CellFormula> cellValues) {
+  public void updateGraph(List<Coord> cellLocations, HashMap<Double, Double> cellValues) {
     // updates the list of spreadsheet coordinates that the graph references
     this.graphPanel.updateCellRefLocations(cellLocations);
     // updates the hashmap of x-axis cells and y-axis cells
@@ -141,6 +147,81 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     JOptionPane.showMessageDialog(this, message);
   }
 
+  public void updateGraphView(List<Coord> cellsToGraph) {
+    try {
+      // determines which column is the x axis and which is the y axis
+      List<Integer> twoColumns = getTwoColumns(cellsToGraph);
+      int leftColIndex;
+      int rightColIndex;
+      if (twoColumns.get(0) > twoColumns.get(1)) {
+        leftColIndex = twoColumns.get(1);
+        rightColIndex = twoColumns.get(0);
+      } else {
+        leftColIndex = twoColumns.get(0);
+        rightColIndex = twoColumns.get(1);
+      }
+
+      // based on the columns above, gets the list of the highlighted cells in that column
+      List<Coord> xAxis = new ArrayList<>();
+      List<Coord> yAxis = new ArrayList<>();
+      for (Coord coord : cellsToGraph) {
+        if (coord.col == leftColIndex) {
+          xAxis.add(coord);
+        }
+        if (coord.col == rightColIndex) {
+          yAxis.add(coord);
+        }
+      }
+
+      HashMap<Double, Double> xyMap = new HashMap<>();
+      if (xAxis.size() != yAxis.size()) {
+        throw new IllegalGraphConstruct("Cannot construct graph: Mismatched column sizes");
+      } else {
+        for (int i = 0; i < xAxis.size(); i++) {
+          Double cellValueAtX;
+          Double cellValueAtY;
+          if (this.modelToDisplay.getCellAt(xAxis.get(i)) instanceof CellDouble ||
+                  this.modelToDisplay.getCellAt(xAxis.get(i)) instanceof CellFunction) {
+            cellValueAtX = (Double) this.modelToDisplay.getCellAt(xAxis.get(i)).evaluateCell();
+          } else {
+            cellValueAtX = 0.0;
+          }
+          if (this.modelToDisplay.getCellAt(yAxis.get(i)) instanceof CellDouble ||
+                  this.modelToDisplay.getCellAt(yAxis.get(i)) instanceof CellFunction) {
+            cellValueAtY = (Double) this.modelToDisplay.getCellAt(yAxis.get(yAxis.size() - (i + 1)))
+                    .evaluateCell();
+          } else {
+            cellValueAtY = 0.0;
+          }
+          xyMap.put(cellValueAtX, cellValueAtY);
+        }
+      }
+      this.updateGraph(cellsToGraph, xyMap);
+    } catch (IllegalGraphConstruct igc) {
+      this.addGraphErrorMessage(igc.getMessage());
+    }
+  }
+
+
+  private List<Integer> getTwoColumns(List<Coord> cells) throws IllegalGraphConstruct {
+    List<Integer> cols = new ArrayList<>();
+    // goes throw the list of coordinates and gets the column indexes of two columns
+    for (Coord coord : cells) {
+      int columnIndex = coord.col;
+      if (!cols.contains(columnIndex)) {
+        cols.add(columnIndex);
+      }
+    }
+    // if there is only column represented in the list, becomes invalid
+    if (cols.size() != 2) {
+      throw new IllegalGraphConstruct("Cannot construct graph: Does not have exactly 2 columns " +
+              "of data");
+    }
+    return cols;
+  }
+
+  //____________________________________________________________________________________________
+
   /**
    * Determines what features should be executed based on the action that occurs is pressed (either
    * the cell's contents are mutated or the edits are denied).
@@ -148,16 +229,17 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
    * @param feature the feature of the spreadsheet that will be added
    */
   public void addIFeatures(IFeatures feature) {
-    // adds actions to the accept button
-    String text = getViewTextField();
-    Coord location = getHighlightedCell();
-    this.buttonPanel.addAcceptAction(feature, location, text);
-
-    // adds actions to the reject button
-    this.buttonPanel.addRejectAction(feature);
+    this.buttonPanel.accept.addActionListener(actionEvent -> {
+      String text = getViewTextField();
+      Coord location = getHighlightedCell();
+      feature.acceptCellEdit(location, text);
+    });
+    this.buttonPanel.reject.addActionListener(actionEvent -> feature.rejectCellEdit());
 
     // adds actions to the graph button
-    this.buttonPanel.addGraphAction(feature, this.spreadsheetView.getHighlightedCells());
+    this.buttonPanel.graph.addActionListener(actionEvent -> {
+      this.updateGraphView(this.spreadsheetView.getHighlightedCells());
+    });
 
     // adds actions to the spreadsheet view for changing cell locations with arrow keys
     this.spreadsheetView.addKeyListener(new KeyListener() {

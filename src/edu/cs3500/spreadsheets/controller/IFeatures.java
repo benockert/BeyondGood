@@ -44,11 +44,4 @@ public interface IFeatures {
    */
   void deleteCellContents(Coord location);
 
-  /**
-   * Handles the graph button, which constructs a graph view of the given cells.
-   *
-   * @param cellsToGraph the list of coordinates of the highlighted cells
-   */
-  void updateGraphView(List<Coord> cellsToGraph) throws IllegalGraphConstruct;
-
 }
