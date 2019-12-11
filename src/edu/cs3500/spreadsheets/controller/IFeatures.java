@@ -1,5 +1,8 @@
 package edu.cs3500.spreadsheets.controller;
 
+import java.util.List;
+
+import edu.cs3500.spreadsheets.bonus.IllegalGraphConstruct;
 import edu.cs3500.spreadsheets.model.Coord;
 
 /**
@@ -40,5 +43,12 @@ public interface IFeatures {
    * @param location the location of the cell whose contents will be cleared.
    */
   void deleteCellContents(Coord location);
+
+  /**
+   * Handles the graph button, which constructs a graph view of the given cells.
+   *
+   * @param cellsToGraph the list of coordinates of the highlighted cells
+   */
+  void updateGraphView(List<Coord> cellsToGraph) throws IllegalGraphConstruct;
 
 }

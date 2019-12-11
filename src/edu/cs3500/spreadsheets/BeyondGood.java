@@ -7,16 +7,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.IllegalFormatConversionException;
 
-import edu.cs3500.spreadsheets.adapters.ProviderModelAdapter;
-import edu.cs3500.spreadsheets.adapters.ProviderViewAdapater;
 import edu.cs3500.spreadsheets.controller.BasicWorksheetController;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
-import edu.cs3500.spreadsheets.provider.view.view.EditableView;
-import edu.cs3500.spreadsheets.provider.view.view.VisualView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetEditorView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetGraphicalView;
 import edu.cs3500.spreadsheets.view.BasicWorksheetSaveView;
@@ -55,14 +51,6 @@ public class BeyondGood {
     // new -edit command line
     else if (args[0].equals("-edit")) {
       runNewEditBlankGUI(args);
-    }
-    // -provider from file command line
-    else if (args[0].equals("-in") && args[2].equals("-provider")) {
-      runProviderEditor(args);
-    }
-    // new -provider command line
-    else if (args[0].equals("-provider")) {
-      runNewBlankProviderEditor(args);
     } else {
       System.out.println("Invalid command line arguments given.");
     }
@@ -139,8 +127,6 @@ public class BeyondGood {
       saveView.render();
     } catch (FileNotFoundException fnf) {
       System.out.println("Invalid file given");
-    } catch (IOException io) {
-      System.out.println("Error saving file");
     }
   }
 
@@ -193,56 +179,6 @@ public class BeyondGood {
     BasicWorksheetEditorView view = new BasicWorksheetEditorView(readOnlyModel);
     BasicWorksheetController controller =
             new BasicWorksheetController(readOnlyModel, view);
-    controller.run();
-  }
-
-  /**
-   * Creates an editable view of a spreadsheet from a file using the provider's view.
-   *
-   * @param args the command line arguments from the client.
-   */
-  private static void runProviderEditor(String[] args) {
-    // the worksheet builder
-    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
-    // the file from which the graphical view will be made
-    String fileName = args[1];
-    File file = new File(fileName);
-    try {
-      FileReader readFile = new FileReader(file);
-      BasicWorksheetModel model = WorksheetReader.read(builder, readFile);
-      BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(model);
-
-      // building the providers view
-      ProviderModelAdapter providerModel = new ProviderModelAdapter(readOnlyModel);
-      VisualView visualView = new VisualView(providerModel, fileName);
-      EditableView editableView = new EditableView(visualView, fileName);
-      BasicWorksheetView providerView = new ProviderViewAdapater(editableView, readOnlyModel);
-      BasicWorksheetController controller =
-              new BasicWorksheetController(model, providerView);
-      controller.run();
-
-    } catch (FileNotFoundException fnf) {
-      System.out.println("Invalid file given");
-    }
-  }
-
-  /**
-   * Creates a new blank editable view of a spreadsheet using the provider's view.
-   *
-   * @param args the command line arguments from the client.
-   */
-  private static void runNewBlankProviderEditor(String[] args) {
-    // the worksheet builder
-    WorksheetReader.WorksheetBuilder<BasicWorksheetModel> builder = new WorksheetBuilderImpl();
-    BasicWorksheetModel blankModel = new BasicWorksheetModel();
-    BasicWorksheetReadOnlyModel readOnlyModel = new BasicWorksheetReadOnlyModel(blankModel);
-    // building the providers view
-    ProviderModelAdapter providerModel = new ProviderModelAdapter(readOnlyModel);
-    VisualView visualView = new VisualView(providerModel, "New Provider View");
-    EditableView editableView = new EditableView(visualView, "New Provider View");
-    BasicWorksheetView providerView = new ProviderViewAdapater(editableView, readOnlyModel);
-    BasicWorksheetController controller =
-            new BasicWorksheetController(blankModel, providerView);
     controller.run();
   }
 

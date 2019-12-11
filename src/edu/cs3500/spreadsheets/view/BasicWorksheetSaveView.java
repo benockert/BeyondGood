@@ -1,7 +1,9 @@
 package edu.cs3500.spreadsheets.view;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.cs3500.spreadsheets.cell.CellFormula;
@@ -53,6 +55,23 @@ public class BasicWorksheetSaveView implements BasicWorksheetView {
   @Override
   public void changeHighlightedCellLocation(int i, int i1) {
     // this view does not support changing the highlighted cell
+  }
+
+  @Override
+  public void updateGraph(List<Coord> cellLocs, HashMap<CellFormula, CellFormula> cellVals) {
+    // nothing to do yet
+  }
+
+  // gets the coordinate that the currently displayed graph references
+  @Override
+  public List<Coord> getGraphsReferencedCoords() {
+    // nothing to do yet
+    return new ArrayList<Coord>();
+  }
+
+  @Override
+  public void addGraphErrorMessage(String message) {
+    // no error message to display in this view
   }
 
   @Override

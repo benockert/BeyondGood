@@ -37,19 +37,23 @@ public class HighlightCell implements MouseListener, MouseMotionListener {
     int xCoord = xPos / SpreadsheetPanel.CELL_WIDTH;
     int yCoord = yPos / SpreadsheetPanel.CELL_HEIGHT;
 
-    // sets the highlighted location of the spreadsheet panel, so that the highlighted cell
-    // will be clearly displayed; then repaints the view and sets the text field to be the
-    // cell contents
-    this.spreadsheetPanel.setHighlightLocation(xCoord, yCoord);
-    this.spreadsheetPanel.unhighlightRegion();
-    this.spreadsheetPanel.revalidate();
-    this.spreadsheetPanel.repaint();
-    this.view.setTextbox();
+    if (xCoord < 0 || yCoord < 0) {
+      // don't do anything if the click is outside of the valid cell range
+    } else {
+      // sets the highlighted location of the spreadsheet panel, so that the highlighted cell
+      // will be clearly displayed; then repaints the view and sets the text field to be the
+      // cell contents
+      this.spreadsheetPanel.setHighlightLocation(xCoord, yCoord);
+      this.spreadsheetPanel.unhighlightRegion();
+      this.spreadsheetPanel.revalidate();
+      this.spreadsheetPanel.repaint();
+      this.view.setTextbox();
+    }
   }
 
   @Override
   public void mousePressed(MouseEvent e) {
-    // nothing to do
+    this.spreadsheetPanel.unhighlightRegion();
   }
 
   @Override
@@ -62,16 +66,21 @@ public class HighlightCell implements MouseListener, MouseMotionListener {
     int xCoord = xPos / SpreadsheetPanel.CELL_WIDTH;
     int yCoord = yPos / SpreadsheetPanel.CELL_HEIGHT;
 
-    this.spreadsheetPanel.setHighlightLocation(xCoord, yCoord);
-
-    Coord mouseCoord = new Coord(xCoord, yCoord);
-    if (!this.spreadsheetPanel.getHighlightRegion().contains(mouseCoord)) {
-      this.spreadsheetPanel.addToHighlightRegion(mouseCoord);
+    if (xCoord < 0 || yCoord < 0) {
+      // don't do anything if the mouse if outside of the valid cell panel range
     } else {
-      // nothing to do, the cell is already highlighted
+
+      this.spreadsheetPanel.setHighlightLocation(xCoord, yCoord);
+
+      Coord mouseCoord = new Coord(xCoord + 1, yCoord + 1);
+      if (!this.spreadsheetPanel.getHighlightRegion().contains(mouseCoord)) {
+        this.spreadsheetPanel.addToHighlightRegion(mouseCoord);
+      } else {
+        // nothing to do, the cell is already highlighted
+      }
+      this.spreadsheetPanel.revalidate();
+      this.spreadsheetPanel.repaint();
     }
-    this.spreadsheetPanel.revalidate();
-    this.spreadsheetPanel.repaint();
   }
 
   @Override

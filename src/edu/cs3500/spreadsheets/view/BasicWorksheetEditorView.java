@@ -1,11 +1,15 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.List;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
+import edu.cs3500.spreadsheets.bonus.LineGraph;
+import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.controller.HighlightCell;
 import edu.cs3500.spreadsheets.controller.IFeatures;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
@@ -19,7 +23,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   private BasicWorksheetGraphicalView spreadsheetView;
   private BasicWorksheetReadOnlyModel modelToDisplayandEdit;
   private ButtonEditPanel buttonPanel;
-
+  private LineGraph graphPanel;
 
   /**
    * A constructor for the editable GUI view of a spreadsheet which reads an existing model and
@@ -29,6 +33,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
    */
   public BasicWorksheetEditorView(BasicWorksheetReadOnlyModel model) {
     super();
+    this.setSize(1750, 800);
     // creates the existing view
     this.spreadsheetView = new BasicWorksheetGraphicalView(model);
     this.modelToDisplayandEdit = model;
@@ -43,9 +48,13 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.buttonPanel.setTextField(this.modelToDisplayandEdit
             .getCellAt(this.getHighlightedCell()).getRawContents());
 
+    // adds the graph panel
+    this.graphPanel = new LineGraph();
+    this.graphPanel.setPreferredSize(new Dimension(420, 420));
+    this.spreadsheetView.add(graphPanel, BorderLayout.EAST);
+
     // sets the text in thee toolbar to be the first highlighted cell
     this.setTextbox();
-
   }
 
   /**
@@ -65,7 +74,7 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
 
   @Override
   public void render() {
-    this.spreadsheetView.setVisible(true);
+    this.spreadsheetView.render();
   }
 
   /**
@@ -76,7 +85,6 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     this.spreadsheetView.spreadsheetPanel.revalidate();
     this.spreadsheetView.spreadsheetPanel.repaint();
   }
-
 
   /**
    * Returns the current text in the textbox.
@@ -97,19 +105,6 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
   }
 
   /**
-   * Returns the current graphical view.
-   *
-   * @return A BasicWorksheetGraphical view.
-   */
-  public BasicWorksheetGraphicalView getGraphicalView() {
-    return this.spreadsheetView;
-  }
-
-  public SpreadsheetPanel getSpreadsheetPanel() {
-    return this.spreadsheetView.spreadsheetPanel;
-  }
-
-  /**
    * Changes the location of the highlighted cell in this spreadsheet view.
    *
    * @param columnFactor the number of columns the highlighted cell is moving
@@ -123,6 +118,29 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     }
   }
 
+  //________________________________________________________________________________________________
+  // GRAPH METHODS
+  @Override
+  public void updateGraph(List<Coord> cellLocations, HashMap<CellFormula, CellFormula> cellValues) {
+    // updates the list of spreadsheet coordinates that the graph references
+    this.graphPanel.updateCellRefLocations(cellLocations);
+    // updates the hashmap of x-axis cells and y-axis cells
+    this.graphPanel.updateCellRegion(cellValues);
+    this.graphPanel.revalidate();
+    this.graphPanel.repaint();
+  }
+
+  // gets the coordinate that the currently displayed graph references
+  @Override
+  public List<Coord> getGraphsReferencedCoords() {
+    return this.graphPanel.getReferencedLocations();
+  }
+
+  @Override
+  public void addGraphErrorMessage(String message) {
+    JOptionPane.showMessageDialog(this, message);
+  }
+
   /**
    * Determines what features should be executed based on the action that occurs is pressed (either
    * the cell's contents are mutated or the edits are denied).
@@ -130,13 +148,19 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
    * @param feature the feature of the spreadsheet that will be added
    */
   public void addIFeatures(IFeatures feature) {
-    this.buttonPanel.accept.addActionListener(actionEvent -> {
-      String text = getViewTextField();
-      Coord location = getHighlightedCell();
-      feature.acceptCellEdit(location, text);
-    });
-    this.buttonPanel.reject.addActionListener(actionEvent -> feature.rejectCellEdit());
-    this.buttonPanel.textInput.addKeyListener(new KeyListener() {
+    // adds actions to the accept button
+    String text = getViewTextField();
+    Coord location = getHighlightedCell();
+    this.buttonPanel.addAcceptAction(feature, location, text);
+
+    // adds actions to the reject button
+    this.buttonPanel.addRejectAction(feature);
+
+    // adds actions to the graph button
+    this.buttonPanel.addGraphAction(feature, this.spreadsheetView.getHighlightedCells());
+
+    // adds actions to the spreadsheet view for changing cell locations with arrow keys
+    this.spreadsheetView.addKeyListener(new KeyListener() {
       @Override
       public void keyTyped(KeyEvent keyEvent) {
         //nothing else to do
@@ -166,5 +190,6 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
         //nothing else to do
       }
     });
+    this.spreadsheetView.setFocusable(true);
   }
 }

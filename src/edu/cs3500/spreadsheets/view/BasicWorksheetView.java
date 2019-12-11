@@ -1,6 +1,11 @@
 package edu.cs3500.spreadsheets.view;
 
+import java.util.HashMap;
+import java.util.List;
+
+import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.controller.IFeatures;
+import edu.cs3500.spreadsheets.model.Coord;
 
 /**
  * Represents a view of a basic worksheet - either graphical or text.
@@ -36,6 +41,25 @@ public interface BasicWorksheetView {
    * @param i1 The number of rows the highlighted cell is moving.
    */
   void changeHighlightedCellLocation(int i, int i1);
+
+  /**
+   * Updates the graph view of the highlighted cells.
+   *
+   * @param cellLocations the list of coordinates that are referenced within the graph
+   * @param cellValues the hashmap of lef column to right column cells
+   */
+  void updateGraph(List<Coord> cellLocations, HashMap<CellFormula, CellFormula> cellValues);
+
+  /**
+   * Gets the list of cells from the spreadsheet model that the graph references, such that the
+   * graph can be updated with the proper cells when the cells change.
+   *
+   * @return the list of spreadsheet coordinates that the graph refers to
+   */
+  List<Coord> getGraphsReferencedCoords();
+
+  void addGraphErrorMessage(String message);
+
 }
 
 

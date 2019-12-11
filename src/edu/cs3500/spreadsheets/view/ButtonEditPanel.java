@@ -2,9 +2,14 @@ package edu.cs3500.spreadsheets.view;
 
 import java.awt.FlowLayout;
 import java.awt.Dimension;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
+
+import edu.cs3500.spreadsheets.bonus.IllegalGraphConstruct;
+import edu.cs3500.spreadsheets.controller.IFeatures;
+import edu.cs3500.spreadsheets.model.Coord;
 
 
 /**
@@ -12,10 +17,11 @@ import javax.swing.JTextField;
  * into a cell, and has an accept or reject button to either change a cell to the inputted text, or
  * reset the cell to the previous text.
  */
-public class ButtonEditPanel extends javax.swing.JPanel {
-  public JButton accept;
-  JButton reject;
-  JTextField textInput;
+class ButtonEditPanel extends javax.swing.JPanel {
+  private JButton accept;
+  private JButton reject;
+  private JTextField textInput;
+  JButton graph;
 
   /**
    * The constructor for a editor panel.
@@ -42,6 +48,12 @@ public class ButtonEditPanel extends javax.swing.JPanel {
 
     // adds the text field to the button panel and then adds the button panel to the existing view
     this.add(textInput);
+
+    // graph button
+    this.graph = new JButton("Graph");
+    this.graph.setActionCommand("Graph cells");
+    this.add(this.graph);
+
   }
 
   /**
@@ -61,6 +73,24 @@ public class ButtonEditPanel extends javax.swing.JPanel {
    */
   String getInputText() {
     return this.textInput.getText();
+  }
+
+  void addRejectAction(IFeatures feature) {
+    this.reject.addActionListener(actionEvent -> feature.rejectCellEdit());
+  }
+
+  void addAcceptAction(IFeatures feature, Coord coord, String text) {
+    this.accept.addActionListener(actionEvent -> feature.acceptCellEdit(coord, text));
+  }
+
+  void addGraphAction(IFeatures feature, List<Coord> cellsToGraph) {
+    this.graph.addActionListener(actionEvent -> {
+      try {
+        feature.updateGraphView(cellsToGraph);
+      } catch (IllegalGraphConstruct igc) {
+        System.out.println("Illegal graph");
+      }
+    });
   }
 
 }

@@ -6,17 +6,20 @@ import java.util.List;
 import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.model.Coord;
 
-public interface Graph {
+public interface ExcellentWorksheetGraph {
 
   /**
    * Gets the list of cell coordinates in a spreadsheet that will make up the data points of
    * this graph
    * @return a list of cell coordinates
    */
-  public List<Coord> getCellRegion();
+  HashMap<CellFormula, CellFormula> getCellRegion();
 
-//  public HashMap<CellFormula, CellFormula>
+  void updateCellRegion(HashMap<CellFormula, CellFormula> newCells);
 
+  List<Coord> getReferencedLocations();
+
+  void updateCellRefLocations(List<Coord> referencedLocations);
 
 
 

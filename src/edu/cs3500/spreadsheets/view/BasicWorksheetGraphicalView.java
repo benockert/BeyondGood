@@ -4,11 +4,15 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.event.AdjustmentEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
 
+import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.controller.IFeatures;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
@@ -136,6 +140,23 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
     // this view does not support changing the highlighted cell
   }
 
+  @Override
+  public void updateGraph(List<Coord> cellLocations, HashMap<CellFormula, CellFormula> cellValues) {
+    // this view does not have a graph to update
+  }
+
+  // gets the coordinate that the currently displayed graph references
+  @Override
+  public List<Coord> getGraphsReferencedCoords() {
+    // no graph in this view
+    return new ArrayList<Coord>();
+  }
+
+  @Override
+  public void addGraphErrorMessage(String message) {
+    // no error message to display in this view
+  }
+
   /**
    * Gets the location of the cell that is highlighted in this view.
    *
@@ -163,7 +184,6 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
       this.spreadsheetPanel.setHighlightLocation(xLoc + columnFactor, yLoc + rowFactor);
     }
   }
-
 
   /**
    * A method that adds a horizontal and vertical scroll pane to our worksheet view. Allows a user
@@ -214,5 +234,14 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
         }
       }
     }
+  }
+
+  /**
+   * Gets the location of the highlighted cells in this view
+   *
+   * @return an array list of coordinates of the highlighted cells
+   */
+  List<Coord> getHighlightedCells() {
+    return this.spreadsheetPanel.getHighlightRegion();
   }
 }
