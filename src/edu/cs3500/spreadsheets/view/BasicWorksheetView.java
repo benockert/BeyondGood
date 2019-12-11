@@ -3,7 +3,6 @@ package edu.cs3500.spreadsheets.view;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.controller.IFeatures;
 import edu.cs3500.spreadsheets.model.Coord;
 
@@ -58,6 +57,10 @@ public interface BasicWorksheetView {
    */
   List<Coord> getGraphsReferencedCoords();
 
+  /**
+   * Adds an error message to the view if the graph is invalid.
+   * @param message The message to display.
+   */
   void addGraphErrorMessage(String message);
 
 }

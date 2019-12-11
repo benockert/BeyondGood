@@ -47,7 +47,8 @@ public class SpreadsheetPanel extends javax.swing.JPanel {
         g2d.setColor(Color.BLACK);
         g2d.drawRect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
         Coord checkRegion = new Coord(x + 1, y + 1);
-        if (x == this.xMouseCellPos && y == this.yMouseCellPos || this.cellRegion.contains(checkRegion)) {
+        if (x == this.xMouseCellPos && y == this.yMouseCellPos
+                || this.cellRegion.contains(checkRegion)) {
           g2d.setColor(Color.LIGHT_GRAY);
           g2d.fillRect(x * CELL_WIDTH + 1, y * CELL_HEIGHT + 1, CELL_WIDTH - 1, CELL_HEIGHT - 1);
           String contentsToDraw = getAndClipContents(g2d, x + 1, y + 1);

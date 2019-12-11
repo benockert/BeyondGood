@@ -1,18 +1,20 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 
 import edu.cs3500.spreadsheets.bonus.IllegalGraphConstruct;
 import edu.cs3500.spreadsheets.bonus.LineGraph;
 import edu.cs3500.spreadsheets.cell.CellDouble;
-import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.cell.CellFunction;
 import edu.cs3500.spreadsheets.controller.HighlightCell;
 import edu.cs3500.spreadsheets.controller.IFeatures;
@@ -147,7 +149,12 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     JOptionPane.showMessageDialog(this, message);
   }
 
-  public void updateGraphView(List<Coord> cellsToGraph) {
+  /**
+   * Updates the view with the graph based on the cells given and any potential error messages.
+   *
+   * @param cellsToGraph The cells from which a graph is created.
+   */
+  private void updateGraphView(List<Coord> cellsToGraph) {
     try {
       // determines which column is the x axis and which is the y axis
       List<Integer> twoColumns = getTwoColumns(cellsToGraph);
@@ -202,10 +209,16 @@ public class BasicWorksheetEditorView extends JFrame implements BasicWorksheetVi
     }
   }
 
-
+  /**
+   * Creates the two columns of cells used when constructing the graph.
+   *
+   * @param cells The cells used in a graph.
+   * @return A list of integers representing the columns.
+   * @throws IllegalGraphConstruct if there are not exactly two columns of data.
+   */
   private List<Integer> getTwoColumns(List<Coord> cells) throws IllegalGraphConstruct {
     List<Integer> cols = new ArrayList<>();
-    // goes throw the list of coordinates and gets the column indexes of two columns
+    // goes through the list of coordinates and gets the column indexes of two columns
     for (Coord coord : cells) {
       int columnIndex = coord.col;
       if (!cols.contains(columnIndex)) {

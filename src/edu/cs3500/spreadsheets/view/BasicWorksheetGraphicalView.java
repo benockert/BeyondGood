@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
 
-import edu.cs3500.spreadsheets.cell.CellFormula;
 import edu.cs3500.spreadsheets.controller.IFeatures;
 import edu.cs3500.spreadsheets.model.BasicWorksheetModel;
 import edu.cs3500.spreadsheets.model.BasicWorksheetReadOnlyModel;
@@ -237,9 +236,9 @@ public class BasicWorksheetGraphicalView extends JFrame implements BasicWorkshee
   }
 
   /**
-   * Gets the location of the highlighted cells in this view
+   * Gets the location of the highlighted cells in this view.
    *
-   * @return an array list of coordinates of the highlighted cells
+   * @return an array list of coordinates of the highlighted cells.
    */
   List<Coord> getHighlightedCells() {
     return this.spreadsheetPanel.getHighlightRegion();

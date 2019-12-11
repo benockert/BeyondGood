@@ -41,7 +41,7 @@ public class BasicWorksheetController implements IFeatures {
       this.model.editCell("=" + cellsRawContents, coord);
     }
     this.view.refresh();
-   }
+  }
 
   @Override
   public void rejectCellEdit() {

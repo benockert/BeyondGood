@@ -26,7 +26,7 @@ public class RepeatTest {
    * A method that initializes the fields of this testing class which will be used to rest the
    * fields of this class prior to each test.
    */
-  void initData() {
+  private void initData() {
     this.parser = new Parser();
     this.visitor = new SexpVisitorHandler();
     this.model = new BasicWorksheetModel();
